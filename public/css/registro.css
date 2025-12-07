@@ -1,0 +1,17 @@
+html,body{
+    width: 100%;
+    height: 100%;
+}
+
+body{
+      background-image: url('../images/dracula_castle.jpg');
+      background-size:cover;
+      background-repeat:no-repeat;
+    /*  background-position:center;*/
+  }
+.formulario-registro-container{
+  width: 80%;
+  height:100%;
+  
+
+}

@@ -32,11 +32,11 @@ RUN composer install --no-dev --optimize-autoloader
 #5️⃣ Instalar Node.js y construir assets
 #-----------------------------
 
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-&& apt-get install -y nodejs
-&& npm ci
-&& npm run build
-&& npm cache clean --force
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && npm ci \
+    && npm run build \
+    && npm cache clean --force
 
 #-----------------------------
 #6️⃣ Configuración de Laravel
@@ -47,9 +47,9 @@ RUN php artisan key --force
 
 #Cachear configuración, rutas y vistas para producción
 
-RUN php artisan config
-&& php artisan route
-&& php artisan view
+RUN php artisan config \
+&& php artisan route \
+&& php artisan view \
 
 #-----------------------------
 #7️⃣ Exponer puerto y comando por defecto

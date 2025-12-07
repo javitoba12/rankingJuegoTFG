@@ -6,7 +6,7 @@ FROM php:8.2-fpm
 
 RUN apt-get update && apt-get install -y \
     git zip unzip curl libzip-dev libpq-dev libonig-dev \
-    && docker-php-ext-install pdo pdo_mysql bcmath mbstring tokenizer ctype xml \
+    && docker-php-ext-install pdo pdo_mysql bcmath zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 #-----------------------------

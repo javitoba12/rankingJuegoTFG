@@ -4,10 +4,10 @@ FROM php:8.2-fpm
 #1️⃣ Instalar dependencias del sistema
 #-----------------------------
 
-RUN apt-get update && apt-get install -y
-git zip unzip curl libzip-dev libpq-dev libonig-dev
-&& docker-php-ext-install pdo pdo_mysql bcmath mbstring tokenizer ctype xml
-&& apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    git zip unzip curl libzip-dev libpq-dev libonig-dev \
+    && docker-php-ext-install pdo pdo_mysql bcmath mbstring tokenizer ctype xml \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 #-----------------------------
 #2️⃣ Instalar Composer

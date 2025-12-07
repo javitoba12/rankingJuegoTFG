@@ -1,28 +1,62 @@
 FROM php:8.2-fpm
 
-# Instalar extensiones necesarias
-RUN apt-get update && apt-get install -y \
-    git zip unzip curl libpq-dev libzip-dev \
-    && docker-php-ext-install pdo pdo_mysql zip
+-----------------------------
+1️⃣ Instalar dependencias del sistema
+-----------------------------
 
-# Instalar Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN apt-get update && apt-get install -y
+git zip unzip curl libzip-dev libpq-dev libonig-dev
+&& docker-php-ext-install pdo pdo_mysql bcmath mbstring tokenizer ctype xml
+&& apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copiar proyecto
+-----------------------------
+2️⃣ Instalar Composer
+-----------------------------
+
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+-----------------------------
+3️⃣ Copiar proyecto
+-----------------------------
+
 WORKDIR /var/www/html
 COPY . .
 
-# Instalar dependencias PHP
+-----------------------------
+4️⃣ Instalar dependencias PHP
+-----------------------------
+
 RUN composer install --no-dev --optimize-autoloader
 
-# Instalar Node para Vite
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt-get install -y nodejs
-RUN npm install && npm run build
+-----------------------------
+5️⃣ Instalar Node.js y construir assets
+-----------------------------
 
-# Generar clave APP_KEY si no existe
-RUN php artisan key:generate --force
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+&& apt-get install -y nodejs
+&& npm ci
+&& npm run build
+&& npm cache clean --force
+
+-----------------------------
+6️⃣ Configuración de Laravel
+-----------------------------
+Generar APP_KEY si no existe
+
+RUN php artisan key --force
+
+Cachear configuración, rutas y vistas para producción
+
+RUN php artisan config
+&& php artisan route
+&& php artisan view
+
+-----------------------------
+7️⃣ Exponer puerto y comando por defecto
+-----------------------------
 
 EXPOSE 8000
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+Script de inicio: migraciones + serve
+
+CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000

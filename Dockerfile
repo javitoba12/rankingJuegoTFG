@@ -1,68 +1,35 @@
 FROM php:8.2-fpm
 
-#-----------------------------
-#1️⃣ Instalar dependencias del sistema
-#-----------------------------
-
+# 1. Dependencias del sistema
 RUN apt-get update && apt-get install -y \
     git zip unzip curl libzip-dev libpq-dev libonig-dev \
     && docker-php-ext-install pdo pdo_mysql bcmath zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-#-----------------------------
-#2️⃣ Instalar Composer
-#-----------------------------
+# 2. Instalar Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-#COPY --from=composer /usr/bin/composer /usr/bin/composer
-RUN composer install --no-dev --optimize-autoloader --no-scripts
-
-#-----------------------------
-#3️⃣ Copiar proyecto
-#-----------------------------
-
+# 3. Copiar proyecto
 WORKDIR /var/www/html
 COPY . .
 
-#-----------------------------
-#4️⃣ Instalar dependencias PHP
-#-----------------------------
-
+# 4. Instalar dependencias PHP
 RUN composer install --no-dev --optimize-autoloader
 
-#-----------------------------
-#5️⃣ Instalar Node.js y construir assets
-#-----------------------------
-
+# 5. Instalar Node y build
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
     && npm ci \
     && npm run build \
     && npm cache clean --force
 
-#-----------------------------
-#6️⃣ Configuración de Laravel
-#-----------------------------
-#Generar APP_KEY si no existe
+# 6. NO ejecutar artisan en build (Render no tiene env vars aún)
+#    (Todo va en el CMD)
 
-RUN php artisan key --force
-
-#Cachear configuración, rutas y vistas para producción
-
-RUN php artisan config \
-&& php artisan route \
-&& php artisan view \
-
-#-----------------------------
-#7️⃣ Exponer puerto y comando por defecto
-#-----------------------------
-
+# 7. Exponer puerto
 EXPOSE 8000
 
-#Script de inicio: migraciones + serve
-
-#CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000
-#CMD php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=8000
-
+# 8. CMD final (se ejecuta con variables ya cargadas por Render)
 CMD php artisan key:generate --force \
     && php artisan migrate --force \
     && php artisan config:cache \

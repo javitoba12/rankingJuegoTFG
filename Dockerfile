@@ -13,7 +13,8 @@ RUN apt-get update && apt-get install -y \
 #2️⃣ Instalar Composer
 #-----------------------------
 
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+#COPY --from=composer /usr/bin/composer /usr/bin/composer
+RUN composer install --no-dev --optimize-autoloader --no-scripts
 
 #-----------------------------
 #3️⃣ Copiar proyecto
@@ -60,4 +61,10 @@ EXPOSE 8000
 #Script de inicio: migraciones + serve
 
 #CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000
-CMD php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=8000
+#CMD php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=8000
+
+CMD php artisan key:generate --force \
+    && php artisan migrate --force \
+    && php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan serve --host=0.0.0.0 --port=8000

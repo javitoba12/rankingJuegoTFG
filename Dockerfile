@@ -23,16 +23,18 @@ WORKDIR /var/www/html
 COPY composer.json composer.lock ./
 
 # -----------------------------
-# 4. Instalar dependencias PHP (sin ejecutar scripts)
+# 4. Copiar el resto del proyecto
+# -----------------------------
+COPY . .
+
+
+
+# -----------------------------
+# 5. Instalar dependencias PHP (sin ejecutar scripts)
 # -----------------------------
 #RUN composer install --no-dev --no-scripts --optimize-autoloader
 RUN composer install --optimize-autoloader \
     && composer clear-cache
-
-# -----------------------------
-# 5. Copiar el resto del proyecto
-# -----------------------------
-COPY . .
 
 # -----------------------------
 # 6. Instalar Node.js y construir assets

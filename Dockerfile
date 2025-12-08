@@ -32,8 +32,8 @@ COPY . .
 # -----------------------------
 # 5. Instalar dependencias PHP (sin ejecutar scripts)
 # -----------------------------
-RUN composer install --no-dev --no-scripts --optimize-autoloader
-#RUN composer install --optimize-autoloader \
+#RUN composer install --no-dev --no-scripts --optimize-autoloader
+RUN composer install --optimize-autoloader 
 #    && composer clear-cache
 
 # -----------------------------

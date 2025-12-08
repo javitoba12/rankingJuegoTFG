@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
     {
 
 
-       $admin1 = User::factory()->updateOrCreate([//Puedo crear un usuario con los campos de su tabla y los valores que 
+       $admin1 = User::factory()->create([//Puedo crear un usuario con los campos de su tabla y los valores que 
             //yo quiera para dichos campos
             'nick' => 'javitoba12',
             'email' => 'javitoba12@gmail.com',
@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        $usuarioPrueba=User::factory()->updateOrCreate([
+        $usuarioPrueba=User::factory()->create([
             'nick' => 'juanjo22',
             'email' => 'juanjogarcia22@gmail.com',
             'password' => Hash::make('1234'),
@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
             
         ]);
 
-        $itemPrueba=Item::factory()->updateOrCreate([
+        $itemPrueba=Item::factory()->create([
 
             'nombre' => 'Brebaje curativo (s)',
             
@@ -61,7 +61,7 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
-        $enemigoPrueba=Enemigo::factory()->updateOrCreate([
+        $enemigoPrueba=Enemigo::factory()->create([
 
             'nombre_enemigo' => 'Nosferatu',
             
@@ -77,7 +77,7 @@ class DatabaseSeeder extends Seeder
             'tipo_daño' => 'Sangrante, Oscuro',
         ]);
         
-        $misionPrueba=Mission::factory()->updateOrCreate([
+        $misionPrueba=Mission::factory()->create([
             'nombre' => 'Atrapa al cultista',
             'tipo' => 'Captura',
             'objetivo' => 'Capturar al objetivo',
@@ -98,7 +98,7 @@ class DatabaseSeeder extends Seeder
      $items->push($itemPrueba);
 
         Enemigo::factory(4)->create();
-        //savedGame::factory(6)->create();
+        savedGame::factory(6)->create();
         
     
         

@@ -49,8 +49,7 @@ EXPOSE 8000
 # -----------------------------
 # 8. Comando final para Render
 # -----------------------------
-CMD php artisan key:generate --force \
-    && php artisan migrate --force \
+CMD php artisan migrate --force \
     && php artisan config:cache \
     && php artisan route:cache \
     && php artisan serve --host=0.0.0.0 --port=8000

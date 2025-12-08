@@ -11,7 +11,7 @@ use App\Livewire\Admin\Administracion;
 
 
 
-    Route::get('/', \App\Livewire\Inicio::class)->name('inicio');
+   // Route::get('/', \App\Livewire\Inicio::class)->name('inicio');
     Route::get('/inicio', \App\Livewire\Inicio::class)->name('inicio');
 
 //Route::get('/counter', Counter::class);

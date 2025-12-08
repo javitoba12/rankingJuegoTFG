@@ -32,9 +32,9 @@ COPY . .
 # -----------------------------
 # 5. Instalar dependencias PHP (sin ejecutar scripts)
 # -----------------------------
-#RUN composer install --no-dev --no-scripts --optimize-autoloader
-RUN composer install --optimize-autoloader \
-    && composer clear-cache
+RUN composer install --no-dev --no-scripts --optimize-autoloader
+#RUN composer install --optimize-autoloader \
+#    && composer clear-cache
 
 # -----------------------------
 # 6. Instalar Node.js y construir assets
@@ -53,8 +53,10 @@ EXPOSE 8000
 # -----------------------------
 # 8. Comando final para Render
 # -----------------------------
-CMD php artisan migrate --force \
+CMD  php artisan key:generate --force \
+    && php artisan migrate --force \
     && php artisan config:cache \
+    && php artisan package:discover \
     && php artisan route:cache \
     && php artisan db:seed --force \
     && php artisan serve --host=0.0.0.0 --port=8000

@@ -19,6 +19,12 @@
             <p>Horas jugadas: {{$usuario->tiempo_juego}} horas</p>
             <p>Registrado en: {{$usuario->fecha_alta}}</p>
 
+            <select name="" id="" class="form-select form-select-sm selectColor text-light bg-secondary" wire:model="colorSeleccionado">
+                <option value="" selected disabled>Cambiar de color</option>
+                <option value="claro">Claro</option>
+                <option value="oscuro">Oscuro</option>
+            </select>
+
             <?php //AVATAR DEL USUARIO ?>
 
             <!--acept= image/* para que el input file solo acepte archivos con formato de imagen(jpg,png,gif,jpgeg...)-->
@@ -28,6 +34,8 @@
             //livewire se encarga de que cuando la propiedad publica del componente cambie, se llame automaticamente a la funcion updatedAvatar
             // 
             // ?>
+
+            
             
 
         </div>

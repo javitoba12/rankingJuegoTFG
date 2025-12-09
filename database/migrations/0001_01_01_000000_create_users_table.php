@@ -32,6 +32,7 @@ return new class extends Migration
             $table->integer('tiempo_juego');
             $table->string('avatar')->nullable();
             $table->enum('rol', ['admin','usuario'])->default('usuario');//Si no se rellena nada, por defecto el rol es usuario.
+            $table->enum('tema', ['claro','oscuro'])->default('oscuro');
            // $table->float('puntuacion')->nullable();
             $table->rememberToken();
             $table->timestamps();

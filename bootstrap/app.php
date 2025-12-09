@@ -13,11 +13,13 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         //
         $middleware->web(append:[
-            App\Http\Middleware\ChequeoRol::class
+            App\Http\Middleware\ChequeoRol::class,
+            App\Http\Middleware\ChequeoTema::class
         ]);
 
         $middleware->alias([
             'rol' => \App\Http\Middleware\ChequeoRol::class,
+            'tema' => \App\Http\Middleware\ChequeoRol::class
         ]);
         
     })

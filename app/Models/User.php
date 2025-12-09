@@ -27,6 +27,7 @@ class User extends Authenticatable
         'fecha_alta',
         'tiempo_juego',
         'rol',
+        'tema',
         'avatar'
     ];
 
@@ -126,6 +127,18 @@ public static function cambiarAvatar($id,$avatar){
     $exito=false;
     
     $filasAfectadas=self::where('id',$id)->update(['avatar'=> $avatar]);
+
+    if($filasAfectadas > 0){
+        $exito=true;
+    }
+
+    return $exito;
+}
+
+public static function cambiarColor($idUsuario,$color){
+    $exito=false;
+
+    $filasAfectadas=self::where('id',$idUsuario)->update(['tema' => $color]);
 
     if($filasAfectadas > 0){
         $exito=true;

@@ -3,7 +3,7 @@
  
   <div class="nav-container bg-dark">
   
-    <nav class="navbar navbar-expand-lg bg-light navbar-light bg-dark navbar-dark my-nav">
+    <nav class="navbar navbar-expand-lg bg-light navbar-light {{ $tema['bgColor'] }} {{ $tema['textColor'] }} navbar-dark my-nav">
     <div class='options-container mx-2'><button class="btn btn-danger  text-start" wire:click="cerrarSesion">Cerrar sesion</button></div>
     <div class='buscador-container mx-2 d-flex'> <?php //BUSCADOR PARA BUSCAR USUARIOS ?>
     
@@ -48,12 +48,14 @@
     </nav>
 </div> 
 
-<div class="container mt-4 ranking-container bg-dark d-flex">
+<div class="container mt-4 ranking-container {{ $tema['bgColor'] }} {{ $tema['textColor'] }} d-flex ">
    <!-- <a href="/inicio/principal/perfil">Perfil</a>-->
    
    <!-- {{-- If your happiness depends on money, you will never be happy with yourself. --}}-->
     <div class='table-ranking-container d-flex flex-column'>
         <h1>Bienvenido {{$usuario->nick}}</h1>
+        
+        <h2>{{$tema['bgColor']}}</h2>
 
         @if($usuario->rol == 'admin')
 
@@ -200,3 +202,5 @@
   </script>  
 
 </div>
+
+

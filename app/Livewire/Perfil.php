@@ -21,6 +21,7 @@ class Perfil extends Component
     public $actualizar=false;//Cuando pase a true, se mostrara su formulario respectivo
     public $borrar=false;//Cuando pase a true, se mostrara su formulario respectivo
     public $nuevoNick,$nuevaPassword,$misionesDisponibles,$aviso,$avatar;
+    public $colorSeleccionado='';
 
     public function mount(){
         if(Auth::check()){//Compruebo que haya un usuario logueado
@@ -156,6 +157,19 @@ class Perfil extends Component
         }
     }
 
+    public function updatedColorSeleccionado(){
+        if(!empty($this->colorSeleccionado)){
+           
+            $exito = User::cambiarColor($this->usuario->id,$this->colorSeleccionado);
+
+           if($exito){
+                $this->aviso='Se ha actualizado el tema de la web.';
+                $this->usuario = User::find($this->usuario->id);
+           }else{
+                $this->aviso ='Se ha producido un error al actualizar el tema.';
+           }
+        }
+    }
 
     public function actualizarPuntuacion(){
 

@@ -163,12 +163,14 @@ class Perfil extends Component
             $exito = User::cambiarColor($this->usuario->id,$this->colorSeleccionado);
 
            if($exito){
-                $this->aviso='Se ha actualizado el tema de la web.';
                 $this->usuario = User::find($this->usuario->id);
+                $this->aviso='Se ha actualizado el tema de la web.';
+                
            }else{
                 $this->aviso ='Se ha producido un error al actualizar el tema.';
            }
         }
+
     }
 
     public function actualizarPuntuacion(){

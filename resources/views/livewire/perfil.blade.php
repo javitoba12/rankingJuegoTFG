@@ -1,4 +1,4 @@
-<div class="container bg-dark ms-0 perfil-container">
+<div class="container ms-0 perfil-container {{ $tema['bgColor'] }}  {{ $tema['textColor'] }} ">
     <!--{{-- In work, do what you enjoy. --}}-->
 
     @if(isset($aviso))

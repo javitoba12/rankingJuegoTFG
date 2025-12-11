@@ -3,7 +3,7 @@
  
   <div class="nav-container bg-dark">
   
-    <nav class="navbar navbar-expand-lg bg-light navbar-light {{ $tema['bgColor'] }} {{ $tema['textColor'] }} navbar-dark my-nav">
+    <nav class="navbar navbar-expand-lg {{ $tema['textColor'] }} {{ $tema['bgColor'] }}  {{ $tema['navbarColor'] }} my-nav">
     <div class='options-container mx-2'><button class="btn btn-danger  text-start" wire:click="cerrarSesion">Cerrar sesion</button></div>
     <div class='buscador-container mx-2 d-flex'> <?php //BUSCADOR PARA BUSCAR USUARIOS ?>
     
@@ -48,7 +48,11 @@
     </nav>
 </div> 
 
-<div class="container mt-4 ranking-container {{ $tema['bgColor'] }} {{ $tema['textColor'] }} d-flex ">
+
+
+<div class="container mt-4 ranking-container {{ $tema['bgColor'] }} {{ $tema['textColor'] }} d-flex">
+
+
    <!-- <a href="/inicio/principal/perfil">Perfil</a>-->
    
    <!-- {{-- If your happiness depends on money, you will never be happy with yourself. --}}-->

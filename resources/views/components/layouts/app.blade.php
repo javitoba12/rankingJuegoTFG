@@ -60,6 +60,12 @@
 
         }
 
+
+        .container-claro{
+            background-color:gainsboro;
+            border:2px solid black;
+        }
+
         
 
         .main-container{

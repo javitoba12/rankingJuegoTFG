@@ -5,7 +5,7 @@
     <ul class="navbar-nav">
 
     <li class="nav-item mx-5">
-        <a class="nav-link" href="#"><h6>Project Dracokeos</h6></a>
+        <a class="nav-link" href="#"><h6>Monster Hunter</h6></a>
       </li>
 
       <li class="nav-item">

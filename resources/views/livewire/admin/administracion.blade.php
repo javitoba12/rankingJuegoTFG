@@ -151,6 +151,7 @@
             <div class='btonForm'>
                 <button type='submit' class='btn btn-success'>Guardar</button>
                 <button type='reset' class='btn btn-info' wire:click='refrescar'>Cancelar</button>
+                <button type='reset' class='btn btn-info' wire:click='verInventarioSeleccionado'>Ver Inventario</button>
             </div>
         </form>
 

@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Mission;
 use App\Models\MissionUser;
 use App\Models\EnemigoUser;
+use App\Http\Traits\colorTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;//Para manejo de sesiones
 use Illuminate\Support\Facades\DB;
@@ -16,12 +17,16 @@ use Asantibanez\LivewireCharts\Models\PieChartModel;//Para el manejo de graficas
 
 class Principal extends Component
 {
+
+    use colorTrait;
+
     public $usuario;
     public $ranking;
     public $tipo;
     public $aviso;
     public $nickBusqueda;
     public $usuarioSeleccionado;
+    public $tema;
 
 
     public function mount(){//mount en livewire es similar a usar un constructor en php,
@@ -37,7 +42,7 @@ class Principal extends Component
                 $this->aviso=session()->get('aviso');
                 session()->forget('aviso');
             }
-        
+            $this->tema=$this->aplicarColor();
             $this->comprobarRankingEnSesion();
 
     }else{

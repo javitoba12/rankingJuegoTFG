@@ -66,6 +66,12 @@ class Administracion extends Component
         $this->usuarioSeleccionado=User::find($idUsuario);
     }
 
+    public function verInventarioSeleccionado(){
+        $idUsuario=$this->usuarioSeleccionado->id;
+        session()->put('idUsuarioSeleccionado',$idUsuario);
+        return redirect()->route('inventario');
+    }
+
     
 
     public function modificarInventario(){

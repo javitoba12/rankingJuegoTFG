@@ -1,4 +1,4 @@
-<div>
+<div class='bajas-page'>
     {{-- Stop trying to control. --}}
     <div class='enemigosContainer'>
         @if(isset($bajas) && count($bajas) > 0)

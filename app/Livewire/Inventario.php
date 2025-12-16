@@ -15,11 +15,23 @@ class Inventario extends Component
     public $items;
     public $aviso;
     public $idSeleccionado;
+    public $vistaAdmin;
 
     public function mount(){
         if(Auth::check()){
+            
             $this->usuario=Auth::user();
-            $this->recuperarInventario();
+            
+
+            if(session()->has('idUsuarioSeleccionado' && $this->usuario->rol == 'admin')){
+                $idUsuarioSeleccionado=session()->get('idUsuarioSeleccionado');
+                $usuarioSeleccionado=User::find($idUsuarioSeleccionado);
+                $this->vistaAdmin=true;
+            }else{
+                $usuarioSeleccionado=$this->usuario;
+            }
+
+            $this->recuperarInventario($usuarioSeleccionado);
             
             if(session()->has('aviso')){
                 $this->aviso=session()->get('aviso');
@@ -29,8 +41,8 @@ class Inventario extends Component
         }
     }
 
-    public function recuperarInventario(){
-       $this->items = User::find($this->usuario->id)->items;
+    public function recuperarInventario($usuarioSeleccionado){
+       $this->items = User::find($usuarioSeleccionado->id)->items;
        //Con esto accedo a todos los items relacionados con el usuario
        //actual logueado en la pagina, gracias a la funcion items() que he definido
        //en el modelo User, que se encarga de crear la relacion N-N User/Item por la parte del usuario

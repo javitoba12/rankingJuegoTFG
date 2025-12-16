@@ -12,7 +12,7 @@
         <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
         @livewireStyles
-        <title>Project Dracokeos</title>
+        <title>Monster Hunter</title>
         <!--{{ $title ?? 'Page Title' }}-->
         <style>
             html,body{
@@ -24,7 +24,7 @@
             }
 
             body{
-            background-image: url('{{asset('images/dracula_castle.jpg')}}');
+            background-image: url('{{asset('images/mh_world3.jpg')}}');
             background-size:cover;
             background-repeat:repeat;
           /*  background-position:center;*/
@@ -189,6 +189,13 @@
         }
 
         /*PAGINA BAJAS*/
+
+        /*.bajas-page{
+            background-image: url('{{asset('images/hunting.jpg')}}');
+            height: 100% ;
+            margin:0;
+            
+        }*/
 
         .enemigosContainer{
              background-image: url('{{asset('images/bajas.jpg')}}');

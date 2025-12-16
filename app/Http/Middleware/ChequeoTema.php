@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+/*namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ class ChequeoTema
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+   /* public function handle(Request $request, Closure $next): Response
     {
          $usuario = auth()->user();
         // $view=[];
@@ -44,4 +44,4 @@ class ChequeoTema
 
         return $next($request);
     }
-}
+}*/

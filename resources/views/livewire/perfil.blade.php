@@ -90,4 +90,12 @@
             <button class='btn btn-success' wire:click='refrescar'>Cancelar</button>
         @endif
     @endif
+
+    <script>
+     window.addEventListener('recargarPagina', function () {//Creo un evento asociado a la pagina actual
+
+        window.location.reload();//Cuando este evento se dispare, provocara que se recargue la pagina actual
+
+     });
+  </script>  
 </div>

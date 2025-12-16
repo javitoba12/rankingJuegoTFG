@@ -10,17 +10,20 @@ use App\Models\Item;
 use App\Models\Mission;
 use App\Models\MissionUser;
 use App\Models\EnemigoUser;
+use App\Http\Traits\colorTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class Perfil extends Component
 {
     use WithFileUploads;
+    use colorTrait;
 
     public $usuario;
     public $actualizar=false;//Cuando pase a true, se mostrara su formulario respectivo
     public $borrar=false;//Cuando pase a true, se mostrara su formulario respectivo
     public $nuevoNick,$nuevaPassword,$misionesDisponibles,$aviso,$avatar;
+    public $tema='oscuro';
     public $colorSeleccionado='';
 
     public function mount(){
@@ -28,6 +31,8 @@ class Perfil extends Component
 
             $this->usuario=Auth::user();//guardo el usuario como atributo local de livewire
             //para que sea mas manejable
+
+            $this->tema=$this->aplicarColor();
 
             if(session()->has('aviso')){//Si existe algun aviso en la sesion...
 
@@ -105,9 +110,12 @@ class Perfil extends Component
             Storage::disk('public')->delete($this->usuario->avatar);
         }
 
-        $nombreAvatar=$this->usuario->nick . '_avatar.' . $this->avatar->getClientOriginalExtension();
-        //El avatar de cada usuario se identificara, con el nombre del usuario seguido de _avatar., y despues del punto
-        //el tipo de extension que usa la imagen que el usuario ha subido como avatar
+        $nombreAvatar=$this->usuario->nick . '_avatar'. time() . '.' . $this->avatar->getClientOriginalExtension();
+        //El avatar de cada usuario se identificara, con el nombre del usuario seguido de _avatar, y despues del punto,
+        //Uso time para usar la hora actual como parte del nombre de la imagen, de esta manera , el navegador detecta que la imagen
+        //ha cambiado, al tener un nombre un poco diferente al anterior. El navegador detecta el cambio y vuelve a pintar la imagen de nuevo.
+        //En la parte final del nombre, declaro tipo de extension que usa la imagen que el usuario ha subido como avatar, con la funcion de livewire
+        //getClientOriginalExtension
 
 
       // $rutaAvatar = $this->avatar->store('avatars', 'public');//En esta linea livewire hace lo siguiente:
@@ -166,10 +174,15 @@ class Perfil extends Component
                 $this->usuario = User::find($this->usuario->id);
                 $this->aviso='Se ha actualizado el tema de la web.';
                 
+                
            }else{
                 $this->aviso ='Se ha producido un error al actualizar el tema.';
            }
         }
+
+        $this->tema=$this->aplicarColor();
+
+        $this->dispatch('recargarPagina');
 
     }
 
@@ -288,7 +301,10 @@ class Perfil extends Component
                  // pego dicho nombre a la ruta de storage donde se encuentran almacenados todos los avatares de todos los usuarios, y con esto conseguire localizar 
                  // su avatar concreto. 
                 
-                : asset('images/avatares/avatar.jpg') // Este sera el avatar por defecto si el usuario no tiene ninguno subido.
+                : asset('images/avatares/avatar.jpg'), // Este sera el avatar por defecto si el usuario no tiene ninguno subido.
+           
+            'tema' => $this->tema
+            
 
                 
         ]);

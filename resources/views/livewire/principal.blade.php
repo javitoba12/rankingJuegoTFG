@@ -16,11 +16,11 @@
         <ul class="navbar-nav">
 
         <li class="nav-item mx-5">
-            <a class="nav-link" href="#"><h6>Project Dracokeos</h6></a>
+            <a class="nav-link" href="#"><h6>Monster Hunter</h6></a>
         </li>
 
         <li class="nav item">
-            <a class="nav-link" href="https://steamcommunity.com/?l=spanish" target='_blank'>Foro</a>
+            <a class="nav-link" href="https://steamcommunity.com/app/582010" target='_blank'>Foro</a>
         </li>
 
         <li class="nav-item">
@@ -99,7 +99,7 @@
                         <p class='mt-1'>Usuario: {{$usuarioSeleccionado->nick}}</p>
                     @endif
 
-                    <table class="table table-hover table-dark mt-3">
+                    <table class="table table-hover {{ $tema['tableColor'] }} mt-3">
                         <thead>
 
 

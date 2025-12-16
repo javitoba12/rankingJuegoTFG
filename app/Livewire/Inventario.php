@@ -23,7 +23,7 @@ class Inventario extends Component
             $this->usuario=Auth::user();
             
 
-            if(session()->has('idUsuarioSeleccionado' && $this->usuario->rol == 'admin')){
+            if(session()->has('idUsuarioSeleccionado') && $this->usuario->rol == 'admin'){
                 $idUsuarioSeleccionado=session()->get('idUsuarioSeleccionado');
                 $usuarioSeleccionado=User::find($idUsuarioSeleccionado);
                 $this->vistaAdmin=true;
@@ -146,7 +146,15 @@ class Inventario extends Component
 
     public function volver(){
         //session()->forget('aviso');
-        return redirect()->route('principal');
+        if($this->vistaAdmin){
+
+            session()->forget('idUsuarioSeleccionado');
+            return redirect()->route('Administracion.dashboard');
+
+        }else{
+            return redirect()->route('principal');
+        }
+        
     }
 
     public function detalles($idSeleccionado){

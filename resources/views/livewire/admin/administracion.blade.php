@@ -127,7 +127,7 @@
     @elseif($editar && $tipoEdicion == 'inventario')
 
         @if(isset($itemsDisponibles))
-        <form wire:submit='modificarInventario' class='editUser mb-2 bg-dark pt-2 pb-2'>
+        <form wire:submit='modificarInventario' class='editInventary mb-2 bg-dark pt-2 pb-2'>
             <label for="accionInventario">Accion:</label>
             <select name="" id="accionInventario" wire:model='accionInventario'>
                 <option value="" selected disabled>Selecciona una accion</option>
@@ -150,7 +150,7 @@
 
             <div class='btonForm'>
                 <button type='submit' class='btn btn-success'>Guardar</button>
-                <button type='reset' class='btn btn-info' wire:click='refrescar'>Cancelar</button>
+                <button type='reset' class='btn btn-info' wire:click='refrescar'>Volver</button>
                 <button type='reset' class='btn btn-info' wire:click='verInventarioSeleccionado'>Ver Inventario</button>
             </div>
         </form>
@@ -209,7 +209,7 @@
                 ?>
 
                 @if($campoNombre == 'remember_token' || $campoNombre == 'created_at' || $campoNombre == 'updated_at'
-                 || $campoNombre == 'id' || $campoNombre == 'password' || $campoNombre == 'avatar' )
+                 || $campoNombre == 'id' || $campoNombre == 'password' || $campoNombre == 'avatar' || $campoNombre == 'tema' )
                 <th style='display:none;'>{{$campoNombre}}</th>
                 <?php //Cualquiera de estos campos, estaran ocultos a la vista del usuario, y solo se muestran
                 // en el codigo ?>

@@ -76,6 +76,8 @@ class Administracion extends Component
 
     public function modificarInventario(){
 
+        if($this->cantidadItem>0){
+
 
         $itemEncontrado=$this->usuarioSeleccionado->items()->where('item_id',$this->idItem)->first();
         //Busco un item el cual tenga una combinacion user_id/item_id igual al id del usuario al que quiero 
@@ -113,6 +115,8 @@ class Administracion extends Component
                     //cantidad a la cantidad actual, si es actualizar, se sobreescribe la cantidad actual por
                     //la nueva cantidad
 
+                $this->refrescar();
+
             }else{
                 session()->flash('aviso','Los datos introducidos no son correctos, revise el item seleccionado y su cantidad');
             }
@@ -133,6 +137,8 @@ class Administracion extends Component
 
                         session()->flash('accion','eliminados ' . $this->cantidadItem . ' ' .  $itemEncontrado->nombre . 
                  ' en el inventario de ' . $this->usuarioSeleccionado->nick);
+
+                 $this->refrescar();
 
                 }else{
 
@@ -159,6 +165,8 @@ class Administracion extends Component
             //Añado una nueva fila con el id del usuario y el id del item para asociar dicho item al usuario,
             //junto con la cantidad introducida por el usuario
 
+            $this->refrescar();
+
         }else{//En caso de que el usuario haya seleccionado una opcion distinta a añadir...
 
             session()->flash('aviso','El usuario no posee el item seleccionado, o el campo cantidad esta vacio');
@@ -166,7 +174,11 @@ class Administracion extends Component
         }
     }
 
-    $this->refrescar();
+    
+
+}else{
+    session()->flash('aviso','La cantidad debe ser mayor a 0');
+}
 
     }
 

@@ -51,7 +51,10 @@
     @endif
     </div>
     <div class='opcionesBtn'>
-    <button class='btn btn-success' wire:click='importarInventario'>Importar mi inventario</button>
-    <button class='btn btn-info' wire:click='volver'>Volver a Principal</button>
+    
+    @if(!$vistaAdmin)
+        <button class='btn btn-success' wire:click='importarInventario'>Importar mi inventario</button>
+    @endif
+    <button class='btn btn-info' wire:click='volver'>Volver atrás</button>
     </div>
 </div>

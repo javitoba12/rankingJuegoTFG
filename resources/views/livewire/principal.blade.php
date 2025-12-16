@@ -59,7 +59,6 @@
     <div class='table-ranking-container d-flex flex-column'>
         <h1>Bienvenido {{$usuario->nick}}</h1>
         
-        <h2>{{$tema['bgColor']}}</h2>
 
         @if($usuario->rol == 'admin')
 

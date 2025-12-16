@@ -274,15 +274,36 @@
             flex-direction:row;
             flex-wrap:wrap;
             justify-content:space-around;
-            width: 80%;
+            width: 90%;
             height:auto;
             padding-bottom:10px;
             border-radius:9px;
         }
 
+
+        .editInventary{
+            display:flex;
+            flex-direction:row;
+            flex-wrap:wrap;
+            justify-content:space-around;
+            width: 96%;
+            height:auto;
+            padding-bottom:10px;
+            border-radius:9px;
+        }
+
+
+
         .editUser>div>input{
             margin-top:5px;
             
+        }
+
+        
+
+        .editUser button{
+
+            margin-top:5px;
         }
 
         .btonForm{
@@ -297,6 +318,16 @@
             width: 80px;
 
         }
+
+        .editInventary> .btonForm{
+            
+            margin-top:9px;
+        }
+
+        .editInventary> .btonForm > button {
+            width: 28vh;
+        }
+
 
 
         </style>

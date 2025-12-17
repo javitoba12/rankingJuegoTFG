@@ -8,6 +8,8 @@ use App\Models\Enemigo;
 use App\Models\EnemigoUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class Bajas extends Component
 {
@@ -16,6 +18,9 @@ class Bajas extends Component
     public $usuario;
 
     public function mount(){
+
+        $respuestaApi=Http::get('https://mhw-db.com/monsters');
+        Log::info($respuestaApi);
 
         if(Auth::check()){
             $this->usuario=Auth::user();

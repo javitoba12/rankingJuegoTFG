@@ -206,6 +206,16 @@ function cancelarBusqueda(){
     }
 }
 
+public function verPerfilSeleccionado(){//CONTINUAR...
+    if($this->usuarioSeleccionado->id!=$this->usuario->id){
+
+        session()->put('perfilSeleccionado',$this->usuarioSeleccionado->id);
+        return redirect()->route('perfil');
+
+    }
+
+}
+
 
 public function cerrarSesion()
 {

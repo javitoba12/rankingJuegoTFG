@@ -19,32 +19,36 @@
             <p>Horas jugadas: {{$usuario->tiempo_juego}} horas</p>
             <p>Registrado en: {{$usuario->fecha_alta}}</p>
 
-            <select name="" id="" class="form-select form-select-sm selectColor text-light bg-secondary" wire:model="colorSeleccionado">
-                <option value="" selected disabled>Cambiar de color</option>
-                <option value="claro">Claro</option>
-                <option value="oscuro">Oscuro</option>
-            </select>
+            @if(!session()->has('perfilSeleccionado'))
 
-            <?php //AVATAR DEL USUARIO ?>
+                <select name="" id="" class="form-select form-select-sm selectColor text-light bg-secondary" wire:model="colorSeleccionado">
+                    <option value="" selected disabled>Cambiar de color</option>
+                    <option value="claro">Claro</option>
+                    <option value="oscuro">Oscuro</option>
+                </select>
 
-            <!--acept= image/* para que el input file solo acepte archivos con formato de imagen(jpg,png,gif,jpgeg...)-->
-            
-            <input type="file" wire:model="avatar" class="btn" accept="image/*"> <?php //Para cambiar el avatar del usuario 
-            //wire model enlaza este input file, con la propiedad avatar del componente livewire de perfil ,
-            //livewire se encarga de que cuando la propiedad publica del componente cambie, se llame automaticamente a la funcion updatedAvatar
-            // 
-            // ?>
+                <?php //AVATAR DEL USUARIO ?>
 
+                <!--acept= image/* para que el input file solo acepte archivos con formato de imagen(jpg,png,gif,jpgeg...)-->
+                
+                <input type="file" wire:model="avatar" class="btn" accept="image/*"> <?php //Para cambiar el avatar del usuario 
+                //wire model enlaza este input file, con la propiedad avatar del componente livewire de perfil ,
+                //livewire se encarga de que cuando la propiedad publica del componente cambie, se llame automaticamente a la funcion updatedAvatar
+                // 
+                // ?>
+
+            @endif
             
             
 
         </div>
 
         <div class='user-avatar mx-1 mt-2'>
-            <img src="{{ $avatarUrl }}" class='rounded-circle border border-primary' alt="avatar">
+            <img src="{{ $avatarUrl }}" class='rounded-circle border border-primary avatar' alt="avatar">
         </div>
     </div>
-    
+
+    @if(!session()->has('perfilSeleccionado'))
         <button type='submit' class='btn btn-success' wire:click="$set('actualizar', true)">Editar Perfil</button>
         <button type='submit' class='btn btn-success' wire:click="actualizarPuntuacion">Actualizar mi puntuacion</button><br>
        <!-- <button type='submit' class='btn btn-info' wire:click="mostrarPartidas">Mis partidas</button>-->
@@ -61,7 +65,9 @@
 
             <button type='submit' class='btn btn-info' wire:click='rutaAdmin'>Navegar a Administracion</button>
         @endif
+    @endif
         <button type='submit' class='btn btn-info' wire:click='volver'>Volver</button><br><br>
+    
         @if($actualizar)<?php //Si el valor actualizar esta en true, creo y muestro el siguiente 
         // formulario para actualizar los datos del usuario ?>
         

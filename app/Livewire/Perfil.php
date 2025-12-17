@@ -22,7 +22,7 @@ class Perfil extends Component
     public $usuario;
     public $actualizar=false;//Cuando pase a true, se mostrara su formulario respectivo
     public $borrar=false;//Cuando pase a true, se mostrara su formulario respectivo
-    public $nuevoNick,$nuevaPassword,$misionesDisponibles,$aviso,$avatar;
+    public $nuevoNick,$nuevaPassword,$aviso,$avatar;
     public $tema='oscuro';
     public $colorSeleccionado='';
 
@@ -33,6 +33,10 @@ class Perfil extends Component
             //para que sea mas manejable
 
             $this->tema=$this->aplicarColor();
+
+            if(session()->has('perfilSeleccionado')){
+                $this->mostrarPerfilSeleccionado(session()->get('perfilSeleccionado'));
+            }
 
             if(session()->has('aviso')){//Si existe algun aviso en la sesion...
 
@@ -55,7 +59,14 @@ class Perfil extends Component
 
     public function volver(){
         session()->forget('aviso');
+        if(session()->has('perfilSeleccionado')){
+            session()->forget('perfilSeleccionado');
+        }
         return redirect()->route('principal');
+    }
+
+    public function mostrarPerfilSeleccionado($idUsuario){
+        $this->usuario=User::find($idUsuario);
     }
 
     public function editarPerfil(){

@@ -159,6 +159,8 @@
 
         .user-avatar>img{
             width: 100%;
+            max-width:200px;
+            max-height:200px;
         }
 
         /*PAGINA DE INVENTARIO*/

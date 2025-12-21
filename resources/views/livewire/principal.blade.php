@@ -189,11 +189,22 @@
     @if(!empty($chartModel))
         @if($tipo == 'personal')
             
-            <livewire:livewire-pie-chart :pie-chart-model="$chartModel" />
+            <livewire:livewire-pie-chart
+    :pie-chart-model="$chartModel"
+    :key="'personal-'.$usuarioSeleccionado->id"
+/>
             
 
+        @elseif($tipo == 'diezMejores')
+                <livewire:livewire-column-chart
+        :column-chart-model="$chartModel"
+        :key="'ranking-'.$tipo"
+    />
         @else
-            <livewire:livewire-column-chart :column-chart-model="$chartModel" />
+                <livewire:livewire-column-chart
+        :column-chart-model="$chartModel"
+        :key="'ranking-'.$tipo"
+    />
         @endif
     @endif
     </div>
@@ -201,14 +212,6 @@
     
     
 </div>
-
-  <script>
-     window.addEventListener('recargarPagina', function () {//Creo un evento asociado a la pagina actual
-
-        window.location.reload();//Cuando este evento se dispare, provocara que se recargue la pagina actual
-
-     });
-  </script>  
 
 </div>
 

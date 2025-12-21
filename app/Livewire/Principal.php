@@ -27,6 +27,7 @@ class Principal extends Component
     public $nickBusqueda;
     public $usuarioSeleccionado;
     public $tema;
+    public $isPintar=false;
 
 
     public function mount(){//mount en livewire es similar a usar un constructor en php,
@@ -79,6 +80,9 @@ class Principal extends Component
     }
 
     private function comprobarRankingEnSesion(){
+
+        $this->isPintar=true;
+
         if(!session()->has('tipo')){//Si aun no existe ninguna opcion de tipo de ranking escogido por el
             //usuario en la sesion...
 
@@ -154,20 +158,96 @@ class Principal extends Component
     
 }
 
+
+
+
+public function pintarGrafico(){
+
+     $chart=null;//con esto evito errores
+
+     //if($this->isPintar){
+
+        if ($this->ranking && $this->ranking->isNotEmpty()) {
+
+            if($this->tipo == 'personal'){
+
+                $chart = (new PieChartModel())//Creo un nuevo grafico que guardo en chart, y que se imprimira en el momento en el que
+            //se renderice la vista 
+
+            ->setTitle('Ranking: ' . ucfirst($this->tipo))
+            ->setAnimated(true)//Habilito animaciones para mas dinamismo al grafico
+            ->setDataLabelsEnabled(true)
+            ->setLegendVisibility(false);//Desactivo la leyenda e informacion mas redundante
+
+            $total=0;
+            foreach ($this->ranking as $fila) {//recorro toda la informacion con un bucle
+                    //$chart->addColumn($fila->nombre, $fila->puntuacion, '#f87171');
+                    $total= $total + $fila->puntuacion; 
+                    
+                    
+            }
+
+            $chart->addSlice('Puntuacion total',$total,'#f87171');
+            $chart->addSlice('Horas jugadas',$this->usuarioSeleccionado->tiempo_juego,'#60a5fa');
+
+            
+
+            }else{
+
+            
+
+                    $chart = (new ColumnChartModel())//Creo un nuevo grafico que guardo en chart, y que se imprimira en el momento en el que
+                //se renderice la vista 
+
+                ->setTitle('Ranking: ' . ucfirst($this->tipo))
+                ->setAnimated(true)//Habilito animaciones para mas dinamismo al grafico
+                ->setDataLabelsEnabled(true)
+                ->setColumnWidth(60)
+                ->setLegendVisibility(false);//Desactivo la leyenda e informacion mas redundante
+
+
+                if ($this->tipo == 'diezMejores') {//En caso seleccionar diez mejores...
+                    foreach ($this->ranking as $fila) {
+                        $chart->addColumn($fila->nick, $fila->puntuacion_total, '#60a5fa');
+                        //Repito el mismo proceso, pero el titulo se cambia por el nick, y la puntuacion que se muestra
+                        //es la puntuacion total del jugador
+                    }
+                } elseif ($this->tipo == 'rankingBajas') {
+                    foreach ($this->ranking as $fila) {
+                        $chart->addColumn($fila->nick, $fila->bajas_totales, '#34d399');
+                        //Igual que las otras dos anteriores, pero adaptado a la tematica de enemigos vencidos
+                    }
+                }
+
+            }
+
+      //  }
+
+       // $this->isPintar=false;
+
+        
+    }
+
+return $chart;
+
+}
+
 public function actualizarInformacion(){
-    $this->seleccionRanking($this->usuario);//Me encargo de realizar la consulta seleccionada en base a la opcion elejida en el select, y extraigo
+    $this->seleccionRanking($this->usuarioSeleccionado);//Me encargo de realizar la consulta seleccionada en base a la opcion elejida en el select, y extraigo
     //los datos.
+
+    $this->isPintar=true;
     
      //return redirect(request()->header('Referer')); Esto fuerza la recarga de la pagina por la parte del servidor.
      
-      $this->dispatch('recargarPagina');//Llamo al evento creado anteriormente en la vista, y le indico que se ejecute.
+      //$this->dispatch('recargarPagina');//Llamo al evento creado anteriormente en la vista, y le indico que se ejecute.
       //Al recargar la pagina consigo que el grafico se pinte realmente de manera dinamica, dado que los graficos de livewire charts
       //Solo se pintan una vez y es unicamente cuando se renderiza la pagina, por lo que si quiero cambiar de grafico dinamicamente
       //he de recargar la pagina cuando el usuario elija una de las opciones disponibles entre rankings.
 }
 
 
-function buscarUsuario(){//Para buscar un usuario a traves del buscador
+/*function buscarUsuario(){//Para buscar un usuario a traves del buscador
 
     if (!empty(trim($this->nickBusqueda))){//Si el usuario buscado no es una cadena de texto vacia ...
 
@@ -175,6 +255,7 @@ function buscarUsuario(){//Para buscar un usuario a traves del buscador
             //Busco al usuario por su nick
 
             $this->tipo='personal';
+            session()->put('tipo','personal');
             
             if(empty($usuarioBuscado)){//Si el usuario no existe, mando un aviso
                 //session()->put('aviso','No se ha encontrado al usuario');
@@ -192,6 +273,30 @@ function buscarUsuario(){//Para buscar un usuario a traves del buscador
         session()->put('aviso','El campo de busqueda esta vacio');
     }
 
+}*/
+
+function buscarUsuario()
+{
+    if (empty(trim($this->nickBusqueda))) {
+        session()->put('aviso', 'El campo de búsqueda está vacío');
+        return;
+    }
+
+    $usuarioBuscado = User::buscarUsuario($this->nickBusqueda);
+
+    if (!$usuarioBuscado) {
+        session()->put('aviso', 'No se ha encontrado al usuario');
+        return;
+    }
+
+    $this->ranking = collect();
+
+    $this->usuarioSeleccionado = $usuarioBuscado;
+    $this->tipo = 'personal';
+    session()->put('tipo', 'personal');
+
+    $this->seleccionRanking();
+    $this->isPintar = true;
 }
 
 function cancelarBusqueda(){
@@ -206,7 +311,7 @@ function cancelarBusqueda(){
     }
 }
 
-public function verPerfilSeleccionado(){//CONTINUAR...
+public function verPerfilSeleccionado(){
     if($this->usuarioSeleccionado->id!=$this->usuario->id){
 
         session()->put('perfilSeleccionado',$this->usuarioSeleccionado->id);
@@ -229,74 +334,13 @@ public function cerrarSesion()
    public function render()
 {
 
-     $chart=null;//con esto evito errores
-
-    if ($this->ranking && $this->ranking->isNotEmpty()) {
-
-        if($this->tipo == 'personal'){
-
-            $chart = (new PieChartModel())//Creo un nuevo grafico que guardo en chart, y que se imprimira en el momento en el que
-        //se renderice la vista 
-
-        ->setTitle('Ranking: ' . ucfirst($this->tipo))
-        ->setAnimated(true)//Habilito animaciones para mas dinamismo al grafico
-        ->setDataLabelsEnabled(true)
-        ->setLegendVisibility(false);//Desactivo la leyenda e informacion mas redundante
-
-        $total=0;
-        foreach ($this->ranking as $fila) {//recorro toda la informacion con un bucle
-                //$chart->addColumn($fila->nombre, $fila->puntuacion, '#f87171');
-                $total= $total + $fila->puntuacion; 
-                
-                
-        }
-
-        $chart->addSlice('Puntuacion total',$total,'#f87171');
-        $chart->addSlice('Horas jugadas',$this->usuarioSeleccionado->tiempo_juego,'#60a5fa');
-
-        
-
-        }else{
-
-           
-
-                $chart = (new ColumnChartModel())//Creo un nuevo grafico que guardo en chart, y que se imprimira en el momento en el que
-            //se renderice la vista 
-
-            ->setTitle('Ranking: ' . ucfirst($this->tipo))
-            ->setAnimated(true)//Habilito animaciones para mas dinamismo al grafico
-            ->setDataLabelsEnabled(true)
-            ->setColumnWidth(60)
-            ->setLegendVisibility(false);//Desactivo la leyenda e informacion mas redundante
-
-
-            if ($this->tipo == 'diezMejores') {//En caso seleccionar diez mejores...
-                foreach ($this->ranking as $fila) {
-                    $chart->addColumn($fila->nick, $fila->puntuacion_total, '#60a5fa');
-                    //Repito el mismo proceso, pero el titulo se cambia por el nick, y la puntuacion que se muestra
-                    //es la puntuacion total del jugador
-                }
-            } elseif ($this->tipo == 'rankingBajas') {
-                foreach ($this->ranking as $fila) {
-                    $chart->addColumn($fila->nick, $fila->bajas_totales, '#34d399');
-                    //Igual que las otras dos anteriores, pero adaptado a la tematica de enemigos vencidos
-                }
-            }
-
-        }
-
-
-        
-}
-
-    
-
+   
     
     
      
 
     return view('livewire.principal', [
-        'chartModel' => $chart
+        'chartModel' => $this->pintarGrafico()
     ]);// Paso el modelo del gráfico a la vista, donde será interpretado por el componente Livewire Chart en la vista de principal.
     // El componente <livewire:livewire-column-chart> importado a mi vista principal
 // se encargara de procesar la información del modelo ($chart) y renderizar el gráfico

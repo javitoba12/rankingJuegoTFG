@@ -28,6 +28,7 @@ class Principal extends Component
     public $usuarioSeleccionado;
     public $tema;
     public $isPintar=false;
+    public $charModel;
 
 
     public function mount(){//mount en livewire es similar a usar un constructor en php,
@@ -45,6 +46,7 @@ class Principal extends Component
             }
             $this->tema=$this->aplicarColor();
             $this->comprobarRankingEnSesion();
+           
 
     }else{
         return redirect()->route('inicio');
@@ -89,15 +91,17 @@ class Principal extends Component
             $this->tipo='diezMejores';//Por defecto tipo pasara a valer diezMejores
             //indicando que por defecto se mostraran las 10 mejores puntuaciones globales del
             //ranking
-            $this->ranking=MissionUser::getDiezMejores();
+           // $this->ranking=MissionUser::getDiezMejores();
             //Extraigo en una consulta las diez mejores puntuaciones, y la coleccion de filas
             //devueltas por la BD, pasaran a almacenarse en ranking, para asi recorrer y mostrar
             //las puntuaciones mas tarde
             
         }else{
             $this->tipo = session()->get('tipo');// esto es igual a $this->tipo=$_SESSION['tipo']
-            $this->seleccionRanking();
+            
         }
+
+        $this->seleccionRanking();
     }
 
 
@@ -155,6 +159,7 @@ class Principal extends Component
     }
 
     session()->put('tipo',$this->tipo);//guardo el tipo de ranking en la sesion
+    $this->chartModel=$this->pintarGrafico();
     
 }
 
@@ -289,15 +294,16 @@ function buscarUsuario()
         return;
     }
 
-    $this->ranking = collect();
-
     $this->usuarioSeleccionado = $usuarioBuscado;
     $this->tipo = 'personal';
     session()->put('tipo', 'personal');
+    session()->put('usuarioBuscado', $usuarioBuscado->nick);
 
     $this->seleccionRanking();
-    $this->isPintar = true;
+    $this->dispatch('recargarPagina');
 }
+
+
 
 function cancelarBusqueda(){
 

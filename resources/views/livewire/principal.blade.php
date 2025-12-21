@@ -95,13 +95,7 @@
                 
 
                     @if($tipo == 'personal')
-                    <div class='d-flex flex-row justify-content-around'>
-                        @if($usuarioSeleccionado->id!=$usuario->id)
-                        <p class='mt-3 mx-2'>Usuario: {{$usuarioSeleccionado->nick}}</p>
-                        
-                            <button wire:click='verPerfilSeleccionado' class='btn btn-info mt-1'>Ver perfil</button>
-                        @endif
-                    </div>
+                        <p class='mt-1'>Usuario: {{$usuarioSeleccionado->nick}}</p>
                     @endif
 
                     <table class="table table-hover {{ $tema['tableColor'] }} mt-3">
@@ -189,22 +183,16 @@
     @if(!empty($chartModel))
         @if($tipo == 'personal')
             
-            <livewire:livewire-pie-chart
-    :pie-chart-model="$chartModel"
-    :key="'personal-'.$usuarioSeleccionado->id"
-/>
+                        <livewire:livewire-pie-chart
+                :pie-chart-model="$chartModel"
+                :key="'personal-'.$usuarioSeleccionado->id"
+            />
             
 
         @elseif($tipo == 'diezMejores')
-                <livewire:livewire-column-chart
-        :column-chart-model="$chartModel"
-        :key="'ranking-'.$tipo"
-    />
+            <livewire:livewire-column-chart :column-chart-model="$chartModel" />
         @else
-                <livewire:livewire-column-chart
-        :column-chart-model="$chartModel"
-        :key="'ranking-'.$tipo"
-    />
+            <livewire:livewire-column-chart :column-chart-model="$chartModel" />
         @endif
     @endif
     </div>
@@ -212,6 +200,14 @@
     
     
 </div>
+
+  <script>
+     window.addEventListener('recargarPagina', function () {//Creo un evento asociado a la pagina actual
+
+        window.location.reload();//Cuando este evento se dispare, provocara que se recargue la pagina actual
+
+     });
+  </script>  
 
 </div>
 

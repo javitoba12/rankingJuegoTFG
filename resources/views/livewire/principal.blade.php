@@ -93,12 +93,14 @@
                 @if($tipo == 'diezMejores' || $tipo == 'personal')<?php //Si ranking contiene informacion 
                 // sobre los diez mejores o el ranking personal, creare una tabla ?>
                 
+                <div class='d-flex flex-row flex-between'>
 
                       @if($usuarioSeleccionado->id!=$usuario->id)
                         <p class='mt-3 mx-2'>Usuario: {{$usuarioSeleccionado->nick}}</p>
                         
                             <button wire:click='verPerfilSeleccionado' class='btn btn-info mt-1'>Ver perfil</button>
                         @endif
+                </div>
                     <table class="table table-hover {{ $tema['tableColor'] }} mt-3">
                         <thead>
 

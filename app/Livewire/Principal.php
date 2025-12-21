@@ -282,25 +282,35 @@ public function actualizarInformacion(){
 
 function buscarUsuario()
 {
-    if (empty(trim($this->nickBusqueda))) {
-        session()->put('aviso', 'El campo de búsqueda está vacío');
-        return;
+    if (!empty(trim($this->nickBusqueda))) {
+        //session()->put('aviso', 'El campo de búsqueda está vacío');
+
+        $this->aviso='El campo de búsqueda está vacío';
+
+        $usuarioBuscado = User::buscarUsuario($this->nickBusqueda);
+
+        if($usuarioBuscado){
+
+            $this->usuarioSeleccionado = $usuarioBuscado;
+            $this->tipo = 'personal';
+            session()->put('tipo', 'personal');
+            session()->put('usuarioBuscado', $usuarioBuscado->nick);
+            $this->dispatch('recargarPagina');
+
+        }else{
+
+            session()->put('aviso', 'No se ha encontrado al usuario');
+            
+
+        }
+        
     }
 
-    $usuarioBuscado = User::buscarUsuario($this->nickBusqueda);
-
-    if (!$usuarioBuscado) {
-        session()->put('aviso', 'No se ha encontrado al usuario');
-        return;
-    }
-
-    $this->usuarioSeleccionado = $usuarioBuscado;
-    $this->tipo = 'personal';
-    session()->put('tipo', 'personal');
-    session()->put('usuarioBuscado', $usuarioBuscado->nick);
+    
+    
 
     $this->seleccionRanking();
-    $this->dispatch('recargarPagina');
+    
 }
 
 
@@ -310,7 +320,8 @@ function cancelarBusqueda(){
     if(!empty(trim($this->nickBusqueda)) || $this->usuarioSeleccionado->id != $this->usuario->id){
 
         session()->forget('usuarioBuscado');
-        $this->actualizarInformacion();
+        $this->seleccionRanking();
+        $this->dispatch('recargarPagina');
 
     }else{
         $this->seleccionRanking();

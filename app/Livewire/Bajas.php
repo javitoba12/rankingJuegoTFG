@@ -14,13 +14,15 @@ use Illuminate\Support\Facades\Log;
 class Bajas extends Component
 {
 
+    const MAX_TIPOS_ENEMIGOS_VENCIDOS=6;
     public $bajas;
     public $usuario;
 
     public function mount(){
 
         $respuestaApi=Http::get('https://mhw-db.com/monsters');
-        Log::info($respuestaApi);
+        $arrayEnemigos=$respuestaApi->json();
+        Log::info($arrayEnemigos);
 
         if(Auth::check()){
             $this->usuario=Auth::user();
@@ -47,13 +49,20 @@ class Bajas extends Component
 
 
     public function importarBajas(){
+
+        $respuestaApi=Http::get('https://mhw-db.com/monsters');
+        $repertorioEnemigos=collect($respuestaApi->json());
         
+        //$maxEnemigos=count($arrayRepertorioEnemigos);
        
-        $tiposEnemigosVencidos=rand(1,Enemigo::contarEnemigos());
+        $tiposEnemigosVencidos=rand(1,self::MAX_TIPOS_ENEMIGOS_VENCIDOS);
         //Los tipos de enemigo que puede haber vencido el jugador
 
-        $repertorioEnemigos=DB::table('enemigos')->inRandomOrder()->limit($tiposEnemigosVencidos)
-        ->pluck('id');
+        $repertorioEnemigos=$repertorioEnemigos->shuffle()->take($tiposEnemigosVencidos)->pluck('id');
+        //Uso shuffle en lugar de inRandomOrder porque la coleccion que uso aqui es una coleccion ya esta cargada en memoria
+        //InRandomOrder se usa cuando sabes que vas a recibir una coleccion de datos de la BD, pero esta coleccion aun no ha llegado a laravel
+        //En este caso ademas, extraigo los datos de una API y no una BD.
+
         //barajo todas la filas de la tabla enemigos, me quedo solo con un numero limitado de filas (en 
         //funcion del random generado, me quedare con mas o menos filas), extraigo la id unicamente de cada 
         // fila
@@ -67,7 +76,7 @@ class Bajas extends Component
             $nuevasBajas=rand(1,300);//Genero una nueva cantidad de bajs para el enemigo actual, 
             // comprendida entre 1 y 300
 
-            $enemigoVencido=$this->usuario->enemigos()->where('enemigo_id',$enemigoSeleccionado)->first();
+            $enemigoVencido=$this->usuario->enemigos()->where('enemigo_id',$enemigoSeleccionado["id"])->first();
             //Hago una consulta a enemigo_user ya que estoy usuando los parentesis junto a enemigos
             //Lo cual quiere decir que esto NO devuelve una coleccion de los enemigos asociados al usuario
             //segun que requisitos, si no que estoy pidiendo en la tabla enemigos_users que me devuelva

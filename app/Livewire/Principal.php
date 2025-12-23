@@ -166,7 +166,7 @@ class Principal extends Component
 
 
 
-public function pintarGrafico(){
+private function pintarGrafico(){
 
      $chart=null;//con esto evito errores
 

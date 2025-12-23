@@ -61,7 +61,7 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
-        $enemigoPrueba=Enemigo::factory()->create([
+       /* $enemigoPrueba=Enemigo::factory()->create([
 
             'nombre_enemigo' => 'Nosferatu',
             
@@ -75,7 +75,7 @@ class DatabaseSeeder extends Seeder
             'daño' => 25,
 
             'tipo_daño' => 'Sangrante, Oscuro',
-        ]);
+        ]);*/
         
         $misionPrueba=Mission::factory()->create([
             'nombre' => 'Atrapa al cultista',
@@ -97,8 +97,8 @@ class DatabaseSeeder extends Seeder
      $items = Item::factory(5)->create();
      $items->push($itemPrueba);
 
-        Enemigo::factory(4)->create();
-        savedGame::factory(6)->create();
+        //Enemigo::factory(4)->create();
+        //savedGame::factory(6)->create();
         
     
         

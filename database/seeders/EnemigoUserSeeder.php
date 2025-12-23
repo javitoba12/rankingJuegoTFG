@@ -5,8 +5,10 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
-use App\Models\Enemigo;
+//use App\Models\Enemigo;
 use App\Models\EnemigoUser;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 
 class EnemigoUserSeeder extends Seeder
@@ -16,8 +18,11 @@ class EnemigoUserSeeder extends Seeder
      */
     public function run(): void
     {
+        $repertorioEnemigos=collect(Http::get('https://mhw-db.com/monsters')->json());
+        
+
         $this->totalUsuarios=User::pluck('id')->toArray();
-        $this->totalTiposEnemigos=Enemigo::contarEnemigos();
+        $this->totalTiposEnemigos=$repertorioEnemigos->count();
 
         $faker = \Faker\Factory::create();//Como ya no uso un factory, me veo obligado a importar manualmente
        //la libreria faker
@@ -30,7 +35,7 @@ class EnemigoUserSeeder extends Seeder
 
         foreach ($this->totalUsuarios as $usuario) {
             $categoriasEnemigosVencidos=$faker->numberBetween(1,$this->totalTiposEnemigos);
-            $enemigosVencidos=Enemigo::inRandomOrder()->limit($categoriasEnemigosVencidos)->pluck('id')
+            $enemigosVencidos=$repertorioEnemigos->shuffle()->take($categoriasEnemigosVencidos)->pluck('id')
             ->toArray();
             //Con la funcion inRandomOrder hago un shuffle(o barajado) de las filas registradas en la tabla 
             //enemigo_users, una vez he barajado el orden de las filas de las tablas, usando limit, me llevo
@@ -44,7 +49,7 @@ class EnemigoUserSeeder extends Seeder
             foreach ($enemigosVencidos as $enemigo) {
             
                 if(!EnemigoUser::where('user_id',$usuario)
-                ->where('enemigo_id',$enemigo)->exists()){
+                ->where('enemigo_api_id',$enemigo)->exists()){
             //Miro que en la tabla enemigo_users no exista ya una fila que tenga la misma
             //combinacion de id de usuario e id de mision, que las que acabo de generar automaticamente
             //de no constar dicha combinacion aun en la tabla....

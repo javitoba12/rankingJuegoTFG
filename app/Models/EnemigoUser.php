@@ -59,14 +59,14 @@ class EnemigoUser extends Pivot
         //Para la insercion de filas en la tabla enemigo_users
 
         $isExiste=self::where('user_id',$id_user)
-    ->where('enemigo_id',$id_enemigo)->exists();//Compruebo antes si ya existe una fila con el id del 
+    ->where('enemigo_api_id',$id_enemigo)->exists();//Compruebo antes si ya existe una fila con el id del 
     //usuario y del enemigo
 
     if(!$isExiste){//Si no existe la fila...
 
         self::create([//La inserto
             'user_id' => $id_user,
-            'enemigo_id' =>$id_enemigo,
+            'enemigo_api_id' =>$id_enemigo,
             'numero_bajas' => $bajas,
         ]);
     

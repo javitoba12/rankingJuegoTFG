@@ -12,11 +12,15 @@ class Enemigo extends Model
     use HasFactory, Notifiable;
 
     protected $fillable = [//Los campos que permito al usuario rellenar para la tabla usuarios en este caso
+        'enemigo_api_id',
         'nombre_enemigo',
-        'descripcion',
-        'debilidades',
-        'daño',
-        'tipo_daño'
+        'tipo_monstruo',
+        'especie',
+      //  'descripcion'
+       // 'descripcion',
+       // 'debilidades',
+       // 'daño',
+       // 'tipo_daño'
     ];
 
 
@@ -34,6 +38,10 @@ class Enemigo extends Model
     public static function contarEnemigos(){
         return self::count();//Esto no devuelve una fila, devuelve un numero
      }
+
+    /*public static function aniadirEnemigo(){
+
+    }*/
 
 
      public static function detalleEnemigo($idEnemigo){

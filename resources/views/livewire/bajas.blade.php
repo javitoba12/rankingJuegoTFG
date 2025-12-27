@@ -13,15 +13,18 @@
         @foreach($bajas as $baja)
         <ul>
             <li>
-               <b>Nombre: {{$baja->nombre_enemigo}}</b>
+               <b>Nombre: {{$baja['nombre_enemigo']}}</b>
             </li>
             <li>
-                tipo de daño: {{$baja->tipo_daño}} 
+                tipo de monstruo: {{$baja['tipo_monstruo']}} 
             </li>
             <li>
-               bajas: {{$baja->numero_bajas}}
+               especie: {{$baja['especie']}}
             </li>
-            <li><button class='btn btn-warning' value='{{$baja->id}}' wire:click='detalles({{$baja->id}})'>Detalle</button></li>
+            <li>
+               bajas: {{$baja['numero_bajas']}}
+            </li>
+            <li><button class='btn btn-warning' value='{{$baja["enemigoId"]}}' wire:click='detalles({{$baja["enemigoId"]}})'>Detalle</button></li>
              <?php //Este boton llama a una funcion que redirige al usuario a una vista, donde se muestran los 
              // detalles de los enemigos ?>
         </ul>
@@ -33,11 +36,12 @@
 
         @endif
 
-        <div class='opcionesBtn'>
+        
+    </div>
+    <div class='opcionesBtn'>
             <button class='btn btn-success' wire:click='importarBajas'>Importar Bajas</button>
             <?php // boton con el que se actualiza o insertan nuevas tablas ?>
             
             <button class='btn btn-info' wire:click='volver'>Volver a Principal</button>
         </div>
-    </div>
 </div>

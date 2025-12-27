@@ -20,24 +20,84 @@ class Bajas extends Component
 
     public function mount(){
 
-        $respuestaApi=Http::get('https://mhw-db.com/monsters');
-        $arrayEnemigos=$respuestaApi->json();
-        Log::info($arrayEnemigos);
+        $this->bajas=collect();//Inicializo bajas
+
+        //$respuestaApi=Http::get('https://mhw-db.com/monsters');
+       // $arrayEnemigos=$respuestaApi->json();
+       // Log::info($arrayEnemigos);
 
         if(Auth::check()){
-            $this->usuario=Auth::user();
+            $this->usuario=Auth::user();//Compruebo al usuario logueado
            // $this->recuperarInventario();
             
-            if(session()->has('aviso')){
+            if(session()->has('aviso')){//Compruebo si hay avisos
                 $this->aviso=session()->get('aviso');
             }
 
-            $this->bajas=EnemigoUser::getBajasUsuario($this->usuario->id);
+            //$this->bajas=EnemigoUser::getBajasUsuario($this->usuario->id);
+            //Extraigo a los enemigos de la tabla de cache
+
+            if($this->bajas->isEmpty()){//Si no hay enemigos que coincidan en el cache con los que el usuario ha vencido
+                $this->cargarDatosEnemigos();//llamo a cargar enemigos
+
+                //Log::info($this->bajas);
+            }
         }else{
             return redirect()->route('inicio');
         }
 
         
+    }
+
+    private function cargarDatosEnemigos(){
+
+        $enemigosVencidos=EnemigoUser::getEnemigosUsuario($this->usuario->id);//Recojo todos los registros de enemigoUsers donde figure el id del usuario logueado
+        //$this->bajas=collect();
+        $respuestaApiMonstruos=collect(Http::get('https://mhw-db.com/monsters')->json())->keyBy('id');
+        //Recojo todos los monstruos disponibles en la API, los convierto de json a una coleccion de laravel, y en dicha coleccion
+        //indexo cada monstruo por su id, en lugar de usar un indice generico (por eso estoy usando keyBy('id))
+
+               foreach($enemigosVencidos as $enemigo){//Recorro todos los enemigos vencidos por el usuario
+               // $respuestaApi=collect(Http::get('https://mhw-db.com/monsters/' . $enemigo->enemigo_api_id)->json());
+
+                $monstruo = $respuestaApiMonstruos[$enemigo->enemigo_api_id] ?? null;
+                //En monstruo almaceno el monstruo de la API, cuya id coincida con el id del enemigo actual vencido por el usuario,
+                //si la id del enemigo vencido por el usuario no coincide con ningun monstruo, la variable pasara a valer null
+
+                if($monstruo){//Si monstruo tiene un valor dentro en lugar de null...
+                    
+                
+
+                    $nuevaBaja= [//almaceno toda la informacion importante del enemigo vencido en la variable nuevaBaja
+                        'enemigoId' => $enemigo->enemigo_api_id,
+                        'nombre_enemigo' => $monstruo['name'],
+                        'tipo_monstruo' => $monstruo['type'],
+                        'especie' => $monstruo['species'],
+                        'numero_bajas' => $enemigo->numero_bajas
+                    ];
+
+                    $this->bajas->push($nuevaBaja);//Almaceno la nueva baja en la coleccion de bajas
+
+                    $this->aniadirEnemigo($nuevaBaja);//Añado el nuevo enemigo a la tabla enemigos que actua como cache de los enemigos en la web
+                
+            }
+        }
+
+
+    }
+
+    private function aniadirEnemigo($nuevoEnemigo){
+
+        Enemigo::updateOrCreate([//Con esta funcion, creo un nuevo enemigo en la tabla cache, si dicho enemigo no existia ya previamente en la tabla,
+            //en caso contrario, simplemente se actualiza la informacion ya existente en la tabla
+
+            'enemigo_api_id' => $nuevoEnemigo['enemigoId'],
+            'nombre_enemigo' => $nuevoEnemigo['nombre_enemigo'],
+            'tipo_monstruo' => $nuevoEnemigo['tipo_monstruo'],
+            'especie' => $nuevoEnemigo['especie']
+            
+        ]);
+
     }
     
     public function detalles($idEnemigo){
@@ -76,7 +136,7 @@ class Bajas extends Component
             $nuevasBajas=rand(1,300);//Genero una nueva cantidad de bajs para el enemigo actual, 
             // comprendida entre 1 y 300
 
-            $enemigoVencido=$this->usuario->enemigos()->where('enemigo_id',$enemigoSeleccionado["id"])->first();
+            $enemigoVencido=$this->usuario->enemigos()->where('enemigo_api_id',$enemigoSeleccionado["id"])->first();
             //Hago una consulta a enemigo_user ya que estoy usuando los parentesis junto a enemigos
             //Lo cual quiere decir que esto NO devuelve una coleccion de los enemigos asociados al usuario
             //segun que requisitos, si no que estoy pidiendo en la tabla enemigos_users que me devuelva

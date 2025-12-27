@@ -13,13 +13,17 @@ return new class extends Migration
     {
         Schema::create('enemigos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('enemigo_api_id');
             $table->string('nombre_enemigo');
-            $table->text('descripcion');
-            $table->string('debilidades');
-            $table->integer('daño');
-            $table->string('tipo_daño');
+            $table->string('tipo_monstruo');
+            $table->string('especie');
+           // $table->text('descripcion');
+         //   $table->string('debilidades');
+          //  $table->integer('daño');
+           // $table->string('tipo_daño');
             $table->rememberToken();
             $table->timestamps();
+            $table->unique('enemigo_api_id');
         
         });
     }

@@ -36,11 +36,17 @@ class EnemigoUser extends Pivot
         return $this->belongsTo(Enemigo::class);
     }
 
+    public static function getEnemigosUsuario($id_user){
+
+        return self::where('user_id',$id_user)->select('user_id','enemigo_api_id','numero_bajas')->get();
+
+    }
+
     public static function getBajasUsuario($id_user){//Devuelve una coleccion con el nombre del usuario
         //y todas sus filas en la tabla enemigo_users
 
        return self::where('user_id',$id_user)
-        ->join('enemigos' ,'enemigo_users.enemigo_id', '=','enemigos.id')
+        ->join('enemigos' ,'enemigo_users.enemigo_api_id', '=','enemigos.id')
         ->select('enemigos.id','enemigos.nombre_enemigo','enemigos.tipo_daño','enemigo_users.numero_bajas')
         ->get();
     }

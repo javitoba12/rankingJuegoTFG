@@ -34,7 +34,18 @@ class Bajas extends Component
                 $this->aviso=session()->get('aviso');
             }
 
-            //$this->bajas=EnemigoUser::getBajasUsuario($this->usuario->id);
+             $this->bajas = EnemigoUser::getBajasUsuario($this->usuario->id)
+            ->map(function($e) {//Para evitar errores con livewire, dado que a veces guarda los campos antiguos de las tablas y modelos en lugar de los nuevos,
+                //convierto en array la coleccion de filas de enemigos, usando la funcion map()
+                return [
+                    'enemigoId' => $e->enemigo_api_id,
+                    'nombre_enemigo' => $e->nombre_enemigo,
+                    'tipo_monstruo' => $e->tipo_monstruo,
+                    'especie' => $e->especie,
+                    'numero_bajas' => $e->numero_bajas
+                ];
+            });
+    
             //Extraigo a los enemigos de la tabla de cache
 
             if($this->bajas->isEmpty()){//Si no hay enemigos que coincidan en el cache con los que el usuario ha vencido
@@ -51,8 +62,10 @@ class Bajas extends Component
 
     private function cargarDatosEnemigos(){
 
+        if($this->usuario){
+
         $enemigosVencidos=EnemigoUser::getEnemigosUsuario($this->usuario->id);//Recojo todos los registros de enemigoUsers donde figure el id del usuario logueado
-        //$this->bajas=collect();
+        $this->bajas=collect();
         $respuestaApiMonstruos=collect(Http::get('https://mhw-db.com/monsters')->json())->keyBy('id');
         //Recojo todos los monstruos disponibles en la API, los convierto de json a una coleccion de laravel, y en dicha coleccion
         //indexo cada monstruo por su id, en lugar de usar un indice generico (por eso estoy usando keyBy('id))
@@ -83,10 +96,14 @@ class Bajas extends Component
             }
         }
 
+    }
+
 
     }
 
     private function aniadirEnemigo($nuevoEnemigo){
+
+    if($this->usuario){
 
         Enemigo::updateOrCreate([//Con esta funcion, creo un nuevo enemigo en la tabla cache, si dicho enemigo no existia ya previamente en la tabla,
             //en caso contrario, simplemente se actualiza la informacion ya existente en la tabla
@@ -97,6 +114,8 @@ class Bajas extends Component
             'especie' => $nuevoEnemigo['especie']
             
         ]);
+
+    }
 
     }
     
@@ -208,7 +227,11 @@ class Bajas extends Component
     }
 
     public function volver(){
-        return redirect()->route('principal');
+        
+             $this->bajas = collect(); // Limpia las propiedades que Livewire podría hidratar
+            $this->usuario = null;
+            return redirect()->route('principal');
+        
     }
 
     public function render()

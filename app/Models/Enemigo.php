@@ -28,8 +28,22 @@ class Enemigo extends Model
         'remember_token',
     ];
 
-    public function users(){
+    /*public function users(){
         return $this->belongsToMany(User::class,'enemigo_users')
+        ->withPivot('numero_bajas')
+        ->using(EnemigoUser::class);
+    }*/
+
+    public function users(){
+        return $this->belongsToMany(User::class,'enemigo_users',
+        'user_id',
+        'enemigo_api_id',
+
+        'id',
+        'enemigo_api_id'
+        
+        
+        )
         ->withPivot('numero_bajas')
         ->using(EnemigoUser::class);
     }

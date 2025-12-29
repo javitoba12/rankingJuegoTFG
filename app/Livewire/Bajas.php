@@ -139,8 +139,15 @@ class Bajas extends Component
 
         $repertorioEnemigos=$repertorioEnemigos->shuffle()->take($tiposEnemigosVencidos)->pluck('id');
         //Uso shuffle en lugar de inRandomOrder porque la coleccion que uso aqui es una coleccion ya esta cargada en memoria
-        //InRandomOrder se usa cuando sabes que vas a recibir una coleccion de datos de la BD, pero esta coleccion aun no ha llegado a laravel
+        //InRandomOrder se usa cuando estas haciendo una consulta a los datos de la BD, pero esta coleccion aun no ha llegado a laravel
         //En este caso ademas, extraigo los datos de una API y no una BD.
+
+        /*
+        
+        shuffle() se utiliza porque los datos ya están cargados en memoria como una colección.
+        inRandomOrder() solo es aplicable cuando se trabaja directamente con consultas a base de datos.
+        
+        */
 
         //barajo todas la filas de la tabla enemigos, me quedo solo con un numero limitado de filas (en 
         //funcion del random generado, me quedare con mas o menos filas), extraigo la id unicamente de cada 
@@ -155,7 +162,7 @@ class Bajas extends Component
             $nuevasBajas=rand(1,300);//Genero una nueva cantidad de bajs para el enemigo actual, 
             // comprendida entre 1 y 300
 
-            $enemigoVencido=$this->usuario->enemigos()->where('enemigo_api_id',$enemigoSeleccionado["id"])->first();
+            $enemigoVencido=$this->usuario->enemigos()->wherePivot('enemigo_api_id',$enemigoSeleccionado)->first();
             //Hago una consulta a enemigo_user ya que estoy usuando los parentesis junto a enemigos
             //Lo cual quiere decir que esto NO devuelve una coleccion de los enemigos asociados al usuario
             //segun que requisitos, si no que estoy pidiendo en la tabla enemigos_users que me devuelva
@@ -167,13 +174,15 @@ class Bajas extends Component
 
             if(!empty($enemigoVencido)){//Si la fila existe...
 
-                if($nuevasBajas>$enemigoVencido->pivot->numero_bajas){
+                $enemigoActualNumBajas=$enemigoVencido->pivot->numero_bajas;
+
+                if($nuevasBajas > $enemigoActualNumBajas){
                     //Cuando necesito acceder a un campo de la tabla pivote y estoy accediendo
                     //usando un modelo que conforma la relacion N-N pero no es el modelo personalizado
                     //(El modelo personalizado es EnemigoUser, y yo estoy accediando a a su tabla pivote desde
                     //fuera con User) necesito usar pivot, para indicar a laravel que quiero acceder a uno
                     //de los campos de la tabla pivote que no esta relacionado con ninguna id o clave prima-
-                    //ria o foranea
+                    //ria o foranea.
 
                     //Si no usase pivot para comprobar el numero de bajas en la fila que tengo guardada
                     //en enemigoVencido, recibiria un null, porque laravel no sabe a que campo me estoy
@@ -182,7 +191,7 @@ class Bajas extends Component
                     /*Nota: pivot en realidad es un objeto que hace referencia a la tabla enemigo_user 
                     //la cual funciona como relacion entre enemigo y user, este objeto almacena los campos
                     //de la fila seleccionada, para los campos que tienen relacion directa con user
-                    //enemigo (como las claves foraneas user_id o enemigo_id) no es necesario llamar a pivot
+                    //enemigo (como las claves foraneas user_id o enemigo_id) no es necesario llamar a pivot(aunque se puede hacer)
                     //para extraer la informacion de dichos campos, pero aquellos campos adicionales que
                     //son unicos de la tabla enemigo_user y no provienen de las tablas users o enemigos,
                     //si es necesario llamar a pivot para extraer su informacion(como es el caso del campo
@@ -194,11 +203,19 @@ class Bajas extends Component
                     // explícitamente desde el objeto pivot. Esto es porque Laravel sabe que estas claves 
                     // foráneas están relacionadas a las tablas principales users y enemigos.*/
                     
-                    $this->usuario->enemigos()->updateExistingPivot($enemigoVencido->id, ['numero_bajas' => $nuevasBajas]);
-                    //Si es mayor que 0, actualizo la fila y con la  nueva cantidad
+                    $this->usuario->enemigos()->updateExistingPivot($enemigoVencido->pivot->enemigo_api_id, ['numero_bajas' => $nuevasBajas]);//Si es mayor que 0, actualizo la fila y 
+                    // con la  nueva cantidad.
 
-                    //Esto es como hacer un UPDATE item_user SET cantidad=':cantida'
-                    //where use_id=:user_id AND enemigo_id=:enemigo_id
+                    //$enemigoVencido->pivot->enemigo_api_id: para indicar de manera correcta que quiero buscar la fila en la BD donde el id del usuario
+                    // y el id del enemigo sean los seleccionados actualmente en el bucle. 
+                    // 
+                    // Ademas con pivot me aseguro de especificar a laravel explicitamente que apunte al campo enemigo_api_id de la tabla enemigo_users
+                    // en la fila relacionada al usuario actual (en lugar del campo enemigo_api_id de enemigos, dado que en ambas tablas se usa el mismo nombre de campo 
+                    // para identificar el id del enemigo, por ejemplo, como caso de que haya algunos nombres comunes entre campos de diferentes tablas).
+                    
+
+                    //Esto es como hacer un UPDATE enemigo_user SET cantidad=':cantida'
+                    //where use_id=:user_id AND enemigo_api_id =:enemigo_id
                 
                 }
 
@@ -208,11 +225,13 @@ class Bajas extends Component
 
                     EnemigoUser::aniadirBajas($this->usuario->id,$enemigoSeleccionado,$nuevasBajas);
                 
-                    //$this->usuario->enemigos()->attach($enemigoSeleccionado, ['numero_bajas' => $nuevasBajas]);
+                    
                     //Introduzco una nueva fila donde asocio user_id e enemigo_id en la tabla enemigo_user
                     //Idicando que el usuario ha conseguido uno o varias bajas nuevas que no figuraban
                     //en sus enemigos vencidos
 
+                    
+                    //$this->usuario->enemigos()->attach($enemigoSeleccionado, ['numero_bajas' => $nuevasBajas]);
                     //Attach es similar a usar insert_into(campos) values(valores)
                     
                 
@@ -223,7 +242,7 @@ class Bajas extends Component
 
         session()->flash('aviso','se han importado las bajas correctamente.');
         //Aviso al usuario del exito 
-        return redirect()->route('bajas');//Refresco la pagina
+        return redirect()->route('bajas');//Refresco la pagina, ademas con esto evito duplicados o que se vuelva a enviar la peticion duplicada a la BD
     }
 
     public function volver(){

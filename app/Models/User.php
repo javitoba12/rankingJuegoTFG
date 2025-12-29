@@ -85,11 +85,26 @@ class User extends Authenticatable
         //el campo update_at)
     }
 
-    public function enemigos(){
+    /*public function enemigos(){
         return $this->belongsToMany(Enemigo::class,'enemigo_users')
         ->withPivot('numero_bajas')
         ->using(EnemigoUser::class);
-    }
+    }*/
+
+    public function enemigos()
+{
+    return $this->belongsToMany(
+        Enemigo::class,        // modelo relacionado
+        'enemigo_users',      // tabla pivote
+
+        'user_id',             // FK en pivote hacia users
+        'enemigo_api_id',      // FK en pivote hacia enemigos (API)
+
+        'id',                  // PK local en users
+        'enemigo_api_id'       // PK local en enemigos
+    )
+    ->withPivot('numero_bajas');
+}    
 
     public function savedGames(){
     return $this->hasMany(SavedGame::class);

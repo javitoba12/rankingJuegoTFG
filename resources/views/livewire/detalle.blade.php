@@ -40,7 +40,7 @@
 
                     @foreach($informacionExtraida as $atributo => $valor)
 
-                    @if(!empty($valor) && $valor !='name' && $valor !='id')
+                    @if(!empty($valor) && $atributo !='name' && $atributo !='id')
 
                             {{-- Si el valor no es un array, lo imprimo directamente --}}
                             @if(!is_array($valor))
@@ -56,7 +56,10 @@
                                     {{-- Si el elemento no un es array, lo imprimo directamente --}}
                                     @if(!is_array($elemento))
                                         <li>{{ $elemento }}</li>
-                                        @continue
+                                        
+                                        
+                                        @continue {{-- Paso a la siguiente iteracion (o elemento) --}}
+
                                     @endif
 
                                     <li>
@@ -68,13 +71,13 @@
                                                     <li>
                                                         <strong>{{ ucfirst($clave) }}:</strong>
                                                         <ul>
-                                                            @foreach($dato as $sub)
-                                                                @if(is_array($sub))
+                                                            @foreach($dato as $subDato)
+                                                                @if(is_array($subDato))
                                                                     <li>
                                                                         <ul>
-                                                                            @foreach($sub as $k => $v)
-                                                                                @if(!is_array($v) && !is_null($v))
-                                                                                    <li>{{ ucfirst($k) }}: {{ $v }}</li>
+                                                                            @foreach($subDato as $subClave => $subValor)
+                                                                                @if(!is_array($subValor) && !is_null($subValor))
+                                                                                    <li>{{ ucfirst($subClave) }}: {{ $subValor }}</li>
                                                                                 @endif
                                                                             @endforeach
                                                                         </ul>

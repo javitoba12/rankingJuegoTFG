@@ -239,14 +239,19 @@
             margin-bottom:10px;
         }
 
+        .informacionDetalleContainer{
+            width: 70%;
+        }
+
         .imgDetalle {
             width: 30%;
-            
-            max-height:300px;
+            height:auto; 
+            max-height:300px ;
         }
 
         .imgDetalle>img {
             width: 100%;
+            height:auto; 
         }
 
         /*PAGINA ADMINISTRACION*/

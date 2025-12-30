@@ -41,8 +41,8 @@ class Detalle extends Component
 
         }else{
             //$this->informacionExtraida=Enemigo::detalleEnemigo($this->idSeleccionado);
-            $this->informacionExtraida=collect(Http::get('https://mhw-db.com/monsters/' . $this->idSeleccionado)->json());
-            //busco y extraigo toda la informacion del enemigo seleccionado en la tabla enemigos
+            $this->informacionExtraida=Http::get('https://mhw-db.com/monsters/' . $this->idSeleccionado)->json();
+            //busco y extraigo toda la informacion del enemigo seleccionado en la API de mosntruos
             $this->paginaOrigen='bajas';
         }
     }
@@ -61,3 +61,56 @@ class Detalle extends Component
         return view('livewire.detalle');
     }
 }
+
+/*
+
+  <h2>Nombre: {{$informacionExtraida['name']}}</h2>
+
+           @foreach($informacionExtraida as $atributo => $valor)
+
+            @if($atributo != 'name')
+
+                @if(!empty($valor))
+
+                    @if(is_array($valor) || $valor instanceof Collection)
+
+                        <h4>{{ ucfirst($atributo) }}</h4>
+                        <ul>
+
+                            @foreach($valor as $atributoAnidado => $valorAnidado) 
+
+                            
+                             @if(is_array($valorAnidado))
+
+                                <li>
+                                    <ul>
+                                        @foreach($valorAnidado as $clave => $dato)
+                                            @if(!empty($dato))
+                                                <li>{{ ucfirst($clave) }}: {{ $dato }}</li>
+                                            @endif
+                                        @endforeach
+                                    </ul>
+                                </li>
+
+
+                                @if(!empty($valorAnidado))
+                                    <li><p>{{$atributoAnidado}} : {{$valorAnidado}}</p></li>
+                                @endif
+
+                              @endif  
+
+                            @endforeach
+                        </ul>
+
+                    @else
+
+                        <p>{{$atributo}} : {{$valor}}</p>
+
+                    @endif
+
+                @endif
+            @endif
+
+           @endforeach
+
+*/

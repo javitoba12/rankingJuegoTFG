@@ -30,16 +30,12 @@
 
             <h2>Nombre: {{$informacionExtraida->nombre_enemigo}}</h2>
 
-            <p>Descripcion: {{$informacionExtraida->descripcion}}</p>
+            <p>Tipo de monstruo: {{$informacionExtraida->tipo_monstruo}}</p>
                
-            <p> Debilidades: {{$informacionExtraida->debilidades}}</p>
+            
                 
-            <p>Daño: {{$informacionExtraida->daño}} ptos</p>
-                <p>
+            <p>Especie: {{$informacionExtraida->especie}} </p>
                 
-                        Tipo de daño: {{$informacionExtraida->tipo_daño}} 
-                   
-                </p>
 
             @endif
         </div>

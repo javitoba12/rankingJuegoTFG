@@ -58,8 +58,14 @@ class Enemigo extends Model
     }*/
 
 
-     public static function detalleEnemigo($idEnemigo){
+    /* public static function detalleEnemigo($idEnemigo){
 
        return self::find($idEnemigo);
+     }*/
+
+
+     public static function detalleEnemigo($idEnemigo){
+
+       return self::where('enemigo_api_id',$idEnemigo)->first();
      }
 }

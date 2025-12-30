@@ -2,7 +2,9 @@
     {{-- Be like water. --}}
     
     @if(isset($informacionExtraida))
-        <div class='containerDetalle'>
+        <div class='containerDetalle d-flex flex-row mx-2'>
+        
+            <div class ='d-flex flex-column'>
             
                 <?php //Si es item, muestro la informacion respectiva al item, en algunos campos de item
                 // compruebo que el campo no este vacio ya que podria haber items por ejemplo que
@@ -28,16 +30,25 @@
                 </p>
             @else <?php //En caso de ser un enemigo y no un item ?>
 
-            <h2>Nombre: {{$informacionExtraida->nombre_enemigo}}</h2>
+            <h2>Nombre: {{$informacionExtraida['name']}}</h2>
 
-            <p>Tipo de monstruo: {{$informacionExtraida->tipo_monstruo}}</p>
+            <p>Tipo de monstruo: {{$informacionExtraida['type']}}</p>
                
             
                 
-            <p>Especie: {{$informacionExtraida->especie}} </p>
-                
+            <p>Especie: {{$informacionExtraida['species']}} </p>
 
-            @endif
+                @if(!empty($informacionExtraida['description']))
+
+
+                    <p>Descripción: {{$informacionExtraida['description']}} </p>
+                @endif
+
+            </div>
+
+            <div class='imgDetalle mx-2'> <img class='rounded border border-danger' src="{{asset('images/enemy.png')}}" alt=""></div>
+
+                @endif
         </div>
 
         <button wire:click='volver' class='btn btn-info'>Volver a {{$paginaOrigen}}</button>

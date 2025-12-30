@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Item;
 use App\Models\Enemigo;
 use App\Models\EnemigoUser;
+use Illuminate\Support\Facades\Http;
 
 class Detalle extends Component
 {
@@ -39,7 +40,8 @@ class Detalle extends Component
             //en ambos casos, para el momento en el que el usuario quiera volver a la pagina anterior
 
         }else{
-            $this->informacionExtraida=Enemigo::detalleEnemigo($this->idSeleccionado);
+            //$this->informacionExtraida=Enemigo::detalleEnemigo($this->idSeleccionado);
+            $this->informacionExtraida=collect(Http::get('https://mhw-db.com/monsters/' . $this->idSeleccionado)->json());
             //busco y extraigo toda la informacion del enemigo seleccionado en la tabla enemigos
             $this->paginaOrigen='bajas';
         }

@@ -239,6 +239,16 @@
             margin-bottom:10px;
         }
 
+        .imgDetalle {
+            width: 30%;
+            
+            max-height:300px;
+        }
+
+        .imgDetalle>img {
+            width: 100%;
+        }
+
         /*PAGINA ADMINISTRACION*/
 
         .adminTitulo{

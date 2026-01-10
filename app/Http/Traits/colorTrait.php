@@ -15,13 +15,16 @@ trait colorTrait {
             $usuario=Auth::user();
             
 
-            $tema = [
-                'bgColor'   => $usuario?->tema == $colorDefecto ? 'bg-dark' : 'container-claro',
-                'textColor' => $usuario?->tema == $colorDefecto ? 'text-white' : 'text-dark',
+            $tema = [//Si el usuario tiene configurado el tema por defecto (oscuro), en cada celda del array relacionada con los estilos, declaro como valores
+                //todos los estilos que tiene el tema oscuro de mi web, en caso contrario signifca que el usuario tiene configurado el tema claro, por lo cual paso
+                //a declarar como valores, todos los estilos relacionados con el tema claro de mi web
+                'bgColor'   => $usuario->tema == $colorDefecto ? 'bg-dark' : 'container-claro',
+                'textColor' => $usuario->tema == $colorDefecto ? 'text-white' : 'text-dark',
                 'navbarColor' => $usuario->tema == $colorDefecto ? 'navbar-dark' : 'navbar-light',
                 'tableColor' => $usuario->tema == $colorDefecto ? 'table-dark' : 'table-light'
             ];
-        }else{
+        }else{//En caso de que el usuario no este logueado, se aplica el tema oscuro, por si hay algunas zonas en la web donde se permita al usuario que pueda acceder sin 
+        // loguearse
             $tema = [
                 'bgColor'   =>  'bg-dark',
                 'textColor' =>  'text-white',

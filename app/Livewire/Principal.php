@@ -252,37 +252,10 @@ public function actualizarInformacion(){
 }
 
 
-/*function buscarUsuario(){//Para buscar un usuario a traves del buscador
-
-    if (!empty(trim($this->nickBusqueda))){//Si el usuario buscado no es una cadena de texto vacia ...
-
-        $usuarioBuscado=User::buscarUsuario($this->nickBusqueda);
-            //Busco al usuario por su nick
-
-            $this->tipo='personal';
-            session()->put('tipo','personal');
-            
-            if(empty($usuarioBuscado)){//Si el usuario no existe, mando un aviso
-                //session()->put('aviso','No se ha encontrado al usuario');
-                //$this->aviso='No se ha encontrado al usuario';
-                session()->put('aviso','No se ha encontrado al usuario');
-            }else{//En caso de existir, lo guardo temporalmente para poder modificarlo mas tarde
-                
-                $this->usuarioSeleccionado=$usuarioBuscado;
-                $this->actualizarInformacion();
-                session()->put('usuarioBuscado',$usuarioBuscado->nick);
-            }
-
-    }else{//Si solo se ha mandado una cadena de texto vacia ...
-        $this->seleccionRanking();
-        session()->put('aviso','El campo de busqueda esta vacio');
-    }
-
-}*/
 
 function buscarUsuario()
 {
-    if (!empty(trim($this->nickBusqueda))) {
+    if (!empty(trim($this->nickBusqueda)) && trim($this->nickBusqueda)!= '') {
         //session()->put('aviso', 'El campo de búsqueda está vacío');
 
         $this->aviso='El campo de búsqueda está vacío';
@@ -304,6 +277,9 @@ function buscarUsuario()
 
         }
         
+    }else{
+        $this->usuarioSeleccionado = $this->usuario;
+        $this->tipo='personal';
     }
 
     

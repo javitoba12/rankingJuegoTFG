@@ -38,14 +38,18 @@
 
                         
 
-                    @foreach($informacionExtraida as $atributo => $valor)
+                    @foreach($informacionExtraida as $atributo => $valor) 
+                    
+                    {{-- Recorro todas las celdas que he recivido del array con la informacion del monstruo actual --}}
 
-                    @if(!empty($valor) && $atributo !='name' && $atributo !='id')
+                    @if(!empty($valor) && $atributo !='name' && $atributo !='id') {{-- Solo muestro aquellos valores que no sean el id, nombre o un valor vacio --}}
 
                             {{-- Si el valor no es un array, lo imprimo directamente --}}
                             @if(!is_array($valor))
                                 <p><strong>{{ ucfirst($atributo) }}:</strong> {{ $valor }}</p>
-                                @continue
+
+
+                                @continue {{-- Paso a la siguiente iteracion (o elemento) --}}
                             @endif
 
                             {{-- Si es array --}}

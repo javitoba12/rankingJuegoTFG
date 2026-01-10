@@ -96,6 +96,8 @@ class Bajas extends Component
             }
         }
 
+        Log::info('Datos de los monstruos extraidos correctamente de la API.');
+
     }
 
 
@@ -241,6 +243,7 @@ class Bajas extends Component
         }
 
         session()->flash('aviso','se han importado las bajas correctamente.');
+        Log::info('Bajas importadas con exito.');
         //Aviso al usuario del exito 
         return redirect()->route('bajas');//Refresco la pagina, ademas con esto evito duplicados o que se vuelva a enviar la peticion duplicada a la BD
     }

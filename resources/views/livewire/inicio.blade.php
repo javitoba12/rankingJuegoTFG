@@ -28,11 +28,15 @@
     </div>
 @endif
 
+<div class="overflow-auto p-3 mb-2 bg-dark bg-gradient text-white mt-5 w-50 p-3 border border-warning  rounded-top">
+
+<h2>Noticias Recientes ! :</h2>
+
 @if(isset($noticias) && count($noticias) > 0)
 
-  <div class="overflow-auto p-3 mb-2 bg-dark bg-gradient text-white mt-5 w-50 p-3 border border-warning  rounded-top">
+  
 
-    <h2>Noticias Recientes ! :</h2>
+    
 
     @foreach($noticias as $noticia)
 
@@ -45,8 +49,9 @@
     </div>
 
     @endforeach
-
-  </div>
-
+@else
+ <h4>No se pudieron cargar las noticias.</h4>
 @endif
+
+ </div>
 </div>

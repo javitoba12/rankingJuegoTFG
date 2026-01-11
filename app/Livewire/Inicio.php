@@ -68,7 +68,7 @@ class Inicio extends Component
                 
             ]);
 
-            $respuestaApi=collect();
+            $respuestaApi=collect();//En caso de que la API no responda, creo una coleccion vacia, para inicializar la variable publica y evitar errores
 
         }
 

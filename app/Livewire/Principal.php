@@ -237,7 +237,7 @@ return $chart;
 
 }
 
-public function actualizarInformacion(){
+/*public function actualizarInformacion(){
     $this->seleccionRanking($this->usuarioSeleccionado);//Me encargo de realizar la consulta seleccionada en base a la opcion elejida en el select, y extraigo
     //los datos.
 
@@ -249,7 +249,7 @@ public function actualizarInformacion(){
       //Al recargar la pagina consigo que el grafico se pinte realmente de manera dinamica, dado que los graficos de livewire charts
       //Solo se pintan una vez y es unicamente cuando se renderiza la pagina, por lo que si quiero cambiar de grafico dinamicamente
       //he de recargar la pagina cuando el usuario elija una de las opciones disponibles entre rankings.
-}
+}*/
 
 
 
@@ -280,6 +280,7 @@ function buscarUsuario()
     }else{
         $this->usuarioSeleccionado = $this->usuario;
         $this->tipo='personal';
+        $this->dispatch('recargarPagina');
     }
 
     

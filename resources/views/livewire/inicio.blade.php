@@ -27,4 +27,26 @@
       <strong>{{$mensaje}}</strong>
     </div>
 @endif
+
+@if(isset($noticias) && count($noticias) > 0)
+
+  <div class="overflow-auto p-3 mb-2 bg-dark bg-gradient text-white mt-5 w-50 p-3 border border-warning  rounded-top">
+
+    <h2>Noticias Recientes ! :</h2>
+
+    @foreach($noticias as $noticia)
+
+    <div>
+      <h4>{{ $noticia['titulo'] }}</h4>
+      <p>{{ $noticia['fecha'] }}</p>
+      <p>{{ $noticia['descripcion'] }} <a href="{{ $noticia['url'] }}" target="_blank">ver más</a></p>
+      
+      
+    </div>
+
+    @endforeach
+
+  </div>
+
+@endif
 </div>

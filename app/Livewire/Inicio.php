@@ -5,10 +5,12 @@ namespace App\Livewire;
 use Livewire\Component;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class Inicio extends Component
 {
     public $mensaje;
+    public $noticias;
 
     public function mount(){
 
@@ -25,8 +27,10 @@ class Inicio extends Component
 
     public function cargarNoticias(){
 
-        //La api donde steam publica las noticias relacionadas con cada videojuego
-        $respuestaApi=Http::get('https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/',
+        $url='https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/';//La api donde steam publica las noticias relacionadas con cada videojuego
+
+        
+        $respuestaApi=Http::get($url,
         [
             'appid' => 582010, //El id relacionado con el juego (monster hunter)
             'count' => 5, //El numero de noticias que pido a la api que me devuelva
@@ -35,12 +39,41 @@ class Inicio extends Component
             //1000 caracteres, quedaria recortado a 300, esto es algo ideal para maquetar las noticias como entradas en un pequeño div o section
             //de manera que queden bien estructuradas y sin descuadrar. (nota: que no se olvide ponerle overflow auto al div de las noticias).
         ]
+
+        
     );
 
+    if($respuestaApi->ok()){
 
-        $respuestaApiJson=$respuestaApi->json();
+    
+        $this->noticias=collect($respuestaApi->json()['appnews']['newsitems'])->map( function($noticia) {//Uso a partir de la coleccion existente, la funcion map
+        //para crear una nueva coleccion donde extraer y quedarme con los datos en los que estoy interesado y formatearlos para hacerlos mas legibles
 
-        Log::info($respuestaApi);
+            return [
+                'titulo' => $noticia['title'],
+                'descripcion' => strip_tags($noticia['contents']),//strip tags para eliminar elementos o etiquetas html dentro del texto
+                'fecha' => Carbon::createFromTimestamp($noticia['date']),//Carbon para formatear la fecha
+                'url' => $noticia['url']
+                
+            ];
+        });
+
+            Log::info($respuestaApi);
+            
+        }else{
+            Log::warning('Error al extraer las noticias',[ 
+                
+                'status' => $respuestaApi->status(),
+                'url' => $url,
+                
+            ]);
+
+            $respuestaApi=collect();
+
+        }
+
+
+        
         
     }
 

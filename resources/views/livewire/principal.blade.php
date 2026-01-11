@@ -75,7 +75,7 @@
 
 
         <div class='select-ranking-container'>
-            <select name="tipoRanking" id="tipoRanking" class='form-select form-select-sm text-light bg-secondary'  wire:change="actualizarInformacion" wire:model="tipo">
+            <select name="tipoRanking" id="tipoRanking" class='form-select form-select-sm text-light bg-secondary'  wire:change="seleccionRanking" wire:model="tipo">
                 <option value="diezMejores">Diez mejores puntuaciones</option>
                 <option value="personal">Ranking Personal</option>
                 <option value="rankingBajas">Diez usuarios con mas bajas</option>

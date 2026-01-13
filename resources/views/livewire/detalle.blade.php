@@ -1,7 +1,7 @@
 <div class='mainDetalle bg-dark'>
     {{-- Be like water. --}}
     
-    @if(isset($informacionExtraida))
+    @if(isset($informacionExtraida) && $informacionExtraida!=null)
         <div class='containerDetalle d-flex flex-row mx-2'>
             
             <div class ='informacionDetalleContainer d-flex flex-column'>
@@ -75,14 +75,30 @@
                                                     <li>
                                                         <strong>{{ ucfirst($clave) }}:</strong>
                                                         <ul>
-                                                            @foreach($dato as $subDato)
-                                                                @if(is_array($subDato))
+                                                            @foreach($dato as $subDato => $valorSubdato)
+                                                                @if(is_array($valorSubdato))
                                                                     <li>
+                                                                         <strong>{{ ucfirst($subDato) }}</strong>
                                                                         <ul>
-                                                                            @foreach($subDato as $subClave => $subValor)
-                                                                                @if(!is_array($subValor) && !is_null($subValor))
+                                                                            @foreach($valorSubdato as $subClave => $subValor)
+
+                                                                                @if(is_array($subValor))
+                                                                                    <li>
+                                                                                        <strong>{{ ucfirst($subClave) }}</strong>
+                                                                                        <ul>
+                                                                                            @foreach($subValor as $k => $v)
+                                                                                                @if(!is_array($v) && !is_null($v))
+                                                                                                    <li>{{ ucfirst($k) }}: {{ $v }}</li>
+                                                                                                @endif
+                                                                                            @endforeach
+                                                                                        </ul>
+                                                                                    </li>
+
+                                                                                @elseif(!is_null($subValor)) {{-- Ya que en muchos casos el dato que llega esta vacio y 
+                                                                                no tiene valor realmente, compruebo antes de nada que tenga algun valor real  --}}
                                                                                     <li>{{ ucfirst($subClave) }}: {{ $subValor }}</li>
                                                                                 @endif
+
                                                                             @endforeach
                                                                         </ul>
                                                                     </li>
@@ -110,6 +126,8 @@
 
 
                         @endif
+                @else
+                    <h4>No se pudo cargar la informacion seleccionada.</h4>
                 @endif
 
             </div>
@@ -117,7 +135,7 @@
             <div class='imgDetalle mx-2'>
                 <img class='border rounded border-danger' src="{{asset('images/enemy.png')}}" alt="">
             </div>
-
+  
         
         
 

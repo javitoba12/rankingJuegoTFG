@@ -35,14 +35,14 @@ class Bajas extends Component
             }
 
              $this->bajas = EnemigoUser::getBajasUsuario($this->usuario->id)
-            ->map(function($e) {//Para evitar errores con livewire, dado que a veces guarda los campos antiguos de las tablas y modelos en lugar de los nuevos,
+            ->map(function($enemigoBd) {//Para evitar errores con livewire, dado que a veces guarda los campos antiguos de las tablas y modelos en lugar de los nuevos,
                 //convierto en array la coleccion de filas de enemigos, usando la funcion map()
                 return [
-                    'enemigoId' => $e->enemigo_api_id,
-                    'nombre_enemigo' => $e->nombre_enemigo,
-                    'tipo_monstruo' => $e->tipo_monstruo,
-                    'especie' => $e->especie,
-                    'numero_bajas' => $e->numero_bajas
+                    'enemigoId' => $enemigoBd->enemigo_api_id,
+                    'nombre_enemigo' => $enemigoBd->nombre_enemigo,
+                    'tipo_monstruo' => $enemigoBd->tipo_monstruo,
+                    'especie' => $enemigoBd->especie,
+                    'numero_bajas' => $enemigoBd->numero_bajas
                 ];
             });
     
@@ -64,16 +64,21 @@ class Bajas extends Component
 
         if($this->usuario){
 
+        $url='https://mhw-db.com/monsters';
         $enemigosVencidos=EnemigoUser::getEnemigosUsuario($this->usuario->id);//Recojo todos los registros de enemigoUsers donde figure el id del usuario logueado
+        $respuestaApiMonstruos=Http::get($url);
         $this->bajas=collect();
-        $respuestaApiMonstruos=collect(Http::get('https://mhw-db.com/monsters')->json())->keyBy('id');
+
+        if($respuestaApiMonstruos->ok()){
+
+        $respuestaApiMonstruosJson=collect(Http::get('https://mhw-db.com/monsters')->json())->keyBy('id');
         //Recojo todos los monstruos disponibles en la API, los convierto de json a una coleccion de laravel, y en dicha coleccion
         //indexo cada monstruo por su id, en lugar de usar un indice generico (por eso estoy usando keyBy('id))
 
                foreach($enemigosVencidos as $enemigo){//Recorro todos los enemigos vencidos por el usuario
                // $respuestaApi=collect(Http::get('https://mhw-db.com/monsters/' . $enemigo->enemigo_api_id)->json());
 
-                $monstruo = $respuestaApiMonstruos[$enemigo->enemigo_api_id] ?? null;
+                $monstruo = $respuestaApiMonstruosJson[$enemigo->enemigo_api_id] ?? null;
                 //En monstruo almaceno el monstruo de la API, cuya id coincida con el id del enemigo actual vencido por el usuario,
                 //si la id del enemigo vencido por el usuario no coincide con ningun monstruo, la variable pasara a valer null
 
@@ -98,7 +103,16 @@ class Bajas extends Component
 
         Log::info('Datos de los monstruos extraidos correctamente de la API.');
 
+    }else{
+        Log::warning('Error al extraer los monstruos',[ 
+                
+                'status' => $respuestaApi->status(),
+                'url' => $url,
+                
+            ]);
     }
+
+        }
 
 
     }

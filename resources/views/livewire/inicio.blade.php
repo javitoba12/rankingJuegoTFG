@@ -40,7 +40,7 @@
 
     @foreach($noticias as $noticia)
 
-    <div>
+    <div class='bg-dark rounded px-2'>
       <h4>{{ $noticia['titulo'] }}</h4>
       <p>{{ $noticia['fecha'] }}</p>
       <p>{{ $noticia['descripcion'] }} <a href="{{ $noticia['url'] }}" target="_blank">ver más</a></p>

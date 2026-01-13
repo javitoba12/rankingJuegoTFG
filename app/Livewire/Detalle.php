@@ -40,10 +40,26 @@ class Detalle extends Component
             //en ambos casos, para el momento en el que el usuario quiera volver a la pagina anterior
 
         }else{
+            $url='https://mhw-db.com/monsters/' . $this->idSeleccionado;
             //$this->informacionExtraida=Enemigo::detalleEnemigo($this->idSeleccionado);
-            $this->informacionExtraida=Http::get('https://mhw-db.com/monsters/' . $this->idSeleccionado)->json();
-            //busco y extraigo toda la informacion del enemigo seleccionado en la API de mosntruos
-            $this->paginaOrigen='bajas';
+            $respuestaApi=Http::get($url);
+
+            if($respuestaApi->ok()){
+
+                $this->informacionExtraida=$respuestaApi->json();
+                //busco y extraigo toda la informacion del enemigo seleccionado en la API de mosntruos
+                $this->paginaOrigen='bajas';
+
+            }else{
+                Log::warning('Error al extraer los monstruos',[ 
+                
+                'status' => $respuestaApi->status(),
+                'url' => $url,
+                
+             ]);
+            }
+
+            
         }
     }
 

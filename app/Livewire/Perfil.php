@@ -32,7 +32,7 @@ class Perfil extends Component
             $this->usuario=Auth::user();//guardo el usuario como atributo local de livewire
             //para que sea mas manejable
 
-            $this->tema=$this->aplicarColor();
+            $this->tema=$this->aplicarColor();//llamo a la funcion aplicar color del trait
 
             if(session()->has('perfilSeleccionado')){
                 $this->mostrarPerfilSeleccionado(session()->get('perfilSeleccionado'));
@@ -111,10 +111,17 @@ class Perfil extends Component
         //Como segundo paso, la funcion debe llamarse siempre updated + el nombre de la propiedad, de lo contrario livewire no podra encontrar la funcion para
         //ejecutarla automaticamente. 
 
-        $this->validate([
-        'avatar' => 'required|image|mimes:jpg,jpeg,png,gif,svg,webp|max:2048',
-    ]);//Valido y compruebo que el avatar solo sea explicitamente una imagen y no cualquier otro archivo.
+        $this->validate([//Valido y compruebo que el avatar solo sea explicitamente una imagen y no cualquier otro archivo.
     //y con un tamaño que no supere los 2 mb(2048kb), para evitar imagenes demasiado grandes.
+        'avatar' => 'required|image|mimes:jpg,jpeg,png,gif,svg,webp|max:2048', //Con mimes especifico los formatos de imagen que permito
+    ],[
+
+        'avatar.max' => 'La imagen no puede pesar mas de 2mb',
+        'avatar.image' => 'El archivo debe ser una imagen válida',
+        'avatar.required' => 'Debes seleccionar una imagen',
+        'avatar.mimes' => 'Formato de imagen no permitido'
+
+    ]);
 
 
         if($this->usuario->avatar && Storage::disk('public')->exists($this->usuario->avatar)){
@@ -191,7 +198,7 @@ class Perfil extends Component
            }
         }
 
-        $this->tema=$this->aplicarColor();
+        $this->tema=$this->aplicarColor();//llamo a la funcion aplicar color del trait
 
         $this->dispatch('recargarPagina');
 

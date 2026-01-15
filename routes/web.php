@@ -14,13 +14,6 @@ use App\Livewire\Admin\Administracion;
     Route::get('/', \App\Livewire\Inicio::class)->name('inicio');
     Route::get('/inicio', \App\Livewire\Inicio::class)->name('inicio');
 
-//Route::get('/counter', Counter::class);
-
-/*Route::get('/inicio', function(){
-
-    return view('inicio');
-
-})->name('inicio');*/
 
 
 
@@ -66,5 +59,4 @@ Route::middleware(['auth', 'rol:admin'])->prefix('admin')->group(function () {
   -Una ruta para enemigos vencidos-->hecho
   -Una ruta para detalle en el objeto seleccionado --> hecho
   -Una ruta para detalle en el enemigo seleccionado --> hecho
-  -Una ruta para puntuaciones --> hecho
-  -Una ruta posible ruta para partidas guardadas*/
+  -Una ruta para puntuaciones --> hecho*/

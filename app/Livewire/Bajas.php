@@ -22,9 +22,6 @@ class Bajas extends Component
 
         $this->bajas=collect();//Inicializo bajas
 
-        //$respuestaApi=Http::get('https://mhw-db.com/monsters');
-       // $arrayEnemigos=$respuestaApi->json();
-       // Log::info($arrayEnemigos);
 
         if(Auth::check()){
             $this->usuario=Auth::user();//Compruebo al usuario logueado

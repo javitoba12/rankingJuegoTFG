@@ -31,10 +31,11 @@ class Inicio extends Component
 
         
         $respuestaApi=Http::get($url,
-        [
+        [//Esto son parametros que las consultas a la api de steam ofrece y se pueden configurar
+
             'appid' => 582010, //El id relacionado con el juego (monster hunter)
             'count' => 5, //El numero de noticias que pido a la api que me devuelva
-            'maxlength' => 300 // El maximo de caracteres por noticia, esto sirve para recortar el numero de caracteres
+            'maxlength' => 300 //(SOLO AFECTA AL ATRIBUTO CONTENTS) El maximo de caracteres por noticia, esto sirve para recortar el numero de caracteres
             //en el campo contents de noticias, el cual almacena el cuerpo entero de la noticia, por lo cual una noticia con un cuerpo de
             //1000 caracteres, quedaria recortado a 300, esto es algo ideal para maquetar las noticias como entradas en un pequeño div o section
             //de manera que queden bien estructuradas y sin descuadrar. (nota: que no se olvide ponerle overflow auto al div de las noticias).

@@ -280,7 +280,8 @@ function buscarUsuario()
     }else{
         $this->usuarioSeleccionado = $this->usuario;
         $this->tipo='personal';
-        $this->dispatch('recargarPagina');
+        //$this->dispatch('recargarPagina');
+        return redirect()->route('principal');
     }
 
     
@@ -298,7 +299,8 @@ function cancelarBusqueda(){
 
         session()->forget('usuarioBuscado');
         $this->seleccionRanking();
-        $this->dispatch('recargarPagina');
+        //$this->dispatch('recargarPagina');
+        return redirect()->route('principal');
 
     }else{
         $this->seleccionRanking();

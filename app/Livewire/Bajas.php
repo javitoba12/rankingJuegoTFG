@@ -17,6 +17,7 @@ class Bajas extends Component
     const MAX_TIPOS_ENEMIGOS_VENCIDOS=6;
     public $bajas;
     public $usuario;
+    public $bajasTotales;
 
     public function mount(){
 
@@ -50,6 +51,9 @@ class Bajas extends Component
 
                 //Log::info($this->bajas);
             }
+
+            $this->bajasTotales=EnemigoUser::calcularTotalBajasUsuario($this->usuario->id);
+
         }else{
             return redirect()->route('inicio');
         }
@@ -176,7 +180,7 @@ class Bajas extends Component
         foreach($repertorioEnemigos as $enemigoSeleccionado){
             //Recorro todos los enemigos que he extraido de manera aleatoria de la tabla enemigos
 
-             Enemigo::firstOrCreate(
+             Enemigo::firstOrCreate(//Si el enemigo seleccionado no existe previamente en la tabla enemigos, creo un nuevo registro para ese enemigo
                 ['enemigo_api_id' => $enemigoSeleccionado['id']],
                 [
                     'nombre_enemigo' => $enemigoSeleccionado['name'],
@@ -200,7 +204,7 @@ class Bajas extends Component
             
 
             if($enemigoVencido !== null){//Si la fila existe... , uso $enemigoVencido !== null en lugar de !empty($enemigoVencido) para evitar falsos positivos con
-            //el modelo enemigo
+            //el modelo enemigo al usar empty()
 
                 $enemigoActualNumBajas=$enemigoVencido->pivot->numero_bajas;
 
@@ -271,7 +275,7 @@ class Bajas extends Component
                 
             }
 
-            // Refresco la colección de bajas para la vista
+            
             
        /* $this->bajas = EnemigoUser::getBajasUsuario($this->usuario->id)
         ->map(function ($enemigoBd) {
@@ -299,7 +303,8 @@ class Bajas extends Component
            
         }
 
-        $this->bajas=EnemigoUser::getBajasUsuario($this->usuario->id);
+        $this->bajas=EnemigoUser::getBajasUsuario($this->usuario->id);// Refresco la colección de bajas para la vista
+        $this->bajasTotales=EnemigoUser::calcularTotalBajasUsuario($this->usuario->id);
         session()->flash('aviso','se han importado las bajas correctamente.');
         Log::info('Bajas importadas con exito.');
         //Aviso al usuario del exito 

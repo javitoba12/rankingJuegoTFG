@@ -49,6 +49,11 @@ class EnemigoUser extends Pivot
 
     }
 
+    public static function calcularTotalBajasUsuario($idUsuario){
+        return self::where('user_id', $idUsuario)
+        ->sum('numero_bajas');
+    }
+
 
     public static function getBajasUsuario($id_user){//Devuelve una coleccion con el nombre del usuario
         //y todas sus filas en la tabla enemigo_users

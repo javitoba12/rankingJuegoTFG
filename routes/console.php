@@ -9,7 +9,7 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 
-Schedule::command('app:actualizar-monstruos')->everyMinute();
+Schedule::command('app:actualizar-monstruos')->everyMinute();//llamada al comando para actualizar los monstruos en la BD cuando se ejecuten los comandos de schedule
 
 
 

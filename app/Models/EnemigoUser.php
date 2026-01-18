@@ -53,11 +53,16 @@ class EnemigoUser extends Pivot
     public static function getBajasUsuario($id_user){//Devuelve una coleccion con el nombre del usuario
         //y todas sus filas en la tabla enemigo_users
 
-        return self::with('enemigo')
-        ->where('user_id', $id_user)
-        ->get()
-        ->filter(fn ($baja) => $baja->enemigo !== null)
-        ->map(function ($baja) {
+        return self::with('enemigo')//llamo a la relacion entre enemigos y usuarios , o lo que es igual, voy a extraer las filas de la tabla enemigo_users
+        ->where('user_id', $id_user)//Solo quiero aquellas filas que contengan el id del usuario actual
+        ->get()//extraigo la informacion de la bd
+        ->filter(fn ($baja) => $baja->enemigo !== null)//Filtro todas aquellas bajas que coincidan entre ambas tablas(enemigos, enemigo_users) con el campo enemigo_api_id,
+        //dicho de otra manera, de todas las bajas relacionadas con el usuario, solo quiero quedarme con aquellos bajas cuyos enemigos contengan informacion en la tabla
+        //enemigos
+        ->map(function ($baja) {//mapeo la informacion de cada enemigo y sus bajas, para que sea mas comoda trabajar con ella y evitar problemas o conflictos con livewire
+        //ya que a veces livewire guarda estados de relaciones y consultas de laravel con la BD, y esto puede dar a casos donde la informacion guardada en los estados de
+        //livewire se quede anticuada en comparacion con las nuevas relaciones , consultas, nuevos campos en tablas etc, que yo haya podido establecer o configurar 
+        // posteriormente (nota: map el metodo map a secas devuele una coleccion en laravel, si quiero crear un array como en js debo usar la funcion all() tras map())
             return [
                 'enemigoId'      => $baja->enemigo_api_id,
                 'numero_bajas'   => $baja->numero_bajas,
@@ -66,32 +71,15 @@ class EnemigoUser extends Pivot
                 'especie'        => $baja->enemigo->especie,
             ];
         })
-        ->values();
+        ->values();//Esto reindexa la coleccion de nuevo, por lo cual los indices de cada elemento vuelven a empezar en 0,1,2,3 ...
+        //Uso value para reindexar las claves de nuevo, ya que tras usar filter la coleccion se queda desordenada al haberme quedado solamente con x elementos de la coleccion
+        //original.
 
       
 
     }
 
    /*
-
-    return self::with('enemigo')->where('user_id',$id_user)
-        ->get()->map(function($baja) {
-
-        if(!empty($baja->enemigo)){
-
-            return [
-                'enemigoId'    => $baja->enemigo_api_id,
-                'numero_bajas' => $baja->numero_bajas,
-                // Campos de la tabla enemigos
-                'nombre_enemigo' => $baja->enemigo->nombre_enemigo ?? null,
-                'tipo_monstruo'  => $baja->enemigo->tipo_monstruo ?? null,
-                'especie'        => $baja->enemigo->especie ?? null,
-                
-            ];
-        }else{
-            return [];
-        }
-    });
    
    
    

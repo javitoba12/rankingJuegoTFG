@@ -31,8 +31,8 @@ class Bajas extends Component
                 $this->aviso=session()->get('aviso');
             }
 
-             $this->bajas = EnemigoUser::getBajasUsuario($this->usuario->id)
-            ->map(function($enemigoBd) {//Para evitar errores con livewire, dado que a veces guarda los campos antiguos de las tablas y modelos en lugar de los nuevos,
+             $this->bajas = EnemigoUser::getBajasUsuario($this->usuario->id);
+            /*$this->bajas->map(function($enemigoBd) {//Para evitar errores con livewire, dado que a veces guarda los campos antiguos de las tablas y modelos en lugar de los nuevos,
                 //convierto en array la coleccion de filas de enemigos, usando la funcion map()
                 return [
                     'enemigoId' => $enemigoBd->enemigo_api_id,
@@ -41,7 +41,7 @@ class Bajas extends Component
                     'especie' => $enemigoBd->especie,
                     'numero_bajas' => $enemigoBd->numero_bajas
                 ];
-            });
+            });*/
     
             //Extraigo a los enemigos de la tabla de cache
 
@@ -118,7 +118,11 @@ class Bajas extends Component
 
     if($this->usuario){
 
-        Enemigo::updateOrCreate([//Con esta funcion, creo un nuevo enemigo en la tabla cache, si dicho enemigo no existia ya previamente en la tabla,
+        Enemigo::updateOrCreate(
+            
+            ['enemigo_api_id' => $nuevoEnemigo['enemigoId']],
+            
+            [//Con esta funcion, creo un nuevo enemigo en la tabla cache, si dicho enemigo no existia ya previamente en la tabla,
             //en caso contrario, simplemente se actualiza la informacion ya existente en la tabla
 
             'enemigo_api_id' => $nuevoEnemigo['enemigoId'],
@@ -150,7 +154,8 @@ class Bajas extends Component
         $tiposEnemigosVencidos=rand(1,self::MAX_TIPOS_ENEMIGOS_VENCIDOS);
         //Los tipos de enemigo que puede haber vencido el jugador
 
-        $repertorioEnemigos=$repertorioEnemigos->shuffle()->take($tiposEnemigosVencidos)->pluck('id');
+       // $repertorioEnemigos=$repertorioEnemigos->shuffle()->take($tiposEnemigosVencidos)->pluck('id');
+       $repertorioEnemigos=$repertorioEnemigos->shuffle()->take($tiposEnemigosVencidos);
         //Uso shuffle en lugar de inRandomOrder porque la coleccion que uso aqui es una coleccion ya esta cargada en memoria
         //InRandomOrder se usa cuando estas haciendo una consulta a los datos de la BD, pero esta coleccion aun no ha llegado a laravel
         //En este caso ademas, extraigo los datos de una API y no una BD.
@@ -170,12 +175,21 @@ class Bajas extends Component
 
         foreach($repertorioEnemigos as $enemigoSeleccionado){
             //Recorro todos los enemigos que he extraido de manera aleatoria de la tabla enemigos
+
+             Enemigo::firstOrCreate(
+                ['enemigo_api_id' => $enemigoSeleccionado['id']],
+                [
+                    'nombre_enemigo' => $enemigoSeleccionado['name'],
+                    'tipo_monstruo'  => $enemigoSeleccionado['type'],
+                    'especie'        => $enemigoSeleccionado['species'],
+                ]
+            );
            
 
             $nuevasBajas=rand(1,300);//Genero una nueva cantidad de bajs para el enemigo actual, 
             // comprendida entre 1 y 300
 
-            $enemigoVencido=$this->usuario->enemigos()->wherePivot('enemigo_api_id',$enemigoSeleccionado)->first();
+            $enemigoVencido=$this->usuario->enemigos()->wherePivot('enemigo_api_id',$enemigoSeleccionado['id'])->first();
             //Hago una consulta a enemigo_user ya que estoy usuando los parentesis junto a enemigos
             //Lo cual quiere decir que esto NO devuelve una coleccion de los enemigos asociados al usuario
             //segun que requisitos, si no que estoy pidiendo en la tabla enemigos_users que me devuelva
@@ -185,7 +199,8 @@ class Bajas extends Component
 
             
 
-            if(!empty($enemigoVencido)){//Si la fila existe...
+            if($enemigoVencido !== null){//Si la fila existe... , uso $enemigoVencido !== null en lugar de !empty($enemigoVencido) para evitar falsos positivos con
+            //el modelo enemigo
 
                 $enemigoActualNumBajas=$enemigoVencido->pivot->numero_bajas;
 
@@ -219,6 +234,12 @@ class Bajas extends Component
                     $this->usuario->enemigos()->updateExistingPivot($enemigoVencido->pivot->enemigo_api_id, ['numero_bajas' => $nuevasBajas]);//Si es mayor que 0, actualizo la fila y 
                     // con la  nueva cantidad.
 
+                    Log::info('Actualizando bajas', [
+                        'user' => $this->usuario->id,
+                        'enemigo' => $enemigoSeleccionado,
+                        'bajas' => $nuevasBajas
+                    ]);
+
                     //$enemigoVencido->pivot->enemigo_api_id: para indicar de manera correcta que quiero buscar la fila en la BD donde el id del usuario
                     // y el id del enemigo sean los seleccionados actualmente en el bucle. 
                     // 
@@ -236,7 +257,7 @@ class Bajas extends Component
 
             }else{//Si el enemigo no estaba asociado al usuario en la tabla item_user...
 
-                    EnemigoUser::aniadirBajas($this->usuario->id,$enemigoSeleccionado,$nuevasBajas);
+                    EnemigoUser::aniadirBajas($this->usuario->id,$enemigoSeleccionado['id'],$nuevasBajas);
                 
                     
                     //Introduzco una nueva fila donde asocio user_id e enemigo_id en la tabla enemigo_user
@@ -250,9 +271,35 @@ class Bajas extends Component
                 
             }
 
+            // Refresco la colección de bajas para la vista
+            
+       /* $this->bajas = EnemigoUser::getBajasUsuario($this->usuario->id)
+        ->map(function ($enemigoBd) {
+            return [
+                'enemigoId' => $enemigoBd->enemigo_api_id,
+                'nombre_enemigo' => $enemigoBd->nombre_enemigo,
+                'tipo_monstruo' => $enemigoBd->tipo_monstruo,
+                'especie' => $enemigoBd->especie,
+                'numero_bajas' => $enemigoBd->numero_bajas
+            ];
+        });*/
+
+       /* $this->bajas = EnemigoUser::getBajasUsuario($this->usuario->id)
+        ->map(function ($enemigoBd) {
+            return [
+                'enemigoId' => $enemigoBd->enemigoId,
+                'nombre_enemigo' => $enemigoBd->nombre_enemigo,
+                'tipo_monstruo' => $enemigoBd->tipo_monstruo,
+                'especie' => $enemigoBd->especie,
+                'numero_bajas' => $numero_bajas
+            ];
+        });*/
+
+
            
         }
 
+        $this->bajas=EnemigoUser::getBajasUsuario($this->usuario->id);
         session()->flash('aviso','se han importado las bajas correctamente.');
         Log::info('Bajas importadas con exito.');
         //Aviso al usuario del exito 

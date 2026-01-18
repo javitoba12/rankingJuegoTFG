@@ -4,6 +4,7 @@ namespace App\Models;
 
 //use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use App\Models\Enemigo;
 use Illuminate\Support\Facades\DB;//Necesario para algunas consultas a BD, en especial cuando se usa
 //raw
 
@@ -33,7 +34,13 @@ class EnemigoUser extends Pivot
 
     public function enemigo()
     {
-        return $this->belongsTo(Enemigo::class);
+        //return $this->belongsTo(Enemigo::class);
+
+        return $this->belongsTo(
+        Enemigo::class,
+        'enemigo_api_id',      // FK en enemigo_users
+        'enemigo_api_id'       // clave única en enemigos(pero no clave primaria)
+    );
     }
 
     public static function getEnemigosUsuario($id_user){
@@ -46,11 +53,67 @@ class EnemigoUser extends Pivot
     public static function getBajasUsuario($id_user){//Devuelve una coleccion con el nombre del usuario
         //y todas sus filas en la tabla enemigo_users
 
-       return self::where('user_id',$id_user)
+        return self::with('enemigo')
+        ->where('user_id', $id_user)
+        ->get()
+        ->filter(fn ($baja) => $baja->enemigo !== null)
+        ->map(function ($baja) {
+            return [
+                'enemigoId'      => $baja->enemigo_api_id,
+                'numero_bajas'   => $baja->numero_bajas,
+                'nombre_enemigo' => $baja->enemigo->nombre_enemigo,
+                'tipo_monstruo'  => $baja->enemigo->tipo_monstruo,
+                'especie'        => $baja->enemigo->especie,
+            ];
+        })
+        ->values();
+
+      
+
+    }
+
+   /*
+
+    return self::with('enemigo')->where('user_id',$id_user)
+        ->get()->map(function($baja) {
+
+        if(!empty($baja->enemigo)){
+
+            return [
+                'enemigoId'    => $baja->enemigo_api_id,
+                'numero_bajas' => $baja->numero_bajas,
+                // Campos de la tabla enemigos
+                'nombre_enemigo' => $baja->enemigo->nombre_enemigo ?? null,
+                'tipo_monstruo'  => $baja->enemigo->tipo_monstruo ?? null,
+                'especie'        => $baja->enemigo->especie ?? null,
+                
+            ];
+        }else{
+            return [];
+        }
+    });
+   
+   
+   
+   return self::with('enemigo')
+        ->where('user_id', $id_user)
+        ->get()
+        ->filter(fn ($baja) => $baja->enemigo !== null)
+        ->map(function ($baja) {
+            return [
+                'enemigoId'      => $baja->enemigo_api_id,
+                'numero_bajas'   => $baja->numero_bajas,
+                'nombre_enemigo' => $baja->enemigo->nombre_enemigo,
+                'tipo_monstruo'  => $baja->enemigo->tipo_monstruo,
+                'especie'        => $baja->enemigo->especie,
+            ];
+        })
+        ->values(); */
+
+    /*return self::where('user_id',$id_user)
         ->join('enemigos' ,'enemigo_users.enemigo_api_id', '=','enemigos.enemigo_api_id')
         ->select('enemigo_users.enemigo_api_id','enemigos.nombre_enemigo','enemigos.tipo_monstruo','enemigos.especie','enemigo_users.numero_bajas')
-        ->get();
-    }
+        ->get(); */
 
     /*public static function getBajasUsuario($id_user){//Devuelve una coleccion con el nombre del usuario
         //y todas sus filas en la tabla enemigo_users

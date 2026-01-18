@@ -9,8 +9,9 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 
-Schedule::command('app:actualizar-monstruos')->everyDay();
+Schedule::command('app:actualizar-monstruos')->everyMinute();
 
 
 
 //->everyMinute()
+//daily()

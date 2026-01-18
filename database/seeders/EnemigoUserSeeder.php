@@ -22,7 +22,7 @@ class EnemigoUserSeeder extends Seeder
         
 
         $this->totalUsuarios=User::pluck('id')->toArray();
-        $this->totalTiposEnemigos=$repertorioEnemigos->count();
+        $this->totalTiposEnemigos=$repertorioEnemigos->count();//El numero de enemigos que extraigo de la API
 
         $faker = \Faker\Factory::create();//Como ya no uso un factory, me veo obligado a importar manualmente
        //la libreria faker

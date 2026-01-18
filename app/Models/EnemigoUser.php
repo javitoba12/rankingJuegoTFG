@@ -50,8 +50,8 @@ class EnemigoUser extends Pivot
     }
 
     public static function calcularTotalBajasUsuario($idUsuario){
-        return self::where('user_id', $idUsuario)
-        ->sum('numero_bajas');
+        return self::where('user_id', $idUsuario)//Busco en la tabla todos los registros asociados al id del usuario actual
+        ->sum('numero_bajas');//Hago una suma de todos los campos de bajas relacionadas con las filas en las que consten el id del usuario actual
     }
 
 

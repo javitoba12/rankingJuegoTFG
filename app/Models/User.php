@@ -243,6 +243,12 @@ public static function buscarUsuario($nick){
    //que laravel me devuelva una coleccion con un solo objeto, ya que solo busco un usuario
 }
 
+public static function buscarUsuariosCoincidentes($busqueda){
+
+    return self::whereLike('nick','%' . $busqueda . '%')->get();
+
+}
+
 public static function contarUsusarios(){
    return self::count();//Esto no devuelve una fila, devuelve un numero
 }

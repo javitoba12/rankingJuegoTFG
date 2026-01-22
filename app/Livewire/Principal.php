@@ -280,8 +280,8 @@ function buscarUsuario()
     }else{
         $this->usuarioSeleccionado = $this->usuario;
         $this->tipo='personal';
-       // $this->dispatch('recargarPagina');
-       return redirect()->route('principal');
+        //$this->dispatch('recargarPagina');
+        return redirect()->route('principal');
     }
 
     

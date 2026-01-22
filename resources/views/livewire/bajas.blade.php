@@ -9,6 +9,8 @@
             <h4>{{session('aviso')}}</h4>
         @endif
 
+        <h4>Bajas totales: {{$bajasTotales}}</h4>
+
         
         @foreach($bajas as $baja)
         <ul>

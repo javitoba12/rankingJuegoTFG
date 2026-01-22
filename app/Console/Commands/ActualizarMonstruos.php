@@ -14,7 +14,7 @@ class ActualizarMonstruos extends Command
      *
      * @var string
      */
-    protected $signature = 'app:actualizar-monstruos';// El nombre con el que laravel identifica el comando
+    protected $signature = 'app:actualizar-monstruos';// El nombre con el que laravel identificaa el comando
 
     /**
      * The console command description.

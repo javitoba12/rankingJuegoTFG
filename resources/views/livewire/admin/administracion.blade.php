@@ -64,12 +64,11 @@
 
 
     <?php // Formularios para modificar usuario e inventario ?>
-
     @if($editar && $tipoEdicion == 'busqueda')
 
         <div class='mb-2 buscadorAdmin pt-2 pb-2 px-2 bg-dark rounded-3'>
             <input type="text" name="" class='rounded' id="nickBuscado" wire:model='nickBusqueda' placeholder='Introduzca un nick'>
-            <button class='btn btn-info' wire:click='buscarUser'>Buscar</button>
+            <button class='btn btn-info' wire:click='buscarUser2'>Buscar</button>
             <button type='button' class='btn btn-danger' wire:click='refrescar'>Cancelar</button>
         </div>
 
@@ -163,6 +162,30 @@
 
    <?php // Informacion del usuario encontrado ?>
 
+   <?php // Muestra todos los usuarios coincidentes ?>
+
+   @if(session()->has('usuariosCoincidentes'))
+
+    <div class='bg-dark pb-2 pt-2 mb-2 rounded-3 w-50 h-50 d-flex flex-column'>
+        <h4 class='mx-2'>Usuarios encontrados:</h4>
+        @if(count(session()->get('usuariosCoincidentes'))==1)
+
+            <button class='btn btn-info mx-2 w-25' wire:click='seleccionarUsuario({{session()->get("usuariosCoincidentes")[0]}})' >{{session()->get('usuariosCoincidentes')[0]->nick}}</button>
+
+        @elseif(count(session()->get('usuariosCoincidentes'))>1)
+
+                @foreach(session()->get('usuariosCoincidentes') as $usuario)
+
+                    <button class='btn btn-info mb-2 w-25 mx-2' wire:click='seleccionarUsuario({{$usuario}})'>{{$usuario->nick}}</button>
+
+                @endforeach
+
+        session()->unset('usuariosCoincidentes');
+        
+    @endif
+    </div>    
+
+   @endif
     
     @if(session()->has('usuarioBuscado'))
     <h6>Resultado:</h6>

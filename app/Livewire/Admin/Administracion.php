@@ -283,6 +283,29 @@ class Administracion extends Component
         }
     }
 
+    public function buscarUser2(){
+        $usuariosCoincidentes=User::buscarUsuariosCoincidentes($this->nickBusqueda);
+
+        if(empty($usuariosCoincidentes) && $usuariosCoincidentes == null){
+
+            session()->flash('aviso','No se ha encontrado ningun usuario');
+
+        }else{
+
+            session()->flash('usuariosCoincidentes',$usuariosCoincidentes);
+
+        }
+    }
+
+    public function seleccionarUsuario($usuarioSeleccionado){
+        if(!empty($usuarioSeleccionado)){
+
+        
+            session()->flash('usuarioBuscado',User::buscarUsuario($usuarioSeleccionado['nick']));
+
+        }
+    }
+
     public function refrescar(){
        
         redirect()->route('Administracion.dashboard');

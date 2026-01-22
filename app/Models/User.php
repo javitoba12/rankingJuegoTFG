@@ -245,7 +245,7 @@ public static function buscarUsuario($nick){
 
 public static function buscarUsuariosCoincidentes($busqueda){
 
-    return self::whereLike('nick','%' . $busqueda . '%')->get();
+    return self::whereLike('nick','%' . $busqueda . '%')->select('nick')->get();
 
 }
 

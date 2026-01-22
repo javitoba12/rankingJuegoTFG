@@ -301,7 +301,7 @@ class Administracion extends Component
         if(!empty($usuarioSeleccionado)){
 
         
-            session()->flash('usuarioBuscado',User::buscarUsuario($usuarioSeleccionado['nick']));
+            session()->flash('usuarioBuscado',User::buscarUsuario($usuarioSeleccionado));
 
         }
     }

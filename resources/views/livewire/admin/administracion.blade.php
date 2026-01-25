@@ -180,7 +180,7 @@
 
                 @endforeach
 
-        session()->unset('usuariosCoincidentes');
+        
         
     @endif
     </div>    

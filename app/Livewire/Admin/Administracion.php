@@ -284,16 +284,20 @@ class Administracion extends Component
     }
 
     public function buscarUser2(){
-        $usuariosCoincidentes=User::buscarUsuariosCoincidentes($this->nickBusqueda);
+            if(!empty(trim($this->nickBusqueda))){
+                $usuariosCoincidentes=User::buscarUsuariosCoincidentes($this->nickBusqueda);
 
-        if(empty($usuariosCoincidentes) && $usuariosCoincidentes == null){
+                if(empty($usuariosCoincidentes) && $usuariosCoincidentes == null){
 
-            session()->flash('aviso','No se ha encontrado ningun usuario');
+                    session()->flash('aviso','No se ha encontrado ningun usuario');
 
+                }else{
+
+                    session()->flash('usuariosCoincidentes',$usuariosCoincidentes);
+
+                }
         }else{
-
-            session()->flash('usuariosCoincidentes',$usuariosCoincidentes);
-
+            session()->flash('aviso','El campo esta vacio.');
         }
     }
 

@@ -33,16 +33,6 @@ class Bajas extends Component
             }
 
              $this->bajas = EnemigoUser::getBajasUsuario($this->usuario->id);
-            /*$this->bajas->map(function($enemigoBd) {//Para evitar errores con livewire, dado que a veces guarda los campos antiguos de las tablas y modelos en lugar de los nuevos,
-                //convierto en array la coleccion de filas de enemigos, usando la funcion map()
-                return [
-                    'enemigoId' => $enemigoBd->enemigo_api_id,
-                    'nombre_enemigo' => $enemigoBd->nombre_enemigo,
-                    'tipo_monstruo' => $enemigoBd->tipo_monstruo,
-                    'especie' => $enemigoBd->especie,
-                    'numero_bajas' => $enemigoBd->numero_bajas
-                ];
-            });*/
     
             //Extraigo a los enemigos de la tabla de cache
 

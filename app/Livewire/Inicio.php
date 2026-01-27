@@ -29,19 +29,20 @@ class Inicio extends Component
 
         $url='https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/';//La api donde steam publica las noticias relacionadas con cada videojuego
 
-        
+        $archivoConfig=config('steam_news_api_config');//para acceder a cualquiera de los parametros del archivo de configuracion, indico en la funcion de config el nombre 
+        // del archivo de configuracion
+
         $respuestaApi=Http::get($url,
         [//Esto son parametros que las consultas a la api de steam ofrece y se pueden configurar
 
         //al usar config() estoy exportando los parametros de mi archivo de configuracion de la API de steam news al componente de inicio para extraer noticias
         //segun el juego, el numero de noticias que quiero mostrar, y la cantidad de caracteres que quiero mostrar en el campo del contenido relacionado con la noticia
         
-        //para acceder a cualquiera de los parametros del archivo de configuracion, indico en la funcion de config el nombre del archivo seguido de un punto, y la
-        //variable a la que apunto dentro de dicho archivo
+        
 
-            'appid' => config('steam_news_api_config.appid'), //El id relacionado con el juego (monster hunter)
-            'count' => config('steam_news_api_config.count'), //El numero de noticias que pido a la api que me devuelva
-            'maxlength' => config('steam_news_api_config.maxlength') //(SOLO AFECTA AL ATRIBUTO CONTENTS) El maximo de caracteres por noticia, esto sirve para recortar el numero de caracteres
+            'appid' => $archivoConfig['appid'], //El id relacionado con el juego (monster hunter)
+            'count' => $archivoConfig['count'], //El numero de noticias que pido a la api que me devuelva
+            'maxlength' => $archivoConfig['maxlength'] //(SOLO AFECTA AL ATRIBUTO CONTENTS) El maximo de caracteres por noticia, esto sirve para recortar el numero de caracteres
             //en el campo contents de noticias, el cual almacena el cuerpo entero de la noticia, por lo cual una noticia con un cuerpo de
             //1000 caracteres, quedaria recortado a 300, esto es algo ideal para maquetar las noticias como entradas en un pequeño div o section
             //de manera que queden bien estructuradas y sin descuadrar. (nota: que no se olvide ponerle overflow auto al div de las noticias).

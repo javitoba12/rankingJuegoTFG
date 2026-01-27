@@ -143,7 +143,8 @@ class Perfil extends Component
        /*
        
        Recojo el archivo aavatar, que ahora mismo es un objeto tipo uploadFile para que livewire pueda manejarlo
-       - store() Es un método de Laravel que guarda el archivo en el disco configurado y, devuelve la ruta relativa del archivo dentro del disco como una cadena de texto.
+       - storeAs() Es un método de Laravel que guarda el archivo en el disco configurado y, devuelve la ruta relativa del archivo (partiendo desde public, el espacio virtual) 
+       dentro del disco como una cadena de texto.
        - avatars indica la carpeta donde se va a guardar la imagen dentro del disco (esta carpeta se encuentra en storage, ruta por defecto para archivos o imagenes),
        si la carpeta avatars no existia antes, se creara en el momento de subir la imagen, para poder almacenar la imagen correctamente.
 

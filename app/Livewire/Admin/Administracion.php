@@ -287,7 +287,7 @@ class Administracion extends Component
             if(!empty(trim($this->nickBusqueda))){
                 $usuariosCoincidentes=User::buscarUsuariosCoincidentes($this->nickBusqueda);
 
-                if(empty($usuariosCoincidentes) && $usuariosCoincidentes == null){
+                if(empty($usuariosCoincidentes) || $usuariosCoincidentes == null || $usuariosCoincidentes->count()<=0){
 
                     session()->flash('aviso','No se ha encontrado ningun usuario');
 
@@ -315,10 +315,7 @@ class Administracion extends Component
         redirect()->route('Administracion.dashboard');
     }
 
-   /* public function updatingPage()
-    {
-        $this->reiniciarFormularios();
-    }*/
+   
 
     
 

@@ -33,16 +33,6 @@ class Bajas extends Component
             }
 
              $this->bajas = EnemigoUser::getBajasUsuario($this->usuario->id);
-            /*$this->bajas->map(function($enemigoBd) {//Para evitar errores con livewire, dado que a veces guarda los campos antiguos de las tablas y modelos en lugar de los nuevos,
-                //convierto en array la coleccion de filas de enemigos, usando la funcion map()
-                return [
-                    'enemigoId' => $enemigoBd->enemigo_api_id,
-                    'nombre_enemigo' => $enemigoBd->nombre_enemigo,
-                    'tipo_monstruo' => $enemigoBd->tipo_monstruo,
-                    'especie' => $enemigoBd->especie,
-                    'numero_bajas' => $enemigoBd->numero_bajas
-                ];
-            });*/
     
             //Extraigo a los enemigos de la tabla de cache
 
@@ -77,11 +67,20 @@ class Bajas extends Component
         //indexo cada monstruo por su id, en lugar de usar un indice generico (por eso estoy usando keyBy('id))
 
                foreach($enemigosVencidos as $enemigo){//Recorro todos los enemigos vencidos por el usuario
-               // $respuestaApi=collect(Http::get('https://mhw-db.com/monsters/' . $enemigo->enemigo_api_id)->json());
+               
 
-                $monstruo = $respuestaApiMonstruosJson[$enemigo->enemigo_api_id] ?? null;
+                $monstruo = $respuestaApiMonstruosJson[$enemigo->enemigo_api_id] ?? null;//Aqui compruebo al mismo tiempo que el id del enemigo actual
+                //exista como indice en el array devuelto por la API, ademas de eso tambien compruebo que dicho indice no almacene un null
                 //En monstruo almaceno el monstruo de la API, cuya id coincida con el id del enemigo actual vencido por el usuario,
-                //si la id del enemigo vencido por el usuario no coincide con ningun monstruo, la variable pasara a valer null
+                //si la id del enemigo vencido por el usuario no coincide con ningun monstruo de la API, la variable pasara a valer null
+
+                //Similar a $monstruo=null 
+                /**
+                 * if(isset($respuestaApiMonstruosJson[$enemigo->enemigo_api_id])){
+                 * $monstruo=$respuestaApiMonstruosJson[$enemigo->enemigo_api_id];
+                 * 
+                 * }
+                 */
 
                 if($monstruo){//Si monstruo tiene un valor dentro en lugar de null...
                     
@@ -151,6 +150,9 @@ class Bajas extends Component
     public function importarBajas(){
 
         $respuestaApi=Http::get('https://mhw-db.com/monsters');
+
+        if($respuestaApi->ok()){
+
         $repertorioEnemigos=collect($respuestaApi->json());
         
         //$maxEnemigos=count($arrayRepertorioEnemigos);
@@ -276,29 +278,8 @@ class Bajas extends Component
             }
 
             
-            
-       /* $this->bajas = EnemigoUser::getBajasUsuario($this->usuario->id)
-        ->map(function ($enemigoBd) {
-            return [
-                'enemigoId' => $enemigoBd->enemigo_api_id,
-                'nombre_enemigo' => $enemigoBd->nombre_enemigo,
-                'tipo_monstruo' => $enemigoBd->tipo_monstruo,
-                'especie' => $enemigoBd->especie,
-                'numero_bajas' => $enemigoBd->numero_bajas
-            ];
-        });*/
-
-       /* $this->bajas = EnemigoUser::getBajasUsuario($this->usuario->id)
-        ->map(function ($enemigoBd) {
-            return [
-                'enemigoId' => $enemigoBd->enemigoId,
-                'nombre_enemigo' => $enemigoBd->nombre_enemigo,
-                'tipo_monstruo' => $enemigoBd->tipo_monstruo,
-                'especie' => $enemigoBd->especie,
-                'numero_bajas' => $numero_bajas
-            ];
-        });*/
-
+      
+        
 
            
         }
@@ -309,6 +290,17 @@ class Bajas extends Component
         Log::info('Bajas importadas con exito.');
         //Aviso al usuario del exito 
         return redirect()->route('bajas');//Refresco la pagina, ademas con esto evito duplicados o que se vuelva a enviar la peticion duplicada a la BD
+        
+        }else{
+
+            Log::warning('Error al extraer los monstruos',[ 
+                
+                'status' => $respuestaApi->status(),
+                'url' => $url,
+                
+            ]);
+
+        }
     }
 
     public function volver(){

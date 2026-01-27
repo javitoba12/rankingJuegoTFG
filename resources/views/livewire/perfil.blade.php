@@ -43,12 +43,12 @@
 
         </div>
 
-        <div class='user-avatar mx-1 mt-2'>
+        <div class='user-avatar mx-1 mt-2'> <?php //IMAGEN DEL AVATAR ?>
             <img src="{{ $avatarUrl }}" class='rounded-circle border border-primary avatar' alt="avatar">
         </div>
     </div>
 
-    @if(!session()->has('perfilSeleccionado'))
+    @if(!session()->has('perfilSeleccionado')) <?php //En caso de que el usuario actual acceda a su propio perfil, y no al perfil de otro usuario seleccionado ?>
         <button type='submit' class='btn btn-success' wire:click="$set('actualizar', true)">Editar Perfil</button>
         <button type='submit' class='btn btn-success' wire:click="actualizarPuntuacion">Actualizar mi puntuacion</button><br>
        <!-- <button type='submit' class='btn btn-info' wire:click="mostrarPartidas">Mis partidas</button>-->

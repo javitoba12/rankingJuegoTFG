@@ -251,6 +251,43 @@ return $chart;
       //he de recargar la pagina cuando el usuario elija una de las opciones disponibles entre rankings.
 }*/
 
+function buscarUsers(){
+
+    if(empty(trim($this->nickBusqueda)) && trim($this->nickBusqueda)!= ''){
+
+        $this->aviso='El campo de búsqueda está vacío';
+
+    }else{
+    $usuariosCoincidentes=User::buscarUsuariosCoincidentes($this->nickBusqueda);
+
+    if(empty($usuariosCoincidentes) || $usuariosCoincidentes == null || $usuariosCoincidentes->count()<=0){
+
+                        session()->flash('aviso','No se ha encontrado ningun usuario');
+                        $this->tipo='diezMejores';
+                        $this->seleccionRanking();
+
+                    }else{
+
+                        session()->flash('usuariosCoincidentes',$usuariosCoincidentes);
+
+                    }
+    }
+
+}
+
+function seleccionarUsuario($usuarioBuscado){
+
+    if(!empty($usuarioBuscado)){
+        
+        $this->usuarioSeleccionado=User::buscarUsuario($usuarioBuscado);
+        $this->tipo='personal';
+        $this->seleccionRanking();
+        session()->put('tipo', 'personal');
+    }else{
+        return redirect()->route('principal');
+    }
+
+}
 
 
 function buscarUsuario()
@@ -258,11 +295,11 @@ function buscarUsuario()
     if (!empty(trim($this->nickBusqueda)) && trim($this->nickBusqueda)!= '') {
         //session()->put('aviso', 'El campo de búsqueda está vacío');
 
-        $this->aviso='El campo de búsqueda está vacío';
+        
 
         $usuarioBuscado = User::buscarUsuario($this->nickBusqueda);
 
-        if($usuarioBuscado){
+        if(!empty($usuarioBuscado)){
 
             $this->usuarioSeleccionado = $usuarioBuscado;
             $this->tipo = 'personal';
@@ -278,6 +315,7 @@ function buscarUsuario()
         }
         
     }else{
+        $this->aviso='El campo de búsqueda está vacío';
         $this->usuarioSeleccionado = $this->usuario;
         $this->tipo='personal';
         //$this->dispatch('recargarPagina');

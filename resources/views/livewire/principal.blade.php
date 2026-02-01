@@ -8,7 +8,7 @@
     <div class='buscador-container mx-2 d-flex'> <?php //BUSCADOR PARA BUSCAR USUARIOS ?>
     
         <input type="text" class='mx-2 rounded' placeholder='Buscar usuario' name="" id="search1" wire:model='nickBusqueda'>
-        <button class='btn btn-info' wire:click='buscarUsuario':disabled='!$wire.nickBusqueda || !$wire.nickBusqueda.trim()'>Buscar</button> 
+        <button class='btn btn-info' wire:click='buscarUsers':disabled='!$wire.nickBusqueda || !$wire.nickBusqueda.trim()'>Buscar</button> 
         {{-- disabled para evitar que el usuario introduzca espacios vacios --}}
         <button class='btn mx-2 btn-danger' wire:click='cancelarBusqueda'>Cancelar</button>
     </div>
@@ -68,8 +68,10 @@
         @endif
 
         @if(session()->has('aviso'))
+         <div class="alert alert-danger" id="success" style="display:block;">
 
             <p>{{session()->get('aviso')}}</p>
+        </div>
 
         @endif
 
@@ -80,17 +82,31 @@
                 <option value="personal">Ranking Personal</option>
                 <option value="rankingBajas">Diez usuarios con mas bajas</option>
             </select>
-        <!-- <button class="btn btn-danger" wire:click="cerrarSesion">Cerrar sesion</button>-->
+        <!-- <button class="btn btn-danger" wire:click="cerrarSesion">Cerrar sesion</button> -->
         </div>
 
         
 
-       <!-- @if(isset($nickBusqueda))
+       
+            @if(session()->has('usuariosCoincidentes'))
+                <div class='bg-dark pb-2 pt-2 mb-2 rounded-3 w-100 h-50 d-flex flex-column'>
+                <h4 class='mx-2'>Usuarios encontrados:</h4>
+                @if(count(session()->get('usuariosCoincidentes'))==1)
 
+                    <button class='btn btn-info mx-2 w-25' wire:click='seleccionarUsuario({{session()->get("usuariosCoincidentes")[0]}})' >{{session()->get('usuariosCoincidentes')[0]->nick}}</button>
 
-        @else-->
+                @elseif(count(session()->get('usuariosCoincidentes'))>1)
 
-            @if(isset($ranking) && count($ranking) > 0)
+                        @foreach(session()->get('usuariosCoincidentes') as $usuario)
+
+                            <button class='btn btn-info mb-2 w-25 mx-2' wire:click='seleccionarUsuario({{$usuario}})'>{{$usuario->nick}}</button>
+
+                        @endforeach
+                @endif
+                </div>
+            @elseif(isset($ranking) && count($ranking) > 0)
+
+            
                 @if($tipo == 'diezMejores' || $tipo == 'personal')<?php //Si ranking contiene informacion 
                 // sobre los diez mejores o el ranking personal, creare una tabla ?>
                 
@@ -174,7 +190,10 @@
                     </table>
                 @endif
            
+           
             @endif
+
+            
 
         
     </div>
@@ -184,7 +203,7 @@
 
     <div class="my-4" style="width: 50%; max-width: 500px; height: 50vh; margin: 0 auto;">
 
-    @if(!empty($chartModel))
+    @if(!empty($chartModel) && !session()->has('usuariosCoincidentes'))
         @if($tipo == 'personal')
             
                         <livewire:livewire-pie-chart
@@ -200,7 +219,7 @@
         @endif
     @endif
     </div>
-@endif
+
     
     
 </div>

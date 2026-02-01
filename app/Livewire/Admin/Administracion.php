@@ -76,8 +76,21 @@ class Administracion extends Component
 
     public function modificarInventario(){
 
-        if($this->cantidadItem>0){
+        if(filter_var($this->cantidadItem, FILTER_VALIDATE_INT) !== false && $this->cantidadItem>0){
+            //Compruebo que la cantidad sea un entero y mayor a 0
 
+            //FILTER_VALIDATE_INT es una constante que usa php, para saber que filtro aplicar a la hora de validar un tipo de dato,
+            //como quiero validar que cantidad sea un entero, indico a la funcion como segundo parametro, que quiero aplicar el filtro
+            //para validar si la cantidad actual es un int
+
+            //FILTER_VALIDATE_INT almacena un numero cualquiera(dependiendo de la version de laravel sera un numero u otro pero no tiene importancia),
+            //  de manera que cuando comparo mi cantidad con la constante, estoy comparando que ambos sean el mismo tipo de dato
+
+            /**
+             * Existen mas constantes depende el tipo de validacion como:*/
+               // FILTER_VALIDATE_EMAIL
+               // FILTER_VALIDATE_FLOAT  
+              //FILTER_SANITIZE_NUMBER_INT (Para eliminar cualquier caracter que no sea numerico en una cadena, a excepcion de los caracteres + o -)
 
         $itemEncontrado=$this->usuarioSeleccionado->items()->where('item_id',$this->idItem)->first();
         //Busco un item el cual tenga una combinacion user_id/item_id igual al id del usuario al que quiero 

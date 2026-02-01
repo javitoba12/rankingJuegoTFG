@@ -262,7 +262,9 @@ function buscarUsers(){
 
     if(empty($usuariosCoincidentes) || $usuariosCoincidentes == null || $usuariosCoincidentes->count()<=0){
 
-                        $this->aviso='No se ha encontrado ningun usuario';
+                        session()->flash('aviso','No se ha encontrado ningun usuario');
+                        $this->tipo='diezMejores';
+                        $this->seleccionRanking();
 
                     }else{
 

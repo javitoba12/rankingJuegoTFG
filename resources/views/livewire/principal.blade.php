@@ -68,8 +68,10 @@
         @endif
 
         @if(session()->has('aviso'))
+         <div class="alert alert-danger" id="success" style="display:block;">
 
             <p>{{session()->get('aviso')}}</p>
+        </div>
 
         @endif
 
@@ -102,9 +104,9 @@
                         @endforeach
                 @endif
                 </div>
-            @else
+            @elseif(isset($ranking) && count($ranking) > 0)
 
-            @if(isset($ranking) && count($ranking) > 0)
+            
                 @if($tipo == 'diezMejores' || $tipo == 'personal')<?php //Si ranking contiene informacion 
                 // sobre los diez mejores o el ranking personal, creare una tabla ?>
                 
@@ -188,9 +190,10 @@
                     </table>
                 @endif
            
+           
             @endif
 
-            @endif
+            
 
         
     </div>

@@ -107,6 +107,12 @@ class Principal extends Component
 
     public function seleccionRanking(){
 
+
+        if($this->tipo!='personal' && $this->usuarioSeleccionado!=$this->usuario){
+            $this->usuarioSeleccionado=$this->usuario;//Para evitar que la opcion de ver perfil del usuario salga, si se busco un usuario anteriormente antes de
+            //cambiar de ranking
+        }
+
         
         
         if($this->tipo =='personal'){//Si el usuario elije la opcion personal 

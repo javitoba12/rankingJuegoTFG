@@ -176,8 +176,6 @@ private function pintarGrafico(){
 
      $chart=null;//con esto evito errores
 
-     //if($this->isPintar){
-
         if ($this->ranking && $this->ranking->isNotEmpty()) {
 
             if($this->tipo == 'personal'){
@@ -232,10 +230,6 @@ private function pintarGrafico(){
 
             }
 
-      //  }
-
-       // $this->isPintar=false;
-
         
     }
 
@@ -243,25 +237,13 @@ return $chart;
 
 }
 
-/*public function actualizarInformacion(){
-    $this->seleccionRanking($this->usuarioSeleccionado);//Me encargo de realizar la consulta seleccionada en base a la opcion elejida en el select, y extraigo
-    //los datos.
 
-    $this->isPintar=true;
-    
-     //return redirect(request()->header('Referer')); Esto fuerza la recarga de la pagina por la parte del servidor.
-     
-      //$this->dispatch('recargarPagina');//Llamo al evento creado anteriormente en la vista, y le indico que se ejecute.
-      //Al recargar la pagina consigo que el grafico se pinte realmente de manera dinamica, dado que los graficos de livewire charts
-      //Solo se pintan una vez y es unicamente cuando se renderiza la pagina, por lo que si quiero cambiar de grafico dinamicamente
-      //he de recargar la pagina cuando el usuario elija una de las opciones disponibles entre rankings.
-}*/
 
 function buscarUsers(){
 
     if(empty(trim($this->nickBusqueda)) && trim($this->nickBusqueda)!= ''){
 
-        $this->aviso='El campo de búsqueda está vacío';
+       session()->flash('aviso','El campo de búsqueda está vacío');
 
     }else{
     $usuariosCoincidentes=User::buscarUsuariosCoincidentes($this->nickBusqueda);
@@ -293,46 +275,6 @@ function seleccionarUsuario($usuarioBuscado){
         return redirect()->route('principal');
     }
 
-}
-
-
-function buscarUsuario()
-{
-    if (!empty(trim($this->nickBusqueda)) && trim($this->nickBusqueda)!= '') {
-        //session()->put('aviso', 'El campo de búsqueda está vacío');
-
-        
-
-        $usuarioBuscado = User::buscarUsuario($this->nickBusqueda);
-
-        if(!empty($usuarioBuscado)){
-
-            $this->usuarioSeleccionado = $usuarioBuscado;
-            $this->tipo = 'personal';
-            session()->put('tipo', 'personal');
-            session()->put('usuarioBuscado', $usuarioBuscado->nick);
-            $this->dispatch('recargarPagina');
-
-        }else{
-
-            session()->put('aviso', 'No se ha encontrado al usuario');
-            
-
-        }
-        
-    }else{
-        $this->aviso='El campo de búsqueda está vacío';
-        $this->usuarioSeleccionado = $this->usuario;
-        $this->tipo='personal';
-        //$this->dispatch('recargarPagina');
-        return redirect()->route('principal');
-    }
-
-    
-    
-
-    $this->seleccionRanking();
-    
 }
 
 

@@ -270,16 +270,7 @@ class Perfil extends Component
         session()->put('aviso','Se han actualizado las puntuaciones'); 
 
         $this->refrescar();
-    }
-
-   /* public function mostrarAviso():string{
-        $this->aviso=session()->get('aviso');
-        session()->forget('aviso');
-
-        return $this->a
-    }*/
-
-        
+    }       
 
         public function mostrarPartidas(){
             return redirect()->route('partidasGuardadas');

@@ -284,7 +284,7 @@ class Administracion extends Component
     }
 
 
-    public function buscarUser(){
+    /*public function buscarUser(){
 
         $usuarioBuscado=User::buscarUsuario($this->nickBusqueda);
         //Busco al usuario por su nick
@@ -294,7 +294,7 @@ class Administracion extends Component
         }else{//En caso de existir, lo guardo temporalmente para poder modificarlo mas tarde
             session()->flash('usuarioBuscado',$usuarioBuscado);
         }
-    }
+    }*/
 
     public function buscarUser2(){
             if(!empty(trim($this->nickBusqueda))){

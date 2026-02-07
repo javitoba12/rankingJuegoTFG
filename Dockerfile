@@ -43,11 +43,18 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && npm run build
 
 # 7. Permisos (FUNDAMENTAL para que Laravel escriba logs y cache)
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+#RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+#RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+#RUN chmod -R 775 /var/www/storage /var/www/html/bootstrap/cache
 
+
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 # 8. Comando final corregido
 # Limpiamos CUALQUIER cache que se haya colado en el COPY antes de migrar
-CMD echo "La base de datos en el sistema es: $DB_DATABASE" && \
-    php artisan config:clear && \
-    php artisan migrate --force && \
-    php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
+#CMD echo "La base de datos en el sistema es: $DB_DATABASE" && \
+#    php artisan config:clear && \
+#    php artisan migrate --force && \
+#    php artisan serve --host=0.0.0.0 --port=$PORT
+
+CMD php artisan config:clear && php artisan cache:clear && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT

@@ -34,6 +34,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 
 # 7. Permisos (FUNDAMENTAL para que Laravel escriba logs y cache)
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN rm -f .env
 
 # 8. Comando final corregido
 # Limpiamos CUALQUIER cache que se haya colado en el COPY antes de migrar

@@ -21,6 +21,8 @@ WORKDIR /var/www/html
 
 # 4. Copiar el proyecto
 COPY . .
+RUN rm -f .env
+RUN rm -f bootstrap/cache/*.php
 
 # 5. Instalar dependencias 
 # IMPORTANTE: Aseguramos que no se arrastren archivos de cache locales
@@ -34,11 +36,9 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 
 # 7. Permisos (FUNDAMENTAL para que Laravel escriba logs y cache)
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-RUN rm -f .env
 
 # 8. Comando final corregido
 # Limpiamos CUALQUIER cache que se haya colado en el COPY antes de migrar
 CMD php artisan config:clear && \
-    php artisan migrate --force && \
-    php artisan cache:clear && \
+    (php artisan migrate --force || true) && \
     php artisan serve --host=0.0.0.0 --port=${PORT:-8080}

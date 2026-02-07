@@ -220,7 +220,7 @@
     <?php //Tabla para mostrar todos los usuarios de la BD paginados ?>
 
     <div class='adminInformacionContainer mb-2 bg-dark d-flex flex-column justify-content-center align-self-center'>
-    @if(isset($usuarios) && $paginacion)
+    @if(isset($usuarios) && $paginacion && count($usuarios)>0)
         <table class='table-bordered'>
             <thead>
             @foreach(array_keys($usuarios[0]->getAttributes()) as $campoNombre)

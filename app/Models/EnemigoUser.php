@@ -84,38 +84,7 @@ class EnemigoUser extends Pivot
 
     }
 
-   /*
    
-   
-   
-   return self::with('enemigo')
-        ->where('user_id', $id_user)
-        ->get()
-        ->filter(fn ($baja) => $baja->enemigo !== null)
-        ->map(function ($baja) {
-            return [
-                'enemigoId'      => $baja->enemigo_api_id,
-                'numero_bajas'   => $baja->numero_bajas,
-                'nombre_enemigo' => $baja->enemigo->nombre_enemigo,
-                'tipo_monstruo'  => $baja->enemigo->tipo_monstruo,
-                'especie'        => $baja->enemigo->especie,
-            ];
-        })
-        ->values(); */
-
-    /*return self::where('user_id',$id_user)
-        ->join('enemigos' ,'enemigo_users.enemigo_api_id', '=','enemigos.enemigo_api_id')
-        ->select('enemigo_users.enemigo_api_id','enemigos.nombre_enemigo','enemigos.tipo_monstruo','enemigos.especie','enemigo_users.numero_bajas')
-        ->get(); */
-
-    /*public static function getBajasUsuario($id_user){//Devuelve una coleccion con el nombre del usuario
-        //y todas sus filas en la tabla enemigo_users
-
-       return self::where('user_id',$id_user)
-        ->join('enemigos' ,'enemigo_users.enemigo_api_id', '=','enemigos.id')
-        ->select('enemigos.id','enemigos.nombre_enemigo','enemigos.tipo_daño','enemigo_users.numero_bajas')
-        ->get();
-    }*/
 
     public static function getDiezUsuariosConMasBajas(){//Devuelve una coleccion con el nombre de cada 
     // usuario y la suma total de sus bajas 

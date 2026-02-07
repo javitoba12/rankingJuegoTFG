@@ -176,8 +176,6 @@ private function pintarGrafico(){
 
      $chart=null;//con esto evito errores
 
-     //if($this->isPintar){
-
         if ($this->ranking && $this->ranking->isNotEmpty()) {
 
             if($this->tipo == 'personal'){
@@ -232,10 +230,6 @@ private function pintarGrafico(){
 
             }
 
-      //  }
-
-       // $this->isPintar=false;
-
         
     }
 
@@ -281,46 +275,6 @@ function seleccionarUsuario($usuarioBuscado){
         return redirect()->route('principal');
     }
 
-}
-
-
-function buscarUsuario()
-{
-    if (!empty(trim($this->nickBusqueda)) && trim($this->nickBusqueda)!= '') {
-        //session()->put('aviso', 'El campo de búsqueda está vacío');
-
-        
-
-        $usuarioBuscado = User::buscarUsuario($this->nickBusqueda);
-
-        if(!empty($usuarioBuscado)){
-
-            $this->usuarioSeleccionado = $usuarioBuscado;
-            $this->tipo = 'personal';
-            session()->put('tipo', 'personal');
-            session()->put('usuarioBuscado', $usuarioBuscado->nick);
-            $this->dispatch('recargarPagina');
-
-        }else{
-
-            session()->put('aviso', 'No se ha encontrado al usuario');
-            
-
-        }
-        
-    }else{
-        $this->aviso='El campo de búsqueda está vacío';
-        $this->usuarioSeleccionado = $this->usuario;
-        $this->tipo='personal';
-        //$this->dispatch('recargarPagina');
-        return redirect()->route('principal');
-    }
-
-    
-    
-
-    $this->seleccionRanking();
-    
 }
 
 

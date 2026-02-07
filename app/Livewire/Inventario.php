@@ -52,7 +52,7 @@ class Inventario extends Component
        // a la relación N-N User/Item como un objeto.
        //Esto puede ser util para el uso de consultas, por ejemplo:
        /*
-       User::find($this->usuario->id)->items() serai algo parecido a hacer esto en sql:
+       User::find($this->usuario->id)->items() seria algo parecido a hacer esto en sql:
 
        SELECT items.*, item_user.cantidad, item_user.created_at, item_user.updated_at
         FROM items

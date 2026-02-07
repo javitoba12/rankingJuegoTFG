@@ -53,9 +53,12 @@ EXPOSE 8000
 # -----------------------------
 # 8. Comando final para Render
 # -----------------------------
-CMD php artisan migrate --force \
-    && php artisan config:cache \
-    && php artisan package:discover \
-    && php artisan route:cache \
+# ... todo lo demás igual hasta el CMD ...
+
+# Comando final en runtime (no en build)
+CMD php artisan config:clear \
+    && php artisan cache:clear \
+    && php artisan route:clear \
+    && php artisan migrate --force \
     && php artisan db:seed --force \
     && php artisan serve --host=0.0.0.0 --port=8000

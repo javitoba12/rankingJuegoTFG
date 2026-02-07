@@ -40,5 +40,5 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 # 8. Comando final corregido
 # Limpiamos CUALQUIER cache que se haya colado en el COPY antes de migrar
 CMD php artisan config:clear && \
-    (php artisan migrate --force || true) && \
+    php artisan migrate:force  && \
     php artisan serve --host=0.0.0.0 --port=${PORT:-8080}

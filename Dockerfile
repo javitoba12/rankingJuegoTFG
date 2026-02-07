@@ -19,46 +19,25 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # -----------------------------
 WORKDIR /var/www/html
 
-# Copiar solo composer.json y composer.lock (para usar cache de Docker)
-COPY composer.json composer.lock ./
-
-# -----------------------------
-# 4. Copiar el resto del proyecto
-# -----------------------------
+# 4. Copiar el proyecto
 COPY . .
 
-
-
-# -----------------------------
-# 5. Instalar dependencias PHP (sin ejecutar scripts)
-# -----------------------------
-#RUN composer install --no-dev --no-scripts --optimize-autoloader
+# 5. Instalar dependencias 
+# IMPORTANTE: Aseguramos que no se arrastren archivos de cache locales
 RUN composer install --no-scripts --optimize-autoloader
-#    && composer clear-cache
 
-# -----------------------------
-# 6. Instalar Node.js y construir assets
-# -----------------------------
+# 6. Instalar Node y construir assets (Igual que lo tienes)
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
     && npm install \
-    && npm run build \
-    && npm cache clean --force
+    && npm run build
 
-# -----------------------------
-# 7. Exponer puerto
-# -----------------------------
-EXPOSE 8000
+# 7. Permisos (FUNDAMENTAL para que Laravel escriba logs y cache)
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# -----------------------------
-# 8. Comando final para Render
-# -----------------------------
-# ... todo lo demás igual hasta el CMD ...
-
-# Comando final en runtime (no en build)
+# 8. Comando final corregido
+# Limpiamos CUALQUIER cache que se haya colado en el COPY antes de migrar
 CMD php artisan config:clear && \
+    php artisan cache:clear && \
     php artisan migrate --force && \
-    php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
-
-   # && php artisan db:seed --force \
-    #&& php artisan serve --host=0.0.0.0 --port=8000
+    php artisan serve --host=0.0.0.0 --port=${PORT:-8080}

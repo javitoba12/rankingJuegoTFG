@@ -56,11 +56,9 @@ EXPOSE 8000
 # ... todo lo demás igual hasta el CMD ...
 
 # Comando final en runtime (no en build)
-CMD php artisan config:clear \
-    && php artisan cache:clear \
-    && php artisan route:clear \
-    && php artisan migrate --force \
-    && php-fpm
+CMD php artisan config:clear && \
+    php artisan migrate --force && \
+    php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
 
    # && php artisan db:seed --force \
     #&& php artisan serve --host=0.0.0.0 --port=8000

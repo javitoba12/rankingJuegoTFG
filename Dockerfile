@@ -1,5 +1,13 @@
 FROM php:8.2-fpm
 
+#para que Docker sepa que estas variables existirán en el sistema
+ENV DB_CONNECTION=mysql
+ENV DB_HOST=mysql.railway.internal
+ENV DB_PORT=3306
+ENV DB_DATABASE=railway
+ENV DB_USERNAME=root
+ENV DB_PASSWORD=vuIXqThQscTtSDujqJgMjYvSLcWBylQX
+
 # -----------------------------
 # 1. Instalar extensiones y dependencias del sistema
 # -----------------------------

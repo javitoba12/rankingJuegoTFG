@@ -67,10 +67,14 @@
 
         @endif
 
-        @if(!empty($aviso))
-         <div class="alert alert-danger" id="success" style="display:block;">
+        @if(!empty($aviso) && trim($aviso)!='')
+         <div class="alert alert-danger" id="success" style="display:block;" x-data x-init = "setTimeout(() => show=false {$wire.set('aviso','')},3000) x-show='show' 
+         x-transition">
+            
+            <?php //Aqui estoy usando Alpine ?>
 
             <p>{{$aviso}}</p>
+           
         </div>
 
         @endif

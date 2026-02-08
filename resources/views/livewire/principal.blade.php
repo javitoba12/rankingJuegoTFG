@@ -92,12 +92,6 @@
 
 
         
-
-        
-
-        @if(empty($avisos))
-
-
         <div class='select-ranking-container'>
             <select name="tipoRanking" id="tipoRanking" class='form-select form-select-sm text-light bg-secondary'  wire:change="seleccionRanking" wire:model="tipo">
                 <option value="diezMejores">Diez mejores puntuaciones</option>
@@ -106,6 +100,12 @@
             </select>
         <!-- <button class="btn btn-danger" wire:click="cerrarSesion">Cerrar sesion</button> -->
         </div>
+        
+
+        @if(empty($avisos))
+
+
+        
        
             @if(session()->has('usuariosCoincidentes'))
                 <div class='bg-dark pb-2 pt-2 mb-2 rounded-3 w-100 h-50 d-flex flex-column'>

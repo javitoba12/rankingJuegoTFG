@@ -67,10 +67,10 @@
 
         @endif
 
-        @if(session()->has('aviso'))
+        @if(!empty($aviso))
          <div class="alert alert-danger" id="success" style="display:block;">
 
-            <p>{{session()->get('aviso')}}</p>
+            <p>{{$aviso}}</p>
         </div>
 
         @endif

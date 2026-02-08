@@ -40,10 +40,10 @@ class Principal extends Component
             
             $this->comprobarUsuarioBuscado();
 
-            if(session()->has('aviso')){
+            /*if(session()->has('aviso')){
                 $this->aviso=session()->get('aviso');
                 session()->forget('aviso');
-            }
+            }*/
             $this->tema=$this->aplicarColor();
             $this->comprobarRankingEnSesion();
            
@@ -127,7 +127,7 @@ class Principal extends Component
         if(empty($this->ranking) || count($this->ranking)<=0){//Si la consulta me devuelve una coleccion vacia
 
             //$this->aviso='Aun no has completado ninguna mision';//aviso al usuario
-            session()->flash('aviso','Aun no has completado ninguna mision');
+           $this->aviso='Aun no has completado ninguna mision';
         }
 
 
@@ -144,7 +144,7 @@ class Principal extends Component
 
         if(empty($this->ranking) || count($this->ranking)<=0){//Si la consulta me devuelve una coleccion vacia
            // $this->aviso='Aun no hay puntuaciones globales disponibles';
-            session()->flash('aviso','Aun no hay puntuaciones globales disponibles');
+            $this->aviso='Aun no hay puntuaciones globales disponibles';
             //aviso al usuario
         }
 
@@ -156,7 +156,7 @@ class Principal extends Component
 
         if(!isset($this->ranking) || count($this->ranking)<=0){//Si la consulta me devuelve una coleccion vacia
            // $this->aviso='Aun no hay bajas globales disponibles';
-            session()->flash('aviso','Aun no hay bajas globales disponibles');
+            $this->aviso='Aun no hay bajas globales disponibles';
             //aviso al usuario
         }
 
@@ -243,14 +243,14 @@ function buscarUsers(){
 
     if(empty(trim($this->nickBusqueda)) && trim($this->nickBusqueda)!= ''){
 
-       session()->flash('aviso','El campo de búsqueda está vacío');
+       $this->aviso='El campo de búsqueda está vacío';
 
     }else{
     $usuariosCoincidentes=User::buscarUsuariosCoincidentes($this->nickBusqueda);
 
     if(empty($usuariosCoincidentes) || $usuariosCoincidentes == null || $usuariosCoincidentes->count()<=0){
 
-                        session()->flash('aviso','No se ha encontrado ningun usuario');
+                       $this->aviso='No se ha encontrado ningun usuario';
                         $this->tipo='diezMejores';
                         $this->seleccionRanking();
 

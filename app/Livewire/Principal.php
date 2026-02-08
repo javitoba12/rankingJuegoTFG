@@ -248,6 +248,8 @@ return $chart;
 
 function buscarUsers(){
 
+    $this->aviso='';
+
     if(empty(trim($this->nickBusqueda))){
 
         $this->tipo='diezMejores';

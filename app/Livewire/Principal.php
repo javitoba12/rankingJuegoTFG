@@ -237,6 +237,16 @@ return $chart;
 
 }
 
+function borrarAviso(){
+    $this->aviso='';
+    $this->resetearRanking();
+}
+
+function resetearRanking(){
+    $this->tipo='diezMejores';
+    $this->seleccionRanking();
+}
+
 
 
 function buscarUsers(){
@@ -251,8 +261,8 @@ function buscarUsers(){
     if(empty($usuariosCoincidentes) || $usuariosCoincidentes == null || $usuariosCoincidentes->count()<=0){
 
                        $this->aviso='No se ha encontrado ningun usuario';
-                        $this->tipo='diezMejores';
-                        $this->seleccionRanking();
+                      /* $this->tipo='diezMejores';
+                       $this->seleccionRanking();*/
 
                     }else{
 

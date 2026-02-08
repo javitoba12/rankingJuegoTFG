@@ -69,7 +69,7 @@
 
         @if(!empty($aviso))
         <div class="alert alert-danger"id="success" style="display:block;" x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => 
-        {show = false; $wire.set('aviso','');}, 3000)"> <p>{{$aviso}}</p>
+        {show = false; $wire.borrarAviso();}, 3000)"> <p>{{$aviso}}</p>
 
 </div>
 
@@ -84,6 +84,8 @@
             </select>
         <!-- <button class="btn btn-danger" wire:click="cerrarSesion">Cerrar sesion</button> -->
         </div>
+
+        @if(empty($aviso))
 
         
 
@@ -219,7 +221,7 @@
         @endif
     @endif
     </div>
-
+@endif
     
     
 </div>

@@ -69,7 +69,7 @@
 
         @if(!empty($aviso) && trim($aviso)!='')
          <div class="alert alert-danger" id="success" style="display:block;" x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => 
-         { show = false; $wire.set('aviso','');}, 3000)">
+         { show = false;}, 3000)">
             
             <?php //Aqui estoy usando Alpine ?>
 

@@ -69,7 +69,7 @@
 
         @if(count($avisos) > 0)
         <div class="alert alert-danger"id="success" style="display:block;" x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => 
-        {$wire.borrarAviso();  }, 3000)"> <?php //Este div utiliza la libreria alpine js para mostrar momentaneamente un aviso en el tiempo
+        {show = false; $wire.borrarAviso();}, 3000)"> <?php //Este div utiliza la libreria alpine js para mostrar momentaneamente un aviso en el tiempo
         // de 3 segundos 
         // x-data indica que el elemento actual sera manejado por Alpine(alpine toma el control y puede manipular elemento y lo que pase dentro de el), en x-data tambien 
         // se inicializan variables, objetos o funciones que se pueden utilizar para el elemento mas adelante
@@ -80,15 +80,16 @@
         // ni tampoco se pueda manipular desde el codigo html, pues cuando livewire vuelva a renderizar detectara por el condicional anterior, que
         // aviso esta vacio ?>
 
-        @foreach($avisos as $aviso)
         
+        @foreach($avisos as $aviso)
             <p>{{$aviso}}</p>
 
-        @endforeach
+        
         
 
+        
+        @endforeach
         </div>
-
         @endif
 
 

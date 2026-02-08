@@ -69,7 +69,18 @@
 
         @if(!empty($aviso))
         <div class="alert alert-danger"id="success" style="display:block;" x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => 
-        {show = false; $wire.set('aviso','');}, 3000)"> <p>{{$aviso}}</p>
+        {show = false; $wire.set('aviso','');}, 3000)"> <?php //Este div utiliza la libreria alpine js para mostrar momentaneamente un aviso en el tiempo
+        // de 3 segundos 
+        // x-data indica que el elemento actual sera manejado por Alpine(alpine toma el control y puede manipular elemento y lo que pase dentro de el), en x-data tambien 
+        // se inicializan variables, objetos o funciones que se pueden utilizar para el elemento mas adelante
+        // x-init es el trigger o el gancho que se lanza o ejecuta una vez se declara y existe x-data, y el DOM esta cargado
+        // x-show apunta a la variable creada dentro de x-data(y controla la visibilidad del elemento), cuando x-show sea false, null o 0, x-show se encargara de aplicar un 
+        // display none al componente
+        // con $wire.set me aseguro de borrar el div cuando pase el tiempo (al limpiar el valor de $aviso) para asegurar que livewire no lo vuelva a cargar por accidente, 
+        // ni tampoco se pueda manipular desde el codigo html, pues cuando livewire vuelva a renderizar detectara por el condicional anterior, que
+        // aviso esta vacio ?>
+        
+        <p>{{$aviso}}</p>
 
 </div>
 

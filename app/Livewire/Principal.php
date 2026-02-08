@@ -165,7 +165,7 @@ class Principal extends Component
     }
 
     session()->put('tipo',$this->tipo);//guardo el tipo de ranking en la sesion
-    $this->chartModel=$this->pintarGrafico();
+    //$this->chartModel=$this->pintarGrafico();
     
 }
 

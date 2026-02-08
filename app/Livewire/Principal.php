@@ -40,10 +40,10 @@ class Principal extends Component
             
             $this->comprobarUsuarioBuscado();
 
-            /*if(session()->has('aviso')){
+            if(session()->has('aviso')){
                 $this->aviso=session()->get('aviso');
                 session()->forget('aviso');
-            }*/
+            }
             $this->tema=$this->aplicarColor();
             $this->comprobarRankingEnSesion();
            
@@ -104,25 +104,26 @@ class Principal extends Component
         $this->seleccionRanking();
     }
 
+    public function borrarAvisos(){
+        session()->forget('aviso');
+    }
 
     public function seleccionRanking(){
 
+        $this->borrarAvisos();
         $this->aviso='';
+    
+
 
         if($this->tipo!='personal' && $this->usuarioSeleccionado!=$this->usuario){
             $this->usuarioSeleccionado=$this->usuario;//Para evitar que la opcion de ver perfil del usuario salga, si se busco un usuario anteriormente antes de
             //cambiar de ranking
         }
 
-            
-
         
         
         if($this->tipo =='personal'){//Si el usuario elije la opcion personal 
             //de select...
-
-          //  $usuarioExistente = $this->usuarioSeleccionado ?? $this->usuario; //Compruebo que si el usuario existe y no es null, si no se cumple esa condicion
-            //asigno como usuario existente al usuario logueado
         
         $this->ranking=MissionUser::getMisionesUser($this->usuarioSeleccionado->id);
         //Extraigo en una consulta todas las puntuaciones de las misiones
@@ -132,8 +133,8 @@ class Principal extends Component
 
         if(empty($this->ranking) || count($this->ranking)<=0){//Si la consulta me devuelve una coleccion vacia
 
-            //$this->aviso='Aun no has completado ninguna mision';//aviso al usuario
-           $this->aviso='Aun no has completado ninguna mision';
+            $this->aviso='Aun no has completado ninguna mision';//aviso al usuario
+            //session()->flash('aviso','Aun no has completado ninguna mision');
         }
 
 
@@ -149,8 +150,8 @@ class Principal extends Component
         
 
         if(empty($this->ranking) || count($this->ranking)<=0){//Si la consulta me devuelve una coleccion vacia
-           // $this->aviso='Aun no hay puntuaciones globales disponibles';
             $this->aviso='Aun no hay puntuaciones globales disponibles';
+           //session()->flash('aviso','Aun no hay puntuaciones globales disponibles');
             //aviso al usuario
         }
 
@@ -161,8 +162,8 @@ class Principal extends Component
 
 
         if(!isset($this->ranking) || count($this->ranking)<=0){//Si la consulta me devuelve una coleccion vacia
-           // $this->aviso='Aun no hay bajas globales disponibles';
             $this->aviso='Aun no hay bajas globales disponibles';
+            //session()->flash('aviso','Aun no hay bajas globales disponibles');
             //aviso al usuario
         }
 
@@ -171,7 +172,7 @@ class Principal extends Component
     }
 
     session()->put('tipo',$this->tipo);//guardo el tipo de ranking en la sesion
-    //$this->chartModel=$this->pintarGrafico();
+    $this->chartModel=$this->pintarGrafico();
     
 }
 
@@ -243,33 +244,22 @@ return $chart;
 
 }
 
-function borrarAviso(){
-    $this->aviso='';
-    $this->resetearRanking();
-}
-
-function resetearRanking(){
-    $this->tipo='diezMejores';
-    $this->seleccionRanking();
-}
-
 
 
 function buscarUsers(){
 
-    if(empty(trim($this->nickBusqueda))){
+    if(empty(trim($this->nickBusqueda)) && trim($this->nickBusqueda)!= ''){
 
-       $this->aviso='El campo de búsqueda está vacío';
-       //$this->resetearRanking();
+       session()->flash('aviso','El campo de búsqueda está vacío');
 
     }else{
     $usuariosCoincidentes=User::buscarUsuariosCoincidentes($this->nickBusqueda);
 
     if(empty($usuariosCoincidentes) || $usuariosCoincidentes == null || $usuariosCoincidentes->count()<=0){
 
-                       $this->aviso='No se ha encontrado ningun usuario';
-                      /* $this->tipo='diezMejores';
-                       $this->seleccionRanking();*/
+                        $this->aviso='No se ha encontrado ningun usuario';
+                        $this->tipo='diezMejores';
+                        $this->seleccionRanking();
 
                     }else{
 
@@ -348,6 +338,4 @@ public function cerrarSesion()
 }
     
 }
-
-
 

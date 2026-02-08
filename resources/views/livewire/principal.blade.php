@@ -68,13 +68,11 @@
         @endif
 
         @if(!empty($aviso))
-        <div class="alert alert-danger"id="success" style="display:block;" x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => 
-        {show = false; $wire.borrarAviso();}, 3000)"> 
-        
-        <p>{{$aviso}}</p>
+         <div class="alert alert-danger" id="success" style="display:block;">
 
-
+            <p>{{$aviso}}</p>
         </div>
+
         @endif
 
 
@@ -87,11 +85,8 @@
         <!-- <button class="btn btn-danger" wire:click="cerrarSesion">Cerrar sesion</button> -->
         </div>
 
-        @if(empty($aviso))
-
         
 
-        
        
             @if(session()->has('usuariosCoincidentes'))
                 <div class='bg-dark pb-2 pt-2 mb-2 rounded-3 w-100 h-50 d-flex flex-column'>
@@ -137,8 +132,8 @@
                             getAttributes es una funcion que ofrece eloquent, no es nativa de php*/ 
                             ?>
 
-                            @if($columna!='id' && $columna!='user_id' && $columna!='mission_id' && $columna!='created_at' && $columna!='updated_at')
-                                <th id="{{$columna}}" class='table-warning'>{{ ucfirst(str_replace('_', ' ', $columna)) }}</th>
+                            @if($columna!='id' && $columna!='user_id' && $columna!='mission_id' && $columna!='Created_ad' && $columna!='Updated_at')
+                                <th class='table-warning'>{{ ucfirst(str_replace('_', ' ', $columna)) }}</th>
                                 <?php 
                                 /*A la hora de imprimir los nombres de las columnas, uso El metodo ucfirst, que
                                 convierte la primera letra de una palabra en string, dentro de ucfirst llamo antes a la
@@ -208,7 +203,7 @@
 
     <div class="my-4" style="width: 50%; max-width: 500px; height: 50vh; margin: 0 auto;">
 
-    @if(!empty($chartModel) && !session()->has('usuariosCoincidentes') )
+    @if(!empty($chartModel) && !session()->has('usuariosCoincidentes'))
         @if($tipo == 'personal')
             
                         <livewire:livewire-pie-chart
@@ -223,9 +218,8 @@
             <livewire:livewire-column-chart :column-chart-model="$chartModel" />
         @endif
     @endif
-
     </div>
-@endif
+
     
     
 </div>
@@ -239,5 +233,4 @@
   </script>  
 
 </div>
-
 

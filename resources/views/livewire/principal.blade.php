@@ -67,9 +67,9 @@
 
         @endif
 
-        @if(!empty($aviso))
+        @if(!empty($avisos) && count($avisos) > 0)
         <div class="alert alert-danger"id="success" style="display:block;" x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => 
-        {show = false; $wire.set('aviso','');}, 3000)"> <?php //Este div utiliza la libreria alpine js para mostrar momentaneamente un aviso en el tiempo
+        {show = false; $wire.borrarAviso();}, 3000)"> <?php //Este div utiliza la libreria alpine js para mostrar momentaneamente un aviso en el tiempo
         // de 3 segundos 
         // x-data indica que el elemento actual sera manejado por Alpine(alpine toma el control y puede manipular elemento y lo que pase dentro de el), en x-data tambien 
         // se inicializan variables, objetos o funciones que se pueden utilizar para el elemento mas adelante
@@ -79,8 +79,12 @@
         // con $wire.set me aseguro de borrar el div cuando pase el tiempo (al limpiar el valor de $aviso) para asegurar que livewire no lo vuelva a cargar por accidente, 
         // ni tampoco se pueda manipular desde el codigo html, pues cuando livewire vuelva a renderizar detectara por el condicional anterior, que
         // aviso esta vacio ?>
+
+        @foreach($avisos as $aviso)
         
-        <p>{{$aviso}}</p>
+            <p>{{$aviso}}</p>
+
+        @endforeach
 
 </div>
 
@@ -98,6 +102,7 @@
 
         
 
+        @if(empty($avisos))
        
             @if(session()->has('usuariosCoincidentes'))
                 <div class='bg-dark pb-2 pt-2 mb-2 rounded-3 w-100 h-50 d-flex flex-column'>
@@ -115,7 +120,7 @@
                         @endforeach
                 @endif
                 </div>
-            @elseif(isset($ranking) && count($ranking) > 0)
+            @elseif(isset($ranking) && count($ranking) > 0 && empty($avisos))
 
             
                 @if($tipo == 'diezMejores' || $tipo == 'personal')<?php //Si ranking contiene informacion 
@@ -143,8 +148,8 @@
                             getAttributes es una funcion que ofrece eloquent, no es nativa de php*/ 
                             ?>
 
-                            @if($columna!='id' && $columna!='user_id' && $columna!='mission_id' && $columna!='Created_ad' && $columna!='Updated_at')
-                                <th class='table-warning'>{{ ucfirst(str_replace('_', ' ', $columna)) }}</th>
+                            @if($columna!='id' && $columna!='user_id' && $columna!='mission_id' && $columna!='created_at' && $columna!='updated_at')
+                                <th id="{{$columna}}" class='table-warning'>{{ ucfirst(str_replace('_', ' ', $columna)) }}</th>
                                 <?php 
                                 /*A la hora de imprimir los nombres de las columnas, uso El metodo ucfirst, que
                                 convierte la primera letra de una palabra en string, dentro de ucfirst llamo antes a la
@@ -214,7 +219,7 @@
 
     <div class="my-4" style="width: 50%; max-width: 500px; height: 50vh; margin: 0 auto;">
 
-    @if(!empty($chartModel) && !session()->has('usuariosCoincidentes'))
+    @if(!empty($chartModel) && !session()->has('usuariosCoincidentes') && empty($avisos))
         @if($tipo == 'personal')
             
                         <livewire:livewire-pie-chart
@@ -229,6 +234,7 @@
             <livewire:livewire-column-chart :column-chart-model="$chartModel" />
         @endif
     @endif
+@endif
     </div>
 
     

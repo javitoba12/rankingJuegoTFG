@@ -23,7 +23,7 @@ class Principal extends Component
     public $usuario;
     public $ranking;
     public $tipo;
-    public $aviso;
+    public $avisos=[];
     public $nickBusqueda;
     public $usuarioSeleccionado;
     public $tema;
@@ -108,17 +108,22 @@ class Principal extends Component
     public function seleccionRanking(){
 
 
-        if($this->tipo!='personal' && $this->usuarioSeleccionado!=$this->usuario){
+        /*if($this->tipo!='personal' && $this->usuarioSeleccionado!=$this->usuario){
             $this->usuarioSeleccionado=$this->usuario;//Para evitar que la opcion de ver perfil del usuario salga, si se busco un usuario anteriormente antes de
             //cambiar de ranking
-        }
+        }*/
+
+            
 
         
         
         if($this->tipo =='personal'){//Si el usuario elije la opcion personal 
             //de select...
+
+            $usuarioExistente = $this->usuarioSeleccionado ?? $this->usuario; //Compruebo que si el usuario existe y no es null, si no se cumple esa condicion
+            //asigno como usuario existente al usuario logueado
         
-        $this->ranking=MissionUser::getMisionesUser($this->usuarioSeleccionado->id);
+        $this->ranking=MissionUser::getMisionesUser($usuarioExistente->id);
         //Extraigo en una consulta todas las puntuaciones de las misiones
         //asociadas al usuario(aquellas filas de mission_users que posean el id del usuario)
 
@@ -127,7 +132,7 @@ class Principal extends Component
         if(empty($this->ranking) || count($this->ranking)<=0){//Si la consulta me devuelve una coleccion vacia
 
             //$this->aviso='Aun no has completado ninguna mision';//aviso al usuario
-           $this->aviso='Aun no has completado ninguna mision';
+           $this->avisos[]='Aun no has completado ninguna mision';
         }
 
 
@@ -144,7 +149,7 @@ class Principal extends Component
 
         if(empty($this->ranking) || count($this->ranking)<=0){//Si la consulta me devuelve una coleccion vacia
            // $this->aviso='Aun no hay puntuaciones globales disponibles';
-            $this->aviso='Aun no hay puntuaciones globales disponibles';
+            $this->avisos[]='Aun no hay puntuaciones globales disponibles';
             //aviso al usuario
         }
 
@@ -156,7 +161,7 @@ class Principal extends Component
 
         if(!isset($this->ranking) || count($this->ranking)<=0){//Si la consulta me devuelve una coleccion vacia
            // $this->aviso='Aun no hay bajas globales disponibles';
-            $this->aviso='Aun no hay bajas globales disponibles';
+            $this->avisos[]='Aun no hay bajas globales disponibles';
             //aviso al usuario
         }
 
@@ -237,22 +242,42 @@ return $chart;
 
 }
 
+function borrarAviso(){
+    
+    
+    $this->avisos=[];
+    $this->comprobarEstadoRanking();
+    
+}
+
+function comprobarEstadoRanking(){
+
+
+if($this->tipo=='personal'){
+        $this->seleccionRanking();//Como vuelvo a cambiar de usuario cuando hago consultas de busquedas a los rankings personales de otros usuarios, ademas de
+        // que el ranking personal, de los 3 tipos es el ranking que mas cambia debido a las busquedas de usuarios (ya sean usuarios existentes o inexistentes), 
+        //reseteo de nuevo el ranking para mostrar el del usuario logueado
+    }
+
+
+ }
+
 
 
 function buscarUsers(){
 
-    if(empty(trim($this->nickBusqueda)) && trim($this->nickBusqueda)!= ''){
+    if(empty(trim($this->nickBusqueda))){
 
-       $this->aviso='El campo de búsqueda está vacío';
+       $this->avisos[]='El campo de búsqueda está vacío';
+       //$this->resetearRanking();
 
     }else{
     $usuariosCoincidentes=User::buscarUsuariosCoincidentes($this->nickBusqueda);
 
     if(empty($usuariosCoincidentes) || $usuariosCoincidentes == null || $usuariosCoincidentes->count()<=0){
 
-                       $this->aviso='No se ha encontrado ningun usuario';
-                        $this->tipo='diezMejores';
-                        $this->seleccionRanking();
+                       $this->avisos[]='No se ha encontrado ningun usuario';
+                       //$this->resetearRanking();
 
                     }else{
 

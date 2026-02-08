@@ -248,18 +248,21 @@ return $chart;
 
 function buscarUsers(){
 
-    if(empty(trim($this->nickBusqueda)) && trim($this->nickBusqueda)!= ''){
+    if(empty(trim($this->nickBusqueda))){
 
-       session()->flash('aviso','El campo de búsqueda está vacío');
+        $this->tipo='diezMejores';
+        $this->seleccionRanking();
+       $this->aviso='El campo de búsqueda está vacío';
 
     }else{
     $usuariosCoincidentes=User::buscarUsuariosCoincidentes($this->nickBusqueda);
 
     if(empty($usuariosCoincidentes) || $usuariosCoincidentes == null || $usuariosCoincidentes->count()<=0){
 
-                        $this->aviso='No se ha encontrado ningun usuario';
+                        
                         $this->tipo='diezMejores';
                         $this->seleccionRanking();
+                        $this->aviso='No se ha encontrado ningun usuario';
 
                     }else{
 

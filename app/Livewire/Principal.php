@@ -104,8 +104,15 @@ class Principal extends Component
         $this->seleccionRanking();
     }
 
+    public function borrarAvisos(){
+        session()->forget('aviso');
+    }
 
     public function seleccionRanking(){
+
+        $this->borrarAvisos();
+        $this->aviso='';
+    
 
 
         if($this->tipo!='personal' && $this->usuarioSeleccionado!=$this->usuario){
@@ -126,8 +133,8 @@ class Principal extends Component
 
         if(empty($this->ranking) || count($this->ranking)<=0){//Si la consulta me devuelve una coleccion vacia
 
-            //$this->aviso='Aun no has completado ninguna mision';//aviso al usuario
-            session()->put('aviso','Aun no has completado ninguna mision');
+            $this->aviso='Aun no has completado ninguna mision';//aviso al usuario
+            //session()->flash('aviso','Aun no has completado ninguna mision');
         }
 
 
@@ -143,8 +150,8 @@ class Principal extends Component
         
 
         if(empty($this->ranking) || count($this->ranking)<=0){//Si la consulta me devuelve una coleccion vacia
-           // $this->aviso='Aun no hay puntuaciones globales disponibles';
-            session()->put('aviso','Aun no hay puntuaciones globales disponibles');
+            $this->aviso='Aun no hay puntuaciones globales disponibles';
+           //session()->flash('aviso','Aun no hay puntuaciones globales disponibles');
             //aviso al usuario
         }
 
@@ -155,8 +162,8 @@ class Principal extends Component
 
 
         if(!isset($this->ranking) || count($this->ranking)<=0){//Si la consulta me devuelve una coleccion vacia
-           // $this->aviso='Aun no hay bajas globales disponibles';
-            session()->put('aviso','Aun no hay bajas globales disponibles');
+            $this->aviso='Aun no hay bajas globales disponibles';
+            //session()->flash('aviso','Aun no hay bajas globales disponibles');
             //aviso al usuario
         }
 
@@ -250,7 +257,7 @@ function buscarUsers(){
 
     if(empty($usuariosCoincidentes) || $usuariosCoincidentes == null || $usuariosCoincidentes->count()<=0){
 
-                        session()->flash('aviso','No se ha encontrado ningun usuario');
+                        $this->aviso='No se ha encontrado ningun usuario';
                         $this->tipo='diezMejores';
                         $this->seleccionRanking();
 

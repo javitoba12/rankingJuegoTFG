@@ -85,8 +85,6 @@
         <!-- <button class="btn btn-danger" wire:click="cerrarSesion">Cerrar sesion</button> -->
         </div>
 
-        @if(empty($aviso))
-
         
 
        
@@ -221,7 +219,7 @@
         @endif
     @endif
     </div>
-@endif
+
     
     
 </div>
@@ -235,5 +233,4 @@
   </script>  
 
 </div>
-
 

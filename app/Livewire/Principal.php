@@ -40,10 +40,10 @@ class Principal extends Component
             
             $this->comprobarUsuarioBuscado();
 
-            /*if(session()->has('aviso')){
+            if(session()->has('aviso')){
                 $this->aviso=session()->get('aviso');
                 session()->forget('aviso');
-            }*/
+            }
             $this->tema=$this->aplicarColor();
             $this->comprobarRankingEnSesion();
            
@@ -244,23 +244,13 @@ return $chart;
 
 }
 
-function borrarAviso(){
-    $this->aviso='';
-    $this->resetearRanking();
-}
-
-function resetearRanking(){
-    $this->tipo='diezMejores';
-    $this->seleccionRanking();
-}
-
 
 
 function buscarUsers(){
 
     if(empty(trim($this->nickBusqueda)) && trim($this->nickBusqueda)!= ''){
 
-       $this->aviso='El campo de búsqueda está vacío';
+       session()->flash('aviso','El campo de búsqueda está vacío');
 
     }else{
     $usuariosCoincidentes=User::buscarUsuariosCoincidentes($this->nickBusqueda);

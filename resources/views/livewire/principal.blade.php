@@ -68,8 +68,10 @@
         @endif
 
         @if(!empty($aviso))
-        <div class="alert alert-danger"id="success" style="display:block;" x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => 
-        {show = false; $wire.borrarAviso();}, 3000)"> <p>{{$aviso}}</p>
+        <!--<div class="alert alert-danger"id="success" style="display:block;" x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => 
+        {show = false; $wire.borrarAviso();}, 3000)"> -->
+        <div class="alert alert-danger"id="success">
+        <p>{{$aviso}}</p>
 
 </div>
 

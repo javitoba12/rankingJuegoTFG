@@ -246,7 +246,6 @@ function borrarAviso(){
     
     
     $this->avisos=[];
-    
     $this->seleccionRanking();//Para volver a pintar el ranking y mantenerlo actualizado
 
     

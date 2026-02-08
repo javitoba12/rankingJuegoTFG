@@ -67,9 +67,9 @@
 
         @endif
 
-        @if(!empty($avisos) && count($avisos) > 0)
+        @if(count($avisos) > 0)
         <div class="alert alert-danger"id="success" style="display:block;" x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => 
-        {show = false; $wire.borrarAviso();}, 3000)"> <?php //Este div utiliza la libreria alpine js para mostrar momentaneamente un aviso en el tiempo
+        {$wire.borrarAviso();  }, 3000)"> <?php //Este div utiliza la libreria alpine js para mostrar momentaneamente un aviso en el tiempo
         // de 3 segundos 
         // x-data indica que el elemento actual sera manejado por Alpine(alpine toma el control y puede manipular elemento y lo que pase dentro de el), en x-data tambien 
         // se inicializan variables, objetos o funciones que se pueden utilizar para el elemento mas adelante
@@ -85,13 +85,13 @@
             <p>{{$aviso}}</p>
 
         @endforeach
+        
 
-</div>
+        </div>
 
         @endif
 
 
-        
         <div class='select-ranking-container'>
             <select name="tipoRanking" id="tipoRanking" class='form-select form-select-sm text-light bg-secondary'  wire:change="seleccionRanking" wire:model="tipo">
                 <option value="diezMejores">Diez mejores puntuaciones</option>
@@ -100,10 +100,8 @@
             </select>
         <!-- <button class="btn btn-danger" wire:click="cerrarSesion">Cerrar sesion</button> -->
         </div>
+
         
-
-        @if(empty($avisos))
-
 
         
        
@@ -123,7 +121,7 @@
                         @endforeach
                 @endif
                 </div>
-            @elseif(isset($ranking) && count($ranking) > 0 && empty($avisos))
+            @elseif(isset($ranking) && count($ranking) > 0)
 
             
                 @if($tipo == 'diezMejores' || $tipo == 'personal')<?php //Si ranking contiene informacion 
@@ -222,7 +220,7 @@
 
     <div class="my-4" style="width: 50%; max-width: 500px; height: 50vh; margin: 0 auto;">
 
-    @if(!empty($chartModel) && !session()->has('usuariosCoincidentes') && empty($avisos))
+    @if(!empty($chartModel) && !session()->has('usuariosCoincidentes') )
         @if($tipo == 'personal')
             
                         <livewire:livewire-pie-chart
@@ -237,7 +235,7 @@
             <livewire:livewire-column-chart :column-chart-model="$chartModel" />
         @endif
     @endif
-@endif
+
     </div>
 
     

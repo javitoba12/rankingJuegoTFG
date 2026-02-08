@@ -23,7 +23,7 @@ class Principal extends Component
     public $usuario;
     public $ranking;
     public $tipo;
-    public $avisos=[];
+    public $aviso;
     public $nickBusqueda;
     public $usuarioSeleccionado;
     public $tema;
@@ -132,7 +132,7 @@ class Principal extends Component
         if(empty($this->ranking) || count($this->ranking)<=0){//Si la consulta me devuelve una coleccion vacia
 
             //$this->aviso='Aun no has completado ninguna mision';//aviso al usuario
-           $this->avisos[]='Aun no has completado ninguna mision';
+           $this->aviso='Aun no has completado ninguna mision';
         }
 
 
@@ -149,7 +149,7 @@ class Principal extends Component
 
         if(empty($this->ranking) || count($this->ranking)<=0){//Si la consulta me devuelve una coleccion vacia
            // $this->aviso='Aun no hay puntuaciones globales disponibles';
-            $this->avisos[]='Aun no hay puntuaciones globales disponibles';
+            $this->aviso='Aun no hay puntuaciones globales disponibles';
             //aviso al usuario
         }
 
@@ -161,7 +161,7 @@ class Principal extends Component
 
         if(!isset($this->ranking) || count($this->ranking)<=0){//Si la consulta me devuelve una coleccion vacia
            // $this->aviso='Aun no hay bajas globales disponibles';
-            $this->avisos[]='Aun no hay bajas globales disponibles';
+            $this->aviso='Aun no hay bajas globales disponibles';
             //aviso al usuario
         }
 
@@ -243,16 +243,14 @@ return $chart;
 }
 
 function borrarAviso(){
-    
-    
-    $this->avisos=[];
-    $this->seleccionRanking();//Para volver a pintar el ranking y mantenerlo actualizado
-
-    
-    
+    $this->aviso='';
+    $this->resetearRanking();
 }
 
-
+function resetearRanking(){
+    $this->tipo='diezMejores';
+    $this->seleccionRanking();
+}
 
 
 
@@ -260,7 +258,7 @@ function buscarUsers(){
 
     if(empty(trim($this->nickBusqueda))){
 
-       $this->avisos[]='El campo de búsqueda está vacío';
+       $this->aviso='El campo de búsqueda está vacío';
        //$this->resetearRanking();
 
     }else{
@@ -268,8 +266,9 @@ function buscarUsers(){
 
     if(empty($usuariosCoincidentes) || $usuariosCoincidentes == null || $usuariosCoincidentes->count()<=0){
 
-                       $this->avisos[]='No se ha encontrado ningun usuario';
-                       //$this->resetearRanking();
+                       $this->aviso='No se ha encontrado ningun usuario';
+                      /* $this->tipo='diezMejores';
+                       $this->seleccionRanking();*/
 
                     }else{
 

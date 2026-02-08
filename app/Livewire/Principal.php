@@ -108,10 +108,10 @@ class Principal extends Component
     public function seleccionRanking(){
 
 
-        /*if($this->tipo!='personal' && $this->usuarioSeleccionado!=$this->usuario){
+        if($this->tipo!='personal' && $this->usuarioSeleccionado!=$this->usuario){
             $this->usuarioSeleccionado=$this->usuario;//Para evitar que la opcion de ver perfil del usuario salga, si se busco un usuario anteriormente antes de
             //cambiar de ranking
-        }*/
+        }
 
             
 
@@ -120,10 +120,10 @@ class Principal extends Component
         if($this->tipo =='personal'){//Si el usuario elije la opcion personal 
             //de select...
 
-            $usuarioExistente = $this->usuarioSeleccionado ?? $this->usuario; //Compruebo que si el usuario existe y no es null, si no se cumple esa condicion
+          //  $usuarioExistente = $this->usuarioSeleccionado ?? $this->usuario; //Compruebo que si el usuario existe y no es null, si no se cumple esa condicion
             //asigno como usuario existente al usuario logueado
         
-        $this->ranking=MissionUser::getMisionesUser($usuarioExistente->id);
+        $this->ranking=MissionUser::getMisionesUser($this->usuarioSeleccionado->id);
         //Extraigo en una consulta todas las puntuaciones de las misiones
         //asociadas al usuario(aquellas filas de mission_users que posean el id del usuario)
 
@@ -246,21 +246,14 @@ function borrarAviso(){
     
     
     $this->avisos=[];
-    $this->comprobarEstadoRanking();
+    
+    $this->seleccionRanking();//Para volver a pintar el ranking y mantenerlo actualizado
+
+    
     
 }
 
-function comprobarEstadoRanking(){
 
-
-if($this->tipo=='personal'){
-        $this->seleccionRanking();//Como vuelvo a cambiar de usuario cuando hago consultas de busquedas a los rankings personales de otros usuarios, ademas de
-        // que el ranking personal, de los 3 tipos es el ranking que mas cambia debido a las busquedas de usuarios (ya sean usuarios existentes o inexistentes), 
-        //reseteo de nuevo el ranking para mostrar el del usuario logueado
-    }
-
-
- }
 
 
 

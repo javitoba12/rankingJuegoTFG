@@ -31,9 +31,13 @@
 
                 <!--acept= image/* para que el input file solo acepte archivos con formato de imagen(jpg,png,gif,jpgeg...)-->
                 
+                <form wire:submit.prevent="updatedAvatar">
                 <input type="file" wire:model="avatar" class="btn" accept="image/*"> {{-- Para cambiar el avatar del usuario 
                 wire model enlaza este input file, con la propiedad avatar del componente livewire de perfil ,
                 livewire se encarga de que cuando la propiedad publica del componente cambie, se llame automaticamente a la funcion updatedAvatar --}}
+                <button type="submit">Subir</button>
+                
+            </form>
 
             @endif
             
@@ -42,7 +46,10 @@
         </div>
 
         <div class='user-avatar mx-1 mt-2'> <?php //IMAGEN DEL AVATAR ?>
+        
+
             <img src="{{ $avatarUrl }}" class='rounded-circle border border-primary avatar' alt="avatar">
+        
         </div>
     </div>
 

@@ -64,16 +64,16 @@
             <button type='button' class='btn btn-danger' wire:click="$set('borrar', true)">Eliminar mi usuario</button>
         @endif
 
-         @if($usuario->rol == 'admin')<?php //Si el usuario es admin, doy acceso a la opcion de navegar
-         //a administracion ?>
+         @if($usuario->rol == 'admin'){{-- //Si el usuario es admin, doy acceso a la opcion de navegar
+         //a administracion --}}
 
             <button type='button' class='btn btn-info' wire:click='rutaAdmin'>Navegar a Administracion</button>
         @endif
     @endif
         <button type='button' class='btn btn-info' wire:click='volver'>Volver</button><br><br>
     
-        @if($actualizar)<?php //Si el valor actualizar esta en true, creo y muestro el siguiente 
-        // formulario para actualizar los datos del usuario ?>
+        @if($actualizar){{-- //Si el valor actualizar esta en true, creo y muestro el siguiente 
+        // formulario para actualizar los datos del usuario --}}
         
             <form wire:submit.prevent='editarPerfil'>
                 <label for="nick">Nick:</label>
@@ -86,7 +86,7 @@
 
         @endif
 
-        @if($borrar)<?php//Al igual que con actualizar, muestro el formulario si borrar es true ?>
+        @if($borrar){{-- //Al igual que con actualizar, muestro el formulario si borrar es true --}}
             <form wire:submit='borrarUsuario'>
                 <h3>¿Esta seguro de querer borrar su usuario?</h3>
                 <label for="clave">Introduzca su contraseña para autorizar la operacion:</label>

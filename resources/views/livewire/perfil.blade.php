@@ -57,8 +57,8 @@
         <button type='button' class='btn btn-success' wire:click="actualizarPuntuacion">Actualizar mi puntuacion</button><br>
        <!-- <button type='submit' class='btn btn-info' wire:click="mostrarPartidas">Mis partidas</button>-->
         
-        <?php /*usando $set en wire:click puedo cambiar directamente el valor de una variable,
-        en set('nombreVariable','nuevoValorasignado')*/ ?>
+        {{-- usando $set en wire:click puedo cambiar directamente el valor de una variable,
+        en set('nombreVariable','nuevoValorasignado') --}}
 
         @if($usuario->rol != 'admin')
             <button type='button' class='btn btn-danger' wire:click="$set('borrar', true)">Eliminar mi usuario</button>

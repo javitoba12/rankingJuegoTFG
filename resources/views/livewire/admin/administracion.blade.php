@@ -63,7 +63,7 @@
     @endif
 
 
-    <?php // Formularios para modificar usuario e inventario ?>
+    {{-- // Formularios para modificar usuario e inventario --}}
     @if($editar && $tipoEdicion == 'busqueda')
 
         <div class='mb-2 buscadorAdmin pt-2 pb-2 px-2 bg-dark rounded-3'>
@@ -103,25 +103,25 @@
             </div>
 
             @if($errors->any())
-                <?php
+                {{--
                 /*Si el array $errors (array que laravel 11 proporciona de manera 
                 automatica y comoda) contiene algun error en el momento de ejecutar el formulario de
                 login...
 
                 Hago un bucle foreach y creo tantos div alert de botstrap como errores 
                 contenga $errors*/
-                ?>
+                --}}
                     @foreach($errors->all() as $error)
                         <div class="alert alert-danger" style="display:block ;">
                             <strong>Error:</strong> {{ $error }}
-                        <?php /*Pinto cada error del array en un alert diferente*/ ?>
+                        {{-- /*Pinto cada error del array en un alert diferente*/ --}}
                         </div>
                     @endforeach
                 @endif
         </form>
 
 
-    <?php //Formulario para inventario ?>
+    {{-- //Formulario para inventario --}}
 
     @elseif($editar && $tipoEdicion == 'inventario')
 
@@ -160,9 +160,9 @@
     
     @endif
 
-   <?php // Informacion del usuario encontrado ?>
+   {{-- // Informacion del usuario encontrado --}}
 
-   <?php // Muestra todos los usuarios coincidentes ?>
+   {{-- // Muestra todos los usuarios coincidentes --}}
 
    @if(session()->has('usuariosCoincidentes'))
 
@@ -201,8 +201,8 @@
                     
                     @if(session('usuarioBuscado')->rol=='usuario')
 
-                    <?php /*Solo doy opciones de manipular los datos de los usuarios que no tienen rol
-                    de admin*/ ?>
+                    {{-- /*Solo doy opciones de manipular los datos de los usuarios que no tienen rol
+                    de admin*/ --}}
                         <td>
                             <button class='btn btn-info' value='{{session("usuarioBuscado")->id}}' wire:click='mostrarFormEditar({{session("usuarioBuscado")->id}},"usuario")'>Actualizar Usuario</button>
                             <button value='{{session("usuarioBuscado")->id}}' wire:click='mostrarMenuBorrarUser("eliminarUser",{{session("usuarioBuscado")->id}})' class='btn btn-danger'>Eliminar usuario</button>
@@ -217,33 +217,32 @@
     @endif
 
 
-    <?php //Tabla para mostrar todos los usuarios de la BD paginados ?>
+    {{-- //Tabla para mostrar todos los usuarios de la BD paginados --}}
 
     <div class='adminInformacionContainer mb-2 bg-dark d-flex flex-column justify-content-center align-self-center'>
     @if(isset($usuarios) && $paginacion && count($usuarios)>0)
         <table class='table-bordered'>
             <thead>
             @foreach(array_keys($usuarios[0]->getAttributes()) as $campoNombre)
-                <?php
-                /*Similar a Object.keys en js cuando hago un for of, aqui del mismo modo, me llevo 
+                {{-- /*Similar a Object.keys en js cuando hago un for of, aqui del mismo modo, me llevo 
                 los nombres de los atributos(con atributos me refiero a los nombres de las columnas de 
                 la tabla en la BD) del primer objeto de la coleccion, (ya que todos los objetos tienen los 
                 mismos atributos) para recorrerlos con un foreach */ 
-                ?>
+                --}}
 
                 @if($campoNombre == 'remember_token' || $campoNombre == 'created_at' || $campoNombre == 'updated_at'
                  || $campoNombre == 'id' || $campoNombre == 'password' || $campoNombre == 'avatar' || $campoNombre == 'tema' )
                 <th style='display:none;'>{{$campoNombre}}</th>
-                <?php //Cualquiera de estos campos, estaran ocultos a la vista del usuario, y solo se muestran
-                // en el codigo ?>
+                {{-- //Cualquiera de estos campos, estaran ocultos a la vista del usuario, y solo se muestran
+                // en el codigo --}}
                 @else
                     <th>{{ ucfirst(str_replace('_', ' ', $campoNombre)) }}</th>
-                    <?php 
+                    {{--
                     /*A la hora de imprimir los nombres de las columnas, uso El metodo ucfirst, que
                     convierte la primera letra de una palabra en mayuscula, dentro de ucfirst llamo antes 
                     a la funcion replace, la cual cambia los _ de los nombres, por espacios reales entre 
                     palabras*/
-                    ?>
+                    --}}
                     
                 @endif
                 @endforeach
@@ -273,7 +272,7 @@
     <div class='paginacion d-flex flex-row justify-content-center'>{{$usuarios->links('pagination::bootstrap-4')}}</div>
     @endif
 
-    <?php /*con la funcion links le indico a laravel que genere los enlaces para poder paginar de 10 en 10
+    {{-- /*con la funcion links le indico a laravel que genere los enlaces para poder paginar de 10 en 10
     usuarios, por los resultados de la consulta con todos los usuarios disponibles con rol usuario.
     
     Con estos enlaces puedo navegar entre resultados(pag 1 , 10 primeros resultados, pag 2 los 10 siguientes
@@ -284,7 +283,7 @@
     exclusivo para estos casos) para poder maquetar y ajustar el tamaño de la paginacion a mi pagina,
     de manera bastante comoda
     
-    Este paquete se encuentra en resources/views/vendor/pagination*/ ?>
+    Este paquete se encuentra en resources/views/vendor/pagination*/ --}}
 
 </div>
 </div>

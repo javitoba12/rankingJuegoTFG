@@ -69,7 +69,7 @@
         @if($actualizar)<?php //Si el valor actualizar esta en true, creo y muestro el siguiente 
         // formulario para actualizar los datos del usuario ?>
         
-            <form wire:submit='editarPerfil'>
+            <form wire:submit.prevent='editarPerfil'>
                 <label for="nick">Nick:</label>
                 <input type="text" name="nick" id="nick" wire:model='nuevoNick' value='{{$usuario->nick}}'><br>
                 <label for="clave">Nueva clave:</label>

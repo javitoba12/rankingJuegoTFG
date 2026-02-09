@@ -31,11 +31,9 @@
 
                 <!--acept= image/* para que el input file solo acepte archivos con formato de imagen(jpg,png,gif,jpgeg...)-->
                 
-                <input type="file" wire:model="avatar" class="btn" accept="image/*"> <?php //Para cambiar el avatar del usuario 
-                //wire model enlaza este input file, con la propiedad avatar del componente livewire de perfil ,
-                //livewire se encarga de que cuando la propiedad publica del componente cambie, se llame automaticamente a la funcion updatedAvatar
-                // 
-                // ?>
+                <input type="file" wire:model="avatar" class="btn" accept="image/*"> {{-- Para cambiar el avatar del usuario 
+                wire model enlaza este input file, con la propiedad avatar del componente livewire de perfil ,
+                livewire se encarga de que cuando la propiedad publica del componente cambie, se llame automaticamente a la funcion updatedAvatar --}}
 
             @endif
             
@@ -49,24 +47,24 @@
     </div>
 
     @if(!session()->has('perfilSeleccionado')) <?php //En caso de que el usuario actual acceda a su propio perfil, y no al perfil de otro usuario seleccionado ?>
-        <button type='submit' class='btn btn-success' wire:click="$set('actualizar', true)">Editar Perfil</button>
-        <button type='submit' class='btn btn-success' wire:click="actualizarPuntuacion">Actualizar mi puntuacion</button><br>
+        <button type='button' class='btn btn-success' wire:click="$set('actualizar', true)">Editar Perfil</button>
+        <button type='button' class='btn btn-success' wire:click="actualizarPuntuacion">Actualizar mi puntuacion</button><br>
        <!-- <button type='submit' class='btn btn-info' wire:click="mostrarPartidas">Mis partidas</button>-->
         
         <?php /*usando $set en wire:click puedo cambiar directamente el valor de una variable,
         en set('nombreVariable','nuevoValorasignado')*/ ?>
 
         @if($usuario->rol != 'admin')
-            <button type='submit' class='btn btn-danger' wire:click="$set('borrar', true)">Eliminar mi usuario</button>
+            <button type='button' class='btn btn-danger' wire:click="$set('borrar', true)">Eliminar mi usuario</button>
         @endif
 
          @if($usuario->rol == 'admin')<?php //Si el usuario es admin, doy acceso a la opcion de navegar
          //a administracion ?>
 
-            <button type='submit' class='btn btn-info' wire:click='rutaAdmin'>Navegar a Administracion</button>
+            <button type='button' class='btn btn-info' wire:click='rutaAdmin'>Navegar a Administracion</button>
         @endif
     @endif
-        <button type='submit' class='btn btn-info' wire:click='volver'>Volver</button><br><br>
+        <button type='button' class='btn btn-info' wire:click='volver'>Volver</button><br><br>
     
         @if($actualizar)<?php //Si el valor actualizar esta en true, creo y muestro el siguiente 
         // formulario para actualizar los datos del usuario ?>

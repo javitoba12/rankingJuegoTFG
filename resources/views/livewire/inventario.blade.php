@@ -32,16 +32,13 @@
             </li>
             <li><button class='btn btn-warning' value='{{$item->id}}' wire:click='detalles({{$item->id}})' wire:model='idSeleccionado'>Detalle</button></li>
             
-            <?php//Abro etiquetas php en los blade para documentar mi desarrollo sin que los comentarios
-            // aparezcan en el navegador:
-
-            /*No puedo usar wire:model en buttons o inputs type submit (botones en general), wire:model
+            {{-- No puedo usar wire:model en buttons o inputs type submit (botones en general), wire:model
             solo funciona y se enlaza con los atributos del componente cuando uso un input mas convencional
             como inputs text,email,number,select,radio,checbox... 
             En resumen solo son validos en los inputs cuyo valor varia en funcion de lo que introduce el 
-            usuario*/ 
+            usuario --}}
             
-            ?>
+            
         </ul>
         @endforeach
     

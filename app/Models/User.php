@@ -163,7 +163,7 @@ public static function cambiarColor($idUsuario,$color){
 }
 
 public static function isNickRepetido($id,$nick):bool{
-  return self::where('nick',$nick)//Busca en aquellas filas con un id diferente al que he pasado como
+  return self::where('nick',trim($nick))//Busca en aquellas filas con un id diferente al que he pasado como
   //parametro, si existe un nick coincidente con el que tambien te he pasado como parametro
 
   ->where('id','!=',$id)//Este segundo where funciona como un AND en sql, asi que la consulta seria algo

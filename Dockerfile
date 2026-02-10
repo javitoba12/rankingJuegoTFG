@@ -49,7 +49,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 
 
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache && chmod -R 775 storage && chmod -R 775 bootstrap/cache
 # 8. Comando final corregido
 # Limpiamos CUALQUIER cache que se haya colado en el COPY antes de migrar
 #CMD echo "La base de datos en el sistema es: $DB_DATABASE" && \

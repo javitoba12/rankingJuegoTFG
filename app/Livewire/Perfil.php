@@ -111,6 +111,8 @@ class Perfil extends Component
         //Como segundo paso, la funcion debe llamarse siempre updated + el nombre de la propiedad, de lo contrario livewire no podra encontrar la funcion para
         //ejecutarla automaticamente. 
 
+        $this->resetErrorBag();//para limpiar los errores del array errors
+
         $this->validate([//Valido y compruebo que el avatar solo sea explicitamente una imagen y no cualquier otro archivo.
     //y con un tamaño que no supere los 2 mb(2048kb), para evitar imagenes demasiado grandes.
         'avatar' => 'required|image|mimes:jpg,jpeg,png,gif,svg,webp|max:2048', //Con mimes especifico los formatos de imagen que permito

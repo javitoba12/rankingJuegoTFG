@@ -41,7 +41,7 @@ Route::get('/inicio/principal/perfil/partidas', \App\Livewire\PartidasGuardadas:
 //RUTAS PARA LOS ADMIN
 
 
-Route::middleware(['auth', 'rol:admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'rol:admin'])->prefix('admin')->group(function () {//llamo al middleware por su alias.
     //Este auth al que llamo con la funcion middleware, se encarga automaticamente
     //de comprobar antes de mirar el rol del usuario, que dicho usuario este logueado, si no lo esta,
     //lo lleva directamente a la ruta de login

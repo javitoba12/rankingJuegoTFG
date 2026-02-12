@@ -112,17 +112,13 @@
 
      });
   </script>  
-  @if($errors->any())<!--Si el array $errors (array que laravel 11 proporciona de manera 
-                automatica y comoda) contiene algun error en el momento de ejecutar el formulario de
-                login...-->
-
-                <!--Hago un bucle foreach y creo tantos div alert de botstrap como errores 
-                contenga $errors-->
-                    @foreach($errors->all() as $error)
+  @error('avatar')
+                    
                         <div class="alert alert-danger" id="perfilError" style="display:block ;">
-                            <strong>Aviso:</strong> {{ $error }}
-                        <!--Pinto cada error del array en un alert diferente-->
+                            <strong>Aviso:</strong> {{ $message }} 
+        
                         </div>
-                    @endforeach
-    @endif
+    @enderror
+                    
+    
 </div>

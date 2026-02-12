@@ -32,13 +32,15 @@
                 <!--acept= image/* para que el input file solo acepte archivos con formato de imagen(jpg,png,gif,jpgeg...)-->
                 
                 
-                
+                <form wire:submit.prevent='subirAvatar'>
 
-                <input type="file" wire:model="avatar" class="btn" accept="image/*"> {{-- Para cambiar el avatar del usuario 
-                wire model enlaza este input file, con la propiedad avatar del componente livewire de perfil ,
-                livewire se encarga de que cuando la propiedad publica del componente cambie, se llame automaticamente a la funcion updatedAvatar --}}
+                    <input type="file" wire:model="avatar" class="btn" accept="image/*"> {{-- Para cambiar el avatar del usuario 
+                    wire model enlaza este input file, con la propiedad avatar del componente livewire de perfil ,
+                    livewire se encarga de que cuando la propiedad publica del componente cambie, se llame automaticamente a la funcion updatedAvatar --}}
+
+                    <button type='submit'>Subir</button>
                
-                
+                </form>
             
 
             @endif
@@ -103,7 +105,6 @@
             <button class='btn btn-success' wire:click='refrescar'>Cancelar</button>
         @endif
     @endif
-
     <script>
      window.addEventListener('recargarPagina', function () {//Creo un evento asociado a la pagina actual
 
@@ -111,7 +112,8 @@
 
      });
   </script>  
-  @error('avatar')
+  @error('avatar') {{-- una manera mas segura de mostrar errores que incumplen las reglas en livewire, asi solo muestro unicamente
+  los errores relacionados con el avatar en el array errors --}}
                     
                         <div class="alert alert-danger" id="perfilError" style="display:block ;">
                             <strong>Aviso:</strong> {{ $message }} 

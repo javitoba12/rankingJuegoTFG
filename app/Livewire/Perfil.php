@@ -105,13 +105,13 @@ class Perfil extends Component
     }
 
 
-    public function updatedAvatar(){//Esta funcion se llama updatedAvatar, para que cuando livewire detecte que se ha modificado la propiedad publica de 
+    public function subirAvatar(){//Esta funcion se llama updatedAvatar, para que cuando livewire detecte que se ha modificado la propiedad publica de 
         //avatar mediante wire:model en el input file, se dispare esta funcion automaticamente.
         //Para que se dispare una funcion automaticamente, debo de enlazar una propiedad publica del componente, a un elemento html en la vista.
         //Como segundo paso, la funcion debe llamarse siempre updated + el nombre de la propiedad, de lo contrario livewire no podra encontrar la funcion para
         //ejecutarla automaticamente. 
 
-        $this->resetErrorBag();//para limpiar los errores del array errors
+        $this->resetErrorBag();//para limpiar los errores del array errors antes de volver a validar
 
         $this->validate([//Valido y compruebo que el avatar solo sea explicitamente una imagen y no cualquier otro archivo.
     //y con un tamaño que no supere los 2 mb(2048kb), para evitar imagenes demasiado grandes.

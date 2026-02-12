@@ -113,6 +113,9 @@ class Perfil extends Component
 
         $this->resetErrorBag();//para limpiar los errores del array errors antes de volver a validar
 
+
+        //this->validate lo proporciona livewire
+
         $this->validate([//Valido y compruebo que el avatar solo sea explicitamente una imagen y no cualquier otro archivo.
     //y con un tamaño que no supere los 2 mb(2048kb), para evitar imagenes demasiado grandes.
         'avatar' => 'required|image|mimes:jpg,jpeg,png,gif,svg,webp|max:2048', //Con mimes especifico los formatos de imagen que permito
@@ -134,7 +137,7 @@ class Perfil extends Component
         //El avatar de cada usuario se identificara, con el nombre del usuario seguido de _avatar, y despues del punto,
         //Uso time para usar la hora actual como parte del nombre de la imagen, de esta manera , el navegador detecta que la imagen
         //ha cambiado, al tener un nombre un poco diferente al anterior. El navegador detecta el cambio y vuelve a pintar la imagen de nuevo.
-        //En la parte final del nombre, declaro tipo de extension que usa la imagen que el usuario ha subido como avatar, con la funcion de livewire
+        //En la parte final del nombre, declaro tipo de extension que usa la imagen que el usuario ha subido como avatar, con la funcion de laravel
         //getClientOriginalExtension
 
 

@@ -70,7 +70,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache 
 
-#Para aumentar el maximo de pesos de archivos en el servidor
+#Para aumentar el maximo de pesos de archivos en el servidor php de laravel
 RUN echo "upload_max_filesize=10M" > /usr/local/etc/php/conf.d/uploads.ini \ 
     && echo "post_max_size=10M" >> /usr/local/etc/php/conf.d/uploads.ini
 

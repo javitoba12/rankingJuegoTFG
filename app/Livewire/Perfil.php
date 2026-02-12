@@ -105,7 +105,7 @@ class Perfil extends Component
     }
 
 
-    public function subirImagen(){//Esta funcion se llama updatedAvatar, para que cuando livewire detecte que se ha modificado la propiedad publica de 
+    public function updatedAvatar(){//Esta funcion se llama updatedAvatar, para que cuando livewire detecte que se ha modificado la propiedad publica de 
         //avatar mediante wire:model en el input file, se dispare esta funcion automaticamente.
         //Para que se dispare una funcion automaticamente, debo de enlazar una propiedad publica del componente, a un elemento html en la vista.
         //Como segundo paso, la funcion debe llamarse siempre updated + el nombre de la propiedad, de lo contrario livewire no podra encontrar la funcion para

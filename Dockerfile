@@ -70,14 +70,12 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache 
 
+#Para aumentar el maximo de pesos de archivos en el servidor
+RUN echo "upload_max_filesize=10M" > /usr/local/etc/php/conf.d/uploads.ini \ 
+    && echo "post_max_size=10M" >> /usr/local/etc/php/conf.d/uploads.ini
+
 #&& chmod -R 775 storage && chmod -R 775 bootstrap/cache
 # 8. Comando final 
-# Limpiamos CUALQUIER cache que se haya colado en el COPY antes de migrar
-#CMD echo "La base de datos en el sistema es: $DB_DATABASE" && \
-#    php artisan config:clear && \
-#    php artisan migrate --force && \
-#    php artisan serve --host=0.0.0.0 --port=$PORT
-
 CMD php artisan config:clear && php artisan route:clear && php artisan cache:clear && php artisan storage:link && chmod -R 775 /var/www/html/storage && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT
 #CMD php artisan config:clear && php artisan cache:clear && php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=$PORT
 #Para ejecutar factories descomentar el comando anterior y comentar el primer CMD

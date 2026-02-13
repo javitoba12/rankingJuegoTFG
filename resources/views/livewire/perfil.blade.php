@@ -115,11 +115,31 @@
   @error('avatar') {{-- una manera mas segura de mostrar errores que incumplen las reglas en livewire, asi solo muestro unicamente
   los errores relacionados con el avatar en el array errors --}}
                     
-                        <div class="alert alert-danger" id="perfilError" style="display:block ;">
+                        <div class="alert alert-danger mt-2" id="perfilError" style="display:block ;">
                             <strong>Aviso:</strong> {{ $message }} 
         
                         </div>
     @enderror
+
+     @error('nuevoNick') {{-- una manera mas segura de mostrar errores que incumplen las reglas en livewire, asi solo muestro unicamente
+  los errores relacionados con el avatar en el array errors --}}
+                    
+                        <div class="alert alert-danger mt-2" id="perfilError" style="display:block ;">
+                            <strong>Aviso:</strong> {{ $message }} 
+        
+                        </div>
+    @enderror
+
+     @error('nuevaPassword') {{-- una manera mas segura de mostrar errores que incumplen las reglas en livewire, asi solo muestro unicamente
+  los errores relacionados con el avatar en el array errors --}}
+                    
+                        <div class="alert alert-danger mt-2" id="perfilError" style="display:block ;">
+                            <strong>Aviso:</strong> {{ $message }} 
+        
+                        </div>
+    @enderror
+
+
                     
     
 </div>

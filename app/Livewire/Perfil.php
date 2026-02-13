@@ -70,11 +70,17 @@ class Perfil extends Component
     }
 
     public function editarPerfil(){
+
+         $this->resetErrorBag();//para limpiar los errores del array errors antes de volver a validar
         
         $this->validate([//valido que el campo de nick este relleno
             //y la contraseña contenga al menos 4 caracteres
             'nuevoNick' => 'required',
             'nuevaPassword' => 'required|min:4',
+        ],[
+            'nuevoNick.required' => 'El campo nick no puede estar vacio',
+            'nuevaPassword.required' => 'El campo clave no puede estar vacio',
+            'nuevaPassword.min' => 'La contraseña debe tener al mendos 4 caracteres',
         ]);
 
         

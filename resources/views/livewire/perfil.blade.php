@@ -120,32 +120,19 @@
 
      });
   </script>  
-  @error('avatar') {{-- una manera mas segura de mostrar errores que incumplen las reglas en livewire, asi solo muestro unicamente
-  los errores relacionados con el avatar en el array errors --}}
-                    
-                        <div class="alert alert-danger mt-2" id="perfilError" style="display:block ;">
-                            <strong>Aviso:</strong> {{ $message }} 
-        
-                        </div>
-    @enderror
+   @if($errors->any())<!--Si el array $errors (array que laravel 11 proporciona de manera 
+                automatica y comoda) contiene algun error en el momento de ejecutar el formulario de
+                login...-->
 
-     @error('nuevoNick') {{-- una manera mas segura de mostrar errores que incumplen las reglas en livewire, asi solo muestro unicamente
-  los errores relacionados con el avatar en el array errors --}}
-                    
-                        <div class="alert alert-danger mt-2" id="perfilError" style="display:block ;">
-                            <strong>Aviso:</strong> {{ $message }} 
-        
+                <!--Hago un bucle foreach y creo tantos div alert de botstrap como errores 
+                contenga $errors-->
+                    @foreach($errors->all() as $error)
+                        <div class="alert alert-danger mt-2" wire:key="error-{{ $error }}" id="perfilError-{{ $error }}" style="display:block ;">
+                            <strong>Aviso:</strong> {{ $error }}
+                        <!--Pinto cada error del array en un alert diferente-->
                         </div>
-    @enderror
-
-     @error('nuevaPassword') {{-- una manera mas segura de mostrar errores que incumplen las reglas en livewire, asi solo muestro unicamente
-  los errores relacionados con el avatar en el array errors --}}
-                    
-                        <div class="alert alert-danger mt-2" id="perfilError" style="display:block ;">
-                            <strong>Aviso:</strong> {{ $message }} 
-        
-                        </div>
-    @enderror
+                    @endforeach
+    @endif
 
 
                     

@@ -34,11 +34,19 @@
                 
                 <form wire:submit.prevent='subirAvatar'>
 
-                    <input type="file" wire:model="avatar" class="btn" accept="image/*"> {{-- Para cambiar el avatar del usuario 
-                    wire model enlaza este input file, con la propiedad avatar del componente livewire de perfil ,
-                    livewire se encarga de que cuando la propiedad publica del componente cambie, se llame automaticamente a la funcion updatedAvatar --}}
+                    <div wire:loading wire:target="avatar" class="text-primary mb-2"><span>Cargando archivo...</span></div> {{-- Mensaje que muestro mientras se sube la 
+                    imagen (es decir mientras la propiedad avatar esta en transito o cargando los datos que ha recibido), al usa wire:target tras wire:loading, 
+                    estoy diciendo que este pendiente a los cambios que ocurren en la propiedad avatar --}}
 
-                    <button type='submit'>Subir</button>
+                    <input type="file" wire:model="avatar" class="btn" accept="image/*">
+
+                    <button type='submit' wire:loading.attr="disabled" wire:target="avatar"> {{-- Mientras este presente el div con el atributo wire:loading
+                        con el target en avatar, (quiere decir que aun se esta subiendo la imagen temporalmente al servidor ), bloqueo este boton para 
+                        evitar confirmar la subida usando el attributo disabled(wire:loading.attr="disabled" quiere decir que mientras se cargue la imagen
+                        este boton estara desabilitado), una vez cargado el archivo, el atributo disabled desaparecera, para poder usar el boton --}}
+                        
+                        Subir
+                    </button>
                
                 </form>
             

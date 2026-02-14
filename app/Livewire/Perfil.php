@@ -296,7 +296,7 @@ class Perfil extends Component
             $idParaBorrar=$this->usuario->id;
             Auth::logout();// Cierro la sesión del usuario,(equivalente a unset($_SESSION['usuario']))
             session()->flush();// Elimino los datos de la sesión
-            User::borrarUsuario($idParaBorrar);//Borro al usuario de la BD
+            User::borrarUsuario($idParaBorrar,$this->usuario->avatar);//Borro al usuario de la BD
             return redirect()->route('inicio');//Lo redirijo a inicio
         }else{
             session()->flash('error','la contraseña es incorrecta');

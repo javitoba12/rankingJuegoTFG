@@ -78,7 +78,7 @@
 
         <div class='editUser mb-2 bg-dark pt-2 pb-2'>
             <h4>¿Esta seguro de que desea eliminar al usuario?</h4>
-            <button wire:click='EliminarUser({{$usuarioSeleccionado->id}})' class='btn btn-danger'>Confirmar</button>
+            <button wire:click='EliminarUser' class='btn btn-danger'>Confirmar</button>
             <button wire:click='refrescar' class='btn btn-success'>Cancelar</button>
         </div>
 

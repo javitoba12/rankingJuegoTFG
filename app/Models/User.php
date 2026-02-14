@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;//Para el manejo del directorio storage
+
 
 class User extends Authenticatable
 {
@@ -97,8 +99,8 @@ class User extends Authenticatable
         Enemigo::class,        // modelo relacionado
         'enemigo_users',      // tabla pivote
 
-        'user_id',             // FK en pivote hacia users
-        'enemigo_api_id',      // FK en pivote hacia enemigos (API)
+        'user_id',             // FK en pivote hacia users en la tabla enemigo_users
+        'enemigo_api_id',      // FK en pivote hacia enemigos (API) en la tabla enemigo_users
 
         'id',                  // PK local en users
         'enemigo_api_id'       // PK local en enemigos
@@ -174,12 +176,17 @@ public static function isNickRepetido($id,$nick):bool{
   //campos con una id diferente a la actual
 }
 
-public static function borrarUsuario($id):bool{
+public static function borrarUsuario($id,$avatar):bool{
 
     $exito=false;
 
    $filasBorradas= self::where('id',$id)->delete();
    //Borro el usuario que coincida con la id pasada por parametro
+
+   if(!empty($avatar) && $avatar!=null){
+
+        Storage::disk('public')->delete($avatar);
+   }
 
    if($filasBorradas > 0){
         $exito=true;

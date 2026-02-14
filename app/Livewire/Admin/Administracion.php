@@ -240,8 +240,8 @@ class Administracion extends Component
 
     }
 
-    public function EliminarUser($idUsuario){
-        $exito=User::borrarUsuario($idUsuario);
+    public function EliminarUser(){
+        $exito=User::borrarUsuario($this->usuarioSeleccionado->id,$this->usuarioSeleccionado->avatar);
         //Busco y borro el usuario seleccionado con la funcion borrarUsuario del modelo User, esta
         //funcion devuelve un booleano que indica el exito
 

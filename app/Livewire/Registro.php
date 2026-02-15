@@ -32,11 +32,13 @@ class Registro extends Component
 
     public function registro(){
 
+        $this->resetErrorBag();//para limpiar los errores del array errors antes de volver a validar
+
        // $ruta='inicio';//La pagina a la que devuelvo al usuario una vez complete el formulario
 
         $validate = $this->validate([
 
-            'nick' => 'required|min:5',
+            'nick' => 'required|min:5|alpha_dash|max:20',
             'email' => 'required|email',
             'password' => 'required|min:4',
             
@@ -48,6 +50,10 @@ class Registro extends Component
 
             'nick.min' => 'El nick introducido debe tener al menos 5 caracteres',//si no se cumple
             //la regla min:5 anterior de nick, se añadira este mensaje a $errors
+
+            'nick.alpha_dash' => 'El nick introducido solo puede tener letras, numeros, o guiones',
+
+            'nick.max' => 'el nick introducido no puede pasar de los 20 caracteres',
 
             'email.required' => 'El email introducido no es valido o el campo esta vacio',//si no se cumple
             //la regla required|email anterior, se añadira este mensaje a $errors

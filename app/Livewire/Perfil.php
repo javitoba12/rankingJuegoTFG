@@ -75,11 +75,19 @@ class Perfil extends Component
         
         $this->validate([//valido que el campo de nick este relleno
             //y la contraseña contenga al menos 4 caracteres
-            'nuevoNick' => 'required',
+            'nuevoNick' => 'required|min:5|alpha_dash|max:20',
             'nuevaPassword' => 'required|min:4',
         ],[
             'nuevoNick.required' => 'El campo nick no puede estar vacio',
+            
+            'nuevoNick.min' => 'El nick introducido debe tener al menos 5 caracteres',
+
+            'nuevoNick.alpha_dash' => 'El nick introducido solo puede tener letras, numeros, o guiones',
+
+            'nuevoNick.max' => 'el nick introducido no puede pasar de los 20 caracteres',
+
             'nuevaPassword.required' => 'El campo clave no puede estar vacio',
+            
             'nuevaPassword.min' => 'La contraseña debe tener al mendos 4 caracteres',
         ]);
 

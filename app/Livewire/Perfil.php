@@ -346,7 +346,10 @@ class Perfil extends Component
         
         if( !empty($this->nuevaPassword) && Hash::check($this->nuevaPassword,$this->usuario->password)){
             //Compruebo que la contraseña introducida por el usuario, y la contraseña en la BD
-            //sean la misma, antes de pasar a borrar al usuario
+            //sean la misma, antes de pasar a borrar al usuario.
+            //Esto lo hace laravel hasheando o encriptando la contraseña introducida, con el mismo metodo que utilizo
+            //al encriptar la contraseña del usuario en la BD, en el momento que se creo dicho usuario.
+            //Tras ello compara ambas contraseñas para ver si coinciden
 
             $idParaBorrar=$this->usuario->id;
             Auth::logout();// Cierro la sesión del usuario,(equivalente a unset($_SESSION['usuario']))

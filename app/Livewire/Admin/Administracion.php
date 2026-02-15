@@ -198,7 +198,7 @@ class Administracion extends Component
     public function actualizarUser(){
 
         $this->validate([
-            'nuevoNick' => 'required|min:5',
+            'nuevoNick' => 'required|min:5|alpha_dash|max:20',
             'nuevaClave' => 'required|min:4',
         ],
         [
@@ -207,6 +207,10 @@ class Administracion extends Component
 
             'nuevoNick.min' => 'El nick introducido debe tener al menos 5 caracteres',//si no se cumple
             //la regla min:5 anterior de nick, se añadira este mensaje a $errors
+
+            'nick.alpha_dash' => 'El nick introducido solo puede tener letras, numeros, o guiones',
+
+            'nick.max' => 'el nick introducido no puede pasar de los 20 caracteres',
 
             'nuevaClave.required' => 'Debe rellenar el campo de contraseña',//si no se cumple
             //la regla required anterior de password, se añadira este mensaje a $errors

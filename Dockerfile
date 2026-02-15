@@ -33,7 +33,12 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # -----------------------------
-# 2. Instalar Composer
+# 2. Instalar Composer v2 (version 2) de su directorio oficial en Docker Hub, la biblioteca oficial en la nube donde los desarrolladores
+#guardan y comparten sus imágenes listas para usar.
+#Alli cojo el ejecutable y lo copio a mi directorio, de esta manera consigo instalar composer
+# el segundo argumento en el comando, es la ruta del ejecutable dentro de la imagen docker de composer en Docker Hub, el tercer argumento es mi ruta 
+#local donde instalare composer, 
+# usare el mismo mapeado que usa el desarrollador en mi contenedor
 # -----------------------------
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -47,11 +52,11 @@ COPY . .
 RUN rm -f .env
 RUN rm -f bootstrap/cache/*.php
 
-# 5. Instalar dependencias 
-# IMPORTANTE: Aseguramos que no se arrastren archivos de cache locales
+# 5. Instalar dependencias de composer
+# IMPORTANTE: Me aseguro que no se arrastren archivos de cache locales, solo las dependencias limpias
 RUN composer install --no-scripts --optimize-autoloader
 
-# 6. Instalar Node y construir assets (Igual que lo tienes)
+# 6. Instalar Node y construir assets necesarios para que laravel funcone
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
     && npm install \
@@ -71,6 +76,13 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache 
 
 #Para aumentar el maximo de pesos de archivos en el servidor php de laravel
+#esta es la ruta estándar en Linux para las imágenes oficiales de PHP, alli creo el archivo uploads ini, si no existe,
+#y dentro del archivo, añado estas dos lineas para indicar al servidor php, que ignore los valores por defecto
+#de tamaño de archivos y use estos
+
+#en conf.d se guardan archivos de configuracion varios, como : Límites de memoria o espacio (como en este caso), zonas horarias, configuraciones de errores etc
+
+#Esta ruta se usa dentro del habitat o el SO de este docker
 RUN echo "upload_max_filesize=10M" > /usr/local/etc/php/conf.d/uploads.ini \ 
     && echo "post_max_size=10M" >> /usr/local/etc/php/conf.d/uploads.ini
 

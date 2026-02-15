@@ -1,8 +1,10 @@
 <div class="container ms-0 perfil-container {{ $tema['bgColor'] }}  {{ $tema['textColor'] }} ">
     <!--{{-- In work, do what you enjoy. --}}-->
 
-    @if(isset($aviso))
+    @if(!empty($aviso))
+    <div class="alert alert-success mt-2" wire:key="aviso-{{ $aviso }}" id="aviso-{{ $aviso }}" style="display:block ;">
         <p><b>{{ $aviso }}</b></p>
+    </div>
         
     @endif
 
@@ -66,7 +68,7 @@
     </div>
 
     @if(!session()->has('perfilSeleccionado')) <?php //En caso de que el usuario actual acceda a su propio perfil, y no al perfil de otro usuario seleccionado ?>
-        <button type='button' class='btn btn-success' wire:click="$set('actualizar', true)">Editar Perfil</button>
+        <button type='button' class='btn btn-success' wire:click="cambiarVisibilidadForm('actualizar')">Editar Perfil</button>
         <button type='button' class='btn btn-success' wire:click="actualizarPuntuacion">Actualizar mi puntuacion</button><br>
        <!-- <button type='submit' class='btn btn-info' wire:click="mostrarPartidas">Mis partidas</button>-->
         
@@ -74,7 +76,7 @@
         en set('nombreVariable','nuevoValorasignado') --}}
 
         @if($usuario->rol != 'admin')
-            <button type='button' class='btn btn-danger' wire:click="$set('borrar', true)">Eliminar mi usuario</button>
+            <button type='button' class='btn btn-danger' wire:click="cambiarVisibilidadForm('borrar')">Eliminar mi usuario</button>
         @endif
 
          @if($usuario->rol == 'admin'){{-- //Si el usuario es admin, doy acceso a la opcion de navegar
@@ -90,11 +92,11 @@
         
             <form wire:submit.prevent='editarPerfil'>
                 <label for="nick">Nick:</label>
-                <input type="text" name="nick" id="nick" wire:model='nuevoNick' value='{{$usuario->nick}}'><br>
+                <input type="text" name="nick" id="nick" wire:model='nuevoNick'><br>
                 <label for="clave">Nueva clave:</label>
                 <input type="password" name="clave" id="clave" wire:model='nuevaPassword' value=""><br><br>
                 <button class='btn btn-success' type='submit'>Confirmar</button>
-                <button class='btn btn-info' wire:click='refrescar'>Cancelar</button>
+                <button type='reset' class='btn btn-info'wire:click="cambiarVisibilidadForm('actualizar')">Cancelar</button>
             </form>
 
         @endif
@@ -109,8 +111,9 @@
                 @if (session()->has('error'))
                     <p><b>{{session('error')}}</b></p>
                 @endif
+                <button type='reset' class='btn btn-success' wire:click="cambiarVisibilidadForm('borrar')">Cancelar</button>
             </form><br>
-            <button class='btn btn-success' wire:click='refrescar'>Cancelar</button>
+            
         @endif
     @endif
     <script>

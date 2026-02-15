@@ -71,6 +71,8 @@ class Perfil extends Component
 
     public function editarPerfil(){
 
+        $this->resetearAviso();
+
          $this->resetErrorBag();//para limpiar los errores del array errors antes de volver a validar
         
         $this->validate([//valido que el campo de nick este relleno
@@ -125,6 +127,8 @@ class Perfil extends Component
         //Como segundo paso, la funcion debe llamarse siempre updated + el nombre de la propiedad, de lo contrario livewire no podra encontrar la funcion para
         //ejecutarla automaticamente. 
 
+        $this->resetearAviso();
+        
         $this->resetErrorBag();//para limpiar los errores del array errors antes de volver a validar
 
 
@@ -224,8 +228,43 @@ class Perfil extends Component
 
     }
 
+    private function resetearAviso(){
+        if(!empty($this->aviso)){
+            $this->aviso='';
+        }
+    }
+
+    public function cambiarVisibilidadForm($tipoForm){
+
+        $this->nuevaPassword='';//Como ambos formularios enlazan la propiedad nueva clave, siempre me aseguro de limpiar
+        //dicha propiedad si la visibiliad de alguno de los formularios cambia
+        
+        if($tipoForm == 'actualizar'){
+
+            $this->actualizar = !$this->actualizar;// Si actualizar es true, cambia a false y viceversa, 
+            // siempre valdra lo contrario a lo que vale actualmente
+            if($this->borrar){
+                $this->borrar=false;
+            }
+
+        }elseif($tipoForm == 'borrar'){
+        
+            $this->borrar = !$this->borrar;
+            if($this->actualizar){
+
+            
+                $this->actualizar = false;
+
+            }
+
+        }
+
+        
+    }
+
     public function actualizarPuntuacion(){
 
+        $this->resetearAviso();
         
 
         $this->misionesDisponibles = Mission::pluck('id')->toArray();//Usando pluck
@@ -285,10 +324,16 @@ class Perfil extends Component
             
         }
 
-        
-        session()->put('aviso','Se han actualizado las puntuaciones'); 
+        $horasInvertidas=rand(1,3) + $this->usuario->tiempo_juego;
 
-        $this->refrescar();
+        User::actualizarHorasJuego($this->usuario->id,$horasInvertidas);
+
+        $this->aviso='Se han actualizado las puntuaciones';
+        
+        //session()->flash('aviso','Se han actualizado las puntuaciones'); 
+
+        $this->usuario=Auth::user();//Actualizo la informacion del usuario
+       // $this->refrescar();
     }       
 
         public function mostrarPartidas(){
@@ -296,6 +341,8 @@ class Perfil extends Component
         }
 
     public function borrarUsuario(){
+
+        $this->resetearAviso();
         
         if( !empty($this->nuevaPassword) && Hash::check($this->nuevaPassword,$this->usuario->password)){
             //Compruebo que la contraseña introducida por el usuario, y la contraseña en la BD

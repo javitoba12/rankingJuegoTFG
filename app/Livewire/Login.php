@@ -15,9 +15,9 @@ class Login extends Component
     public function login()
     {
 
-       /* $this->addError('email','El email introducido no es valido o el campo esta vacio');
-        $this->addError('password','La contraseña debe contener al menos 4 caracteres');*/
+        $this->resetErrorBag();//para limpiar los errores del array errors antes de volver a validar
 
+       
         //Cuando uso la funcion validate en livewire, debo proporcionar un array con las reglas
         //que quiero que se cumplan en cada campo,adicionalmente puedo proporcionar como parametro adicional
         //otro array con los mensajes de error para dichas reglas, estos errores pasaran a cargarse 

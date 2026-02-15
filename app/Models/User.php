@@ -256,6 +256,12 @@ public static function buscarUsuariosCoincidentes($busqueda){
 
 }
 
+public static function actualizarHorasJuego($idUsuario,$horasJugadas){
+
+    return self::where('id',$idUsuario)->update(['tiempo_juego' => $horasJugadas]);
+
+}
+
 public static function contarUsusarios(){
    return self::count();//Esto no devuelve una fila, devuelve un numero
 }

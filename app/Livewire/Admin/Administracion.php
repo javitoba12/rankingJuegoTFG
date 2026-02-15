@@ -197,6 +197,8 @@ class Administracion extends Component
 
     public function actualizarUser(){
 
+        $this->resetErrorBag();//para limpiar los errores del array errors antes de volver a validar
+
         $this->validate([
             'nuevoNick' => 'required|min:5|alpha_dash|max:20',
             'nuevaClave' => 'required|min:4',

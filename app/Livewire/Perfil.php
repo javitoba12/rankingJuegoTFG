@@ -332,7 +332,7 @@ class Perfil extends Component
         
         //session()->flash('aviso','Se han actualizado las puntuaciones'); 
 
-        $this->usuario=Auth::user();
+        $this->usuario=Auth::user();//Actualizo la informacion del usuario
        // $this->refrescar();
     }       
 

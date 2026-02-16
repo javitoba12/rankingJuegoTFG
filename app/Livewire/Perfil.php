@@ -195,7 +195,8 @@ class Perfil extends Component
 
         if($exito){//Si la consulta ha tenido exito, y devuelve 1 o mas filas modificadas en la tabla
 
-        $this->usuario = User::find($this->usuario->id);//Vuelvo a buscar al usuario logueado en la base de datos y lo recojo de nuevo 
+        $this->usuario = User::find($this->usuario->id);//Similar o lo mismo que hacer un SELECT * FROM USERS WHERE ID = 'ID'
+        //Vuelvo a buscar al usuario logueado en la base de datos y lo recojo de nuevo 
         //en mi variable local de usuario en el componente, con esto consigo actualizar facilmente la informacion del usuario en la web, sin recargar la pagina
         //si este ha cambiado su avatar.(en el campo avatar de la tabla users, se guarda como ruta la carpeta avatars + el nombre del avatar)
         //para poder localizar el avatar facilmente desde el componente, cunado extraigo la informacion del usuario de la BD
@@ -333,7 +334,11 @@ class Perfil extends Component
         
         //session()->flash('aviso','Se han actualizado las puntuaciones'); 
 
-        $this->usuario=Auth::user();//Actualizo la informacion del usuario
+       $this->usuario = User::find($this->usuario->id);//Actualizo la informacion del usuario
+       //Similar o lo mismo que hacer un SELECT * FROM USERS WHERE ID = 'ID'
+       //Esto es mejor que auth::user para actualizar la informacion del usuario, dado que si ya he validado al usuario
+       //con auth en mount() laravel en lugar de volver a pedir el usuario a la BD, lo rescatara de su cache, para evitar hacer muchas
+       //consultas, por lo cual la informacion de auth::user puede estar obsoleta en comparacion a la informacion de la BD
        // $this->refrescar();
     }       
 
@@ -376,7 +381,7 @@ class Perfil extends Component
             //Recojo como propieda serializada, que pasare directamente en un array a la vista perfil, 
             // el avatar del usuario(en caso de que tenga el nombre del archivo de su avatar asociada a su fila en la tabla users)
 
-            'avatarUrl' =>$this->usuario->avatar //Compruebo si el usuario contiene una ruta a su avatar en la BD (lo que significa que ya tiene un avatar propio)
+            'avatarUrl' => !empty($this->usuario->avatar) //Compruebo si el usuario contiene una ruta a su avatar en la BD (lo que significa que ya tiene un avatar propio)
         ? Storage::disk('s3')->temporaryUrl($this->usuario->avatar, now()->addMinutes(60)) //Como la visibilidad del contenido del bucket es privada
         //por limitaciones del plan gratuito, lo que hago es pedir a iDrive una url temporal con un certificado de 60 min para que el usuario propietario del avatar
         // o cualquier otro usuario que consulte el perfil del usuario actual,

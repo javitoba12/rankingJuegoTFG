@@ -147,8 +147,8 @@ class Perfil extends Component
     ]);
 
 
-        if($this->usuario->avatar && Storage::disk('public')->exists($this->usuario->avatar)){
-            Storage::disk('public')->delete($this->usuario->avatar);
+        if($this->usuario->avatar && Storage::disk('s3')->exists($this->usuario->avatar)){
+            Storage::disk('s3')->delete($this->usuario->avatar);
         }
 
         $nombreAvatar=$this->usuario->nick . '_avatar'. time() . '.' . $this->avatar->getClientOriginalExtension();
@@ -161,8 +161,9 @@ class Perfil extends Component
 
       // $rutaAvatar = $this->avatar->store('avatars', 'public');//En esta linea livewire hace lo siguiente:
 
-      $rutaAvatar=$this->avatar->storeAs('avatars', $nombreAvatar, 'public');//En esta linea livewire hace lo siguiente:
+      $rutaAvatar=$this->avatar->storeAs('avatarsUsuarios', $nombreAvatar, ['disk' => 's3','visibility' => 'public']);//En esta linea livewire hace lo siguiente:
 
+      //$rutaAvatar=$this->avatar->storePubliclyAs('avatarsUsuarios', $nombreAvatar, 's3');
        /*
        
        Recojo el archivo aavatar, que ahora mismo es un objeto tipo uploadFile para que livewire pueda manejarlo
@@ -375,8 +376,13 @@ class Perfil extends Component
             //Recojo como propieda serializada, que pasare directamente en un array a la vista perfil, 
             // el avatar del usuario(en caso de que tenga el nombre del archivo de su avatar asociada a su fila en la tabla users)
 
-            'avatarUrl' => $this->usuario->avatar && Storage::disk('public')->exists($this->usuario->avatar) ? asset('storage/' . $this->usuario->avatar )
-                 //Si el usuario resulta tener el nombre de su archivo de avatar en la BD, y ademas ese archivo existe en storage/public/avatars... 
+            'avatarUrl' =>$this->usuario->avatar //Compruebo si el usuario contiene una ruta a su avatar en la BD (lo que significa que ya tiene un avatar propio)
+        ? Storage::disk('s3')->temporaryUrl($this->usuario->avatar, now()->addMinutes(60)) //Como la visibilidad del contenido del bucket es privada
+        //por limitaciones del plan gratuito, lo que hago es pedir a iDrive una url temporal con un certificado de 60 min para que el usuario propietario del avatar
+        // o cualquier otro usuario que consulte el perfil del usuario actual,
+        //  tenga tiempo de sobra para ver su imagen. Esta url se genera utilizando las variables de entorno en el fichero .env (local) , o en railway (produccion)
+        //Laravel le pasa esta url ya certificada a iDrive, y le pide que verifique el certificado, para poder usarla en mi web, y que cualquiera pueda ver esa imagen
+                 //Si el usuario resulta tener el nombre de su archivo de avatar en la BD, y ademas ese archivo existe en el bucket 
                  // pego dicho nombre a la ruta de storage donde se encuentran almacenados todos los avatares de todos los usuarios, y con esto conseguire localizar 
                  // su avatar concreto. 
 

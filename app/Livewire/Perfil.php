@@ -379,6 +379,11 @@ class Perfil extends Component
                  //Si el usuario resulta tener el nombre de su archivo de avatar en la BD, y ademas ese archivo existe en storage/public/avatars... 
                  // pego dicho nombre a la ruta de storage donde se encuentran almacenados todos los avatares de todos los usuarios, y con esto conseguire localizar 
                  // su avatar concreto. 
+
+                 //Con asset() consigo enlazar la direccion de mi web, con la ruta donde se encuentra el avatar dentro de mi web, ensamblando asi la ruta absoluta exacta
+                 //hasta el avatar del usuario, por ejemplo si mi servidor está en https://miweb.com (o http://127.0.0.1:8000 si estoy en local)
+                 //   asset('storage/' . $this->usuario->avatar ) (que se traduce  como /avatars/nombre_foto) hace que
+                 //laravel ensambla o traduzca la ruta como https://miweb.com/avatars/nombre_foto, con lo cual ya tengo la ruta absoluta exacta al avatar del usuario
                 
                 : asset('images/avatares/avatar.jpg'), // Este sera el avatar por defecto si el usuario no tiene ninguno subido.
            

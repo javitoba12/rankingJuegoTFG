@@ -11,6 +11,7 @@
         "laravel-lang/publisher": "^16.6",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
+        "league/flysystem-aws-s3-v3": "3.0",
         "livewire/flux": "^2.1",
         "livewire/livewire": "^3.6"
     },

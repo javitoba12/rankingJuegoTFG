@@ -198,7 +198,7 @@ private function pintarGrafico(){
             $total=0;
             foreach ($this->ranking as $fila) {//recorro toda la informacion con un bucle
                     //$chart->addColumn($fila->nombre, $fila->puntuacion, '#f87171');
-                    $total= $total + $fila->puntuacion; 
+                    $total= $total + $fila->puntuacion; // para conseguir el maximo de puntuacion total sumando todas las misiones completadas por el usuario
                     
                     
             }
@@ -218,7 +218,7 @@ private function pintarGrafico(){
                 ->setTitle('Ranking: ' . ucfirst($this->tipo))
                 ->setAnimated(true)//Habilito animaciones para mas dinamismo al grafico
                 ->setDataLabelsEnabled(true)
-                ->setColumnWidth(60)
+                ->setColumnWidth(60)//ancho de cada columna del grafico
                 ->setLegendVisibility(false);//Desactivo la leyenda e informacion mas redundante
 
 

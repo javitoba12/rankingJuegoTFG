@@ -45,7 +45,15 @@ class Enemigo extends Model
         
         )
         ->withPivot('numero_bajas')
-        ->using(EnemigoUser::class);
+        ->using(EnemigoUser::class);//Estoy indicando a laravel, que para la relacion de enemigos con usuarios, laravel use mi modelo pivote personalizado
+        //en lugar de usar su modelo pivote por defecto
+
+        /**
+             * Uso ->using(EnemigoUser::class) porque la mayoría de la lógica y consultas 
+             * relacionadas con la tabla enemigo_users se hacen desde el lado de los enemigos, 
+             * no desde los usuarios. Desde el lado del usuario, solo necesito acceder a los enemigos
+             * vencidos, y para eso basta con la estructura pivot por defecto de Laravel.
+        */
     }
 
 

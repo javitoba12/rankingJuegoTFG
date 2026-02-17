@@ -84,6 +84,26 @@ class EnemigoUser extends Pivot
 
     }
 
+    public static function existenEnemigosSinCache($userId){
+    
+    return self::where('user_id', $userId)->whereDoesntHave('enemigo')->exists();//Aqui estoy diciendo:
+    //buscame en la tabla enemigoUsers, si existen filas donde el enemigo que ha vencido el usuario
+    //no conste en mi tabla enemigos(la que guarda informacion de los enemigos), es decir que no existan
+    //filas o registros de ese enemigo en la tabla enemigos
+
+    /* La traduccion a esta consulta seria algo como:
+    *SELECT EXISTS(
+    SELECT *
+    FROM enemigo_users 
+    WHERE enemigo_users.user_id = ?
+    AND NOT EXISTS (
+        SELECT 1
+        FROM enemigos 
+        WHERE enemigos.enemigo_api_id = enemigo_users.enemigo_api_id
+    )
+); */
+}
+
    
 
     public static function getDiezUsuariosConMasBajas(){//Devuelve una coleccion con el nombre de cada 

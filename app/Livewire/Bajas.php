@@ -36,7 +36,7 @@ class Bajas extends Component
     
             //Extraigo a los enemigos de la tabla de cache
 
-            if($this->bajas->isEmpty()){//Si no hay enemigos que coincidan en el cache con los que el usuario ha vencido
+            if($this->bajas->isEmpty() || EnemigoUser::existenEnemigosSinCache($this->usuario->id)){//Si no hay enemigos que coincidan en el cache con los que el usuario ha vencido
                 $this->cargarDatosEnemigos();//llamo a cargar enemigos
 
                 //Log::info($this->bajas);
@@ -61,8 +61,9 @@ class Bajas extends Component
         $this->bajas=collect();
 
         if($respuestaApiMonstruos->ok()){
+            $respuestaApiMonstruosJson=collect($respuestaApiMonstruos->json())->keyBy('id');
 
-        $respuestaApiMonstruosJson=collect(Http::get('https://mhw-db.com/monsters')->json())->keyBy('id');
+        //$respuestaApiMonstruosJson=collect(Http::get('https://mhw-db.com/monsters')->json())->keyBy('id');
         //Recojo todos los monstruos disponibles en la API, los convierto de json a una coleccion de laravel, y en dicha coleccion
         //indexo cada monstruo por su id, en lugar de usar un indice generico (por eso estoy usando keyBy('id))
 
@@ -106,7 +107,7 @@ class Bajas extends Component
     }else{
         Log::warning('Error al extraer los monstruos',[ 
                 
-                'status' => $respuestaApi->status(),
+                'status' => $respuestaApiMonstruos->status(),
                 'url' => $url,
                 
             ]);

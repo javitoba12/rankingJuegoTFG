@@ -382,7 +382,10 @@ class Perfil extends Component
             // el avatar del usuario(en caso de que tenga el nombre del archivo de su avatar asociada a su fila en la tabla users)
 
             'avatarUrl' => !empty($this->usuario->avatar) //Compruebo si el usuario contiene una ruta a su avatar en la BD (lo que significa que ya tiene un avatar propio)
-        ? Storage::disk('s3')->temporaryUrl($this->usuario->avatar, now()->addMinutes(60)) //Como la visibilidad del contenido del bucket es privada
+        ? Storage::disk('s3')->temporaryUrl($this->usuario->avatar, now()->addMinutes(60))//Con tempralyurl(), monto la url, a partir de mi url base de mi bucket
+        //sumada a la direccion donde se encuentra la imagen del usuario actual dentro del bucket, lo cual me da la direccion completa de donde se encuentra
+        //el avatar , para poder mostrarlo en mi web.
+         //Como la visibilidad del contenido del bucket es privada
         //por limitaciones del plan gratuito, lo que hago es pedir a iDrive una url temporal con un certificado de 60 min para que el usuario propietario del avatar
         // o cualquier otro usuario que consulte el perfil del usuario actual,
         //  tenga tiempo de sobra para ver su imagen. Esta url se genera utilizando las variables de entorno en el fichero .env (local) , o en railway (produccion)

@@ -11,6 +11,8 @@
 
         <h4>Bajas totales: {{$bajasTotales}}</h4>
 
+        <h4>Tipos de monstruos vencidos: {{count($bajas)}}</h4>
+
         
         @foreach($bajas as $baja)
         <ul>

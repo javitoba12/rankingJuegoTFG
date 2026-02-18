@@ -181,6 +181,8 @@ class Bajas extends Component
         
 
         foreach($repertorioEnemigos as $enemigoSeleccionado){
+
+            if(!empty($enemigoSeleccionado['id'])){
             //Recorro todos los enemigos que he extraido de manera aleatoria de la tabla enemigos
 
              Enemigo::firstOrCreate(//Si el enemigo seleccionado no existe previamente en la tabla enemigos, creo un nuevo registro para ese enemigo
@@ -284,6 +286,8 @@ class Bajas extends Component
 
            
         }
+
+    }
 
         $this->bajas=EnemigoUser::getBajasUsuario($this->usuario->id);// Refresco la colección de bajas para la vista
         $this->bajasTotales=EnemigoUser::calcularTotalBajasUsuario($this->usuario->id);

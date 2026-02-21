@@ -185,7 +185,7 @@ public static function borrarUsuario($id,$avatar):bool{
 
    if(!empty($avatar) && $avatar!=null){
 
-        Storage::disk('s3')->delete($this->usuario->avatar);
+        Storage::disk('s3')->delete($avatar);
    }
 
    if($filasBorradas > 0){

@@ -256,11 +256,11 @@
                     <td>{{$usuario->fecha_alta}}</td>
                     <td>{{$usuario->tiempo_juego}} horas</td>
                     <td>{{$usuario->rol}}</td>
-                    <td>
-                        <button class='btn btn-info' value='{{$usuario->id}}' wire:click='mostrarFormEditar({{$usuario->id}},"usuario")'>Actualizar Usuario</button>
-                        <button value='{{$usuario->id}}' wire:click='mostrarMenuBorrarUser("eliminarUser",{{$usuario->id}})' class='btn btn-danger'>Eliminar usuario</button>
-                        <button value='{{$usuario->id}}' wire:click='mostrarFormEditar({{$usuario->id}},"inventario")' class='btn btn-info'>Modificar inventario</button>
-                        <button value='{{$usuario->id}}' wire:click='reiniciarEstadisticas({{$usuario->id}})' class='btn btn-danger'>Reiniciar estadisticas</button>
+                    <td class = 'w-100 d-flex justify-content-center'>
+                        <button class='btn btn-info mx-2' value='{{$usuario->id}}' wire:click='mostrarFormEditar({{$usuario->id}},"usuario")'>Actualizar Usuario</button>
+                        <button value='{{$usuario->id}}' wire:click='mostrarMenuBorrarUser("eliminarUser",{{$usuario->id}})' class='btn btn-danger mx-2'>Eliminar usuario</button>
+                        <button value='{{$usuario->id}}' wire:click='mostrarFormEditar({{$usuario->id}},"inventario")' class='btn btn-info mx-2'>Modificar inventario</button>
+                        <button value='{{$usuario->id}}' wire:click='reiniciarEstadisticas({{$usuario->id}})' class='btn btn-danger mx-2'>Reiniciar estadisticas</button>
                     </td>
                 </tr>
         @endforeach

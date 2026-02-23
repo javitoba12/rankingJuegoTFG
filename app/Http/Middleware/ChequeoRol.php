@@ -62,6 +62,12 @@ class ChequeoRol
     }
 }
 
+/**
+ * Un middleware es una capa intermedia que filtra, inspecciona o modifica las solicitudes HTTP entrantes antes de que lleguen a la lógica central de la
+ *  aplicación o a los controladores. Actúa como un puente, y se usa mucho para tareas como autenticación, login, protección CSRF (falsificación de solicitudes) 
+ * o redirecciones, manteniendo el código del los controladores y la web limpios.
+ */
+
 
  // Si llegamos a la ruta 'dashboard', redirigimos según el rol
            /*     if ($request->routeIs('principal') && Auth::check()) {

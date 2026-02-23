@@ -19,6 +19,9 @@ class ChequeoRol
         public function handle(Request $request, Closure $next, ?string $rol = null): Response
         {//Esta funcion es tipica para todos los middleware
         /*
+
+            ?string $rol = null indica en php que el parametro podria ser un string o un null, esto en php quiere decir que el parametro puede 
+            llegar vacio.
             Request representa la peticion http que ha hecho actualmente, es un objeto que incluye 
             - url, 
             - tipo de metodo (get,post etc), 
@@ -29,10 +32,13 @@ class ChequeoRol
 
         Closure $next   Es una función anónima que representa el siguiente paso del flujo de la petición(por ejemplo si consigo pasar del middleware).
         */
+    
            
-            if ($rol !== null && Auth::check() && Auth::user()->rol !== $rol) {//Miro que el rol sea 
+            if (($rol !== null && Auth::check() && Auth::user()->rol !== $rol)) {//Miro que el rol sea 
                 //distinto a null, que el usuario este logueado, y ademas tambien compruebo que el rol
                 //del usuario no sea distinto al que tengo como parametro.
+                //!== es una comparacion estricta, comparo tanto valor como tipo de dato al comprobar si el rol del usuario
+                //es distinto al rol que he obtenido como usuario
 
                 // Si el rol no coincide con el requerido, redirige a la página principal
                 return redirect()->route('principal');

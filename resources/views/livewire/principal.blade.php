@@ -213,7 +213,7 @@
             
 
         @elseif($tipo == 'diezMejores')
-            <livewire:livewire-column-chart :column-chart-model="$chartModel" />
+            <livewire:livewire-column-chart :column-chart-model="$chartModel" /> {{-- Aqui monto y muestro el grafico que he creado en el componente --}}
         @else
             <livewire:livewire-column-chart :column-chart-model="$chartModel" />
         @endif

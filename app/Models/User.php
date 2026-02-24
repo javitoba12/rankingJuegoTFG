@@ -180,7 +180,7 @@ public static function borrarUsuario($id,$avatar):bool{
 
     $exito=false;
 
-   $filasBorradas= self::where('id',$id)->delete();
+   $filasBorradas= self::where('id',$id)->where('rol', '!=' ,'admin')->delete();
    //Borro el usuario que coincida con la id pasada por parametro
 
    if(!empty($avatar) && $avatar!=null){

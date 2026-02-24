@@ -10,7 +10,7 @@
         <input type="text" class='mx-2 rounded' placeholder='Buscar usuario' name="" id="search1" wire:model='nickBusqueda'>
         <button class='btn btn-info' wire:click='buscarUsers':disabled='!$wire.nickBusqueda || !$wire.nickBusqueda.trim()'>Buscar</button> 
         {{-- disabled para evitar que el usuario introduzca espacios vacios --}}
-        <!--<button class='btn mx-2 btn-danger' wire:click='cancelarBusqueda'>Cancelar</button>-->
+        
     </div>
     <div class="container justify-content-end">
     

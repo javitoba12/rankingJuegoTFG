@@ -172,7 +172,7 @@ class Principal extends Component
     }
 
     session()->put('tipo',$this->tipo);//guardo el tipo de ranking en la sesion
-    $this->chartModel=$this->pintarGrafico();
+   // $this->chartModel=$this->pintarGrafico();
     
 }
 
@@ -248,27 +248,27 @@ return $chart;
 
 function buscarUsers(){
 
-    $this->aviso='';
+    $this->aviso='';//Vacio el aviso
 
-    if(empty(trim($this->nickBusqueda))){
+    if(empty(trim($this->nickBusqueda))){//Si el nick esta vacio
 
-        $this->tipo='diezMejores';
-        $this->seleccionRanking();
-       $this->aviso='El campo de búsqueda está vacío';
+        $this->tipo='diezMejores';//Selecciono el ranking por defecto
+        $this->seleccionRanking();//Cargo el ranking
+       $this->aviso='El campo de búsqueda está vacío';//Aviso de que el campo esta vacio
 
     }else{
-    $usuariosCoincidentes=User::buscarUsuariosCoincidentes($this->nickBusqueda);
+    $usuariosCoincidentes=User::buscarUsuariosCoincidentes($this->nickBusqueda);//Busco a todos los usuarios que coincidan con la cadena escrita por el usuario
 
-    if(empty($usuariosCoincidentes) || $usuariosCoincidentes == null || $usuariosCoincidentes->count()<=0){
+    if(empty($usuariosCoincidentes) || $usuariosCoincidentes == null || $usuariosCoincidentes->count()<=0){//Si no hay usuarios coincidentes..
 
                         
-                        $this->tipo='diezMejores';
-                        $this->seleccionRanking();
-                        $this->aviso='No se ha encontrado ningun usuario';
+                        $this->tipo='diezMejores';//Selecciono el ranking por defecto
+                        $this->seleccionRanking();//Cargo el ranking
+                        $this->aviso='No se ha encontrado ningun usuario';//Aviso de que no se encontraron usuarios
 
-                    }else{
+                    }else{//Si se encuentran usuarios
 
-                        session()->flash('usuariosCoincidentes',$usuariosCoincidentes);
+                        session()->flash('usuariosCoincidentes',$usuariosCoincidentes);//Los cargo en la sesion momentaneamente
 
                     }
     }
@@ -277,13 +277,14 @@ function buscarUsers(){
 
 function seleccionarUsuario($usuarioBuscado){
 
-    if(!empty($usuarioBuscado)){
+    if(!empty($usuarioBuscado)){//Si el usuario existe
         
-        $this->usuarioSeleccionado=User::buscarUsuario($usuarioBuscado);
-        $this->tipo='personal';
-        $this->seleccionRanking();
-        session()->put('tipo', 'personal');
-    }else{
+        $this->usuarioSeleccionado=User::buscarUsuario($usuarioBuscado);//extraigo de la BD, los datos del usuario
+        $this->tipo='personal';//selecciono el ranking personal
+        $this->seleccionRanking();//cargo el ranking
+        session()->put('tipo', 'personal');//guardo el tipo de ranking en sesion
+    
+    }else{//Si el usuario no existe, recargo la pagina principal
         return redirect()->route('principal');
     }
 
@@ -291,7 +292,7 @@ function seleccionarUsuario($usuarioBuscado){
 
 
 
-function cancelarBusqueda(){
+/*function cancelarBusqueda(){
 
     if(!empty(trim($this->nickBusqueda)) || $this->usuarioSeleccionado->id != $this->usuario->id){
 
@@ -303,7 +304,7 @@ function cancelarBusqueda(){
     }else{
         $this->seleccionRanking();
     }
-}
+}*/
 
 public function verPerfilSeleccionado(){
     if($this->usuarioSeleccionado->id!=$this->usuario->id){
